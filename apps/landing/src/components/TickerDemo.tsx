@@ -1,4 +1,4 @@
-import { signal, effect, Show, For, ErrorBoundary } from 'streem'
+import { signal, effect, Suspense, For, ErrorBoundary } from 'streem'
 import { fromObservable, batch, throttle } from 'streem'
 import { createTickerSource, SYMBOLS } from '../lib/ticker'
 import { buildSparklinePath } from '../lib/sparkline'
@@ -91,13 +91,20 @@ export function TickerDemo(): Node {
   // Throttle visual updates to ~30fps (33ms) — source runs at 200 msg/sec
   const throttledStream = throttle(stream, 33)
 
-  // hasData flips true on the first tick — Show uses it to swap skeleton → table
-  const hasData = signal(false)
+  // Promise that resolves on the first tick — Suspense waits on this.
+  // Using a plain promise+flag (not a signal) so TickerTable can throw it
+  // synchronously during Suspense's tryRenderChildren().
+  let resolveInitial!: () => void
+  const initialPromise = new Promise<void>(res => { resolveInitial = res })
+  let initialResolved = false
 
   effect(() => {
     const ticks = throttledStream()
     if (!ticks) return
-    hasData.set(true)
+    if (!initialResolved) {
+      initialResolved = true
+      resolveInitial()
+    }
     // batch() ensures all N signal writes flush as one effect run, not N runs
     batch(() => {
       for (const tick of ticks) {
@@ -113,6 +120,30 @@ export function TickerDemo(): Node {
       }
     })
   })
+
+  // Rendered by Suspense once initialPromise resolves.
+  // rows + stream are in TickerDemo scope — retrying children() does NOT
+  // re-create them, which was the original retry-loop bug.
+  function TickerTable(): Node {
+    if (!initialResolved) throw initialPromise
+    return (
+      <table class="ticker-table">
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Price</th>
+            <th>Change</th>
+            <th>Trend</th>
+          </tr>
+        </thead>
+        <tbody>
+          <For each={rows} by={(r: TickerRow) => r.symbol}>
+            {(row: TickerRow) => <TickerRowComponent row={row} />}
+          </For>
+        </tbody>
+      </table>
+    ) as unknown as Node
+  }
 
   return (
     <section class="ticker-section">
@@ -132,26 +163,9 @@ export function TickerDemo(): Node {
             'Stream error: ' + (err instanceof Error ? err.message : String(err))
           )
         )}>
-          {Show({
-            when: hasData,
+          {Suspense({
             fallback: TickerSkeleton(),
-            children: () => (
-              <table class="ticker-table">
-                <thead>
-                  <tr>
-                    <th>Symbol</th>
-                    <th>Price</th>
-                    <th>Change</th>
-                    <th>Trend</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <For each={rows} by={(r: TickerRow) => r.symbol}>
-                    {(row: TickerRow) => <TickerRowComponent row={row} />}
-                  </For>
-                </tbody>
-              </table>
-            ) as unknown as Node,
+            children: TickerTable,
           }) as Node}
         </ErrorBoundary>
       </div>

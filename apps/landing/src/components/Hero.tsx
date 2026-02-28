@@ -1,4 +1,6 @@
 import { signal, computed, onMount } from 'streem'
+import '@shoelace-style/shoelace/dist/components/badge/badge.js'
+import '@streem/lit'
 
 export function Hero(): Node {
   // Live reactive counter demo — shows signals updating DOM in real time
@@ -15,8 +17,7 @@ export function Hero(): Node {
     <header class="hero">
       <div class="container">
         <div class="hero-badge">
-          {/* sl-badge added in plan 06-03; placeholder for now */}
-          <span class="badge">v0.1.0</span>
+          <sl-badge prop:variant="neutral" prop:pill={true}>v0.1.0</sl-badge>
         </div>
         <h1 class="hero-headline">
           Build reactive UIs that update in microseconds
@@ -50,15 +51,6 @@ export function Hero(): Node {
           text-align: center;
         }
         .hero-badge { margin-bottom: 16px; }
-        .badge {
-          display: inline-block;
-          padding: 3px 10px;
-          border: 1px solid var(--color-accent);
-          border-radius: 20px;
-          font-size: 13px;
-          color: var(--color-accent);
-          font-family: var(--font-mono);
-        }
         .hero-headline {
           font-size: clamp(2rem, 5vw, 3.5rem);
           font-weight: 700;
