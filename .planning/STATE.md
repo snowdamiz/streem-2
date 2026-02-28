@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-28T08:08:42.648Z"
+last_updated: "2026-02-28T08:49:21Z"
 progress:
-  total_phases: 3
+  total_phases: 4
   completed_phases: 3
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 15
+  completed_plans: 14
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 3 - Streaming Primitives — COMPLETE (4 of 4 plans done)
+**Current focus:** Phase 4 - Lit Web Component Interop — IN PROGRESS (2 of 3 plans done)
 
 ## Current Position
 
-Phase: 3 of 6 (Streaming Primitives) — COMPLETE
-Plan: 4 of 4 in current phase (03-01, 03-02, 03-03, 03-04 complete)
-Status: 03-04 complete — batch/throttle/debounce combinators — 42 tests passing (9 WS + 11 SSE + 5 readable + 7 observable + 10 combinators)
-Last activity: 2026-02-28 — Completed 03-04: batch() for backpressure (200 writes = 1 effect flush), throttle() leading-edge, debounce() trailing-edge
+Phase: 4 of 6 (Lit Web Component Interop) — In Progress
+Plan: 2 of 3 in current phase (04-01, 04-02 complete)
+Status: 04-02 complete — @streem/lit package with bindLitProp, observeLitProp, base custom element JSX types
+Last activity: 2026-02-28 — Completed 04-02: @streem/lit scaffold, bindLitProp/observeLitProp, base-custom-element-types.d.ts
 
-Progress: [██████████] 58% (3 of 6 phases complete — phase 4 next)
+Progress: [█████████████] 67% (14 of 15 plans complete)
 
 ## Performance Metrics
 
@@ -43,9 +43,10 @@ Progress: [██████████] 58% (3 of 6 phases complete — phase
 | 01-reactive-core | 3 | 14min | 5min |
 | 02-jsx-runtime-and-component-model | 5/5 | 25min | 5min |
 | 03-streaming-primitives | 4/4 | 18min | 5min |
+| 04-lit-web-component-interop | 2/3 | 3min | 2min |
 
 **Recent Trend:**
-- Last 5 plans: 5min, 6min, 3min, 9min, 4min
+- Last 5 plans: 6min, 3min, 9min, 4min, 1min
 - Trend: consistent
 
 *Updated after each plan completion*
@@ -103,6 +104,12 @@ Recent decisions affecting current work:
 - [Phase 03-04]: startBatch/endBatch exported from @streem/core/src/index.ts — were implemented as Phase 3 extension points in reactive.ts; plan 03-04 opens the export gate
 - [Phase 03-04]: batch() uses try/finally to guarantee endBatch() always called even when fn() throws — error propagation safe
 - [Phase 03-04]: throttle() and debounce() must be called inside a reactive scope (createRoot/component body) — same ownership invariant as effect(), documented in JSDoc
+- [Phase 04]: prop: reactive branch calls effect() directly (not bindAttr) — bindAttr calls setAttribute which defeats Lit property binding
+- [Phase 04]: on: branch must precede existing on* handler — both match startsWith('on'); on: has priority via early return
+- [Phase 04-02]: Lit is devDependency only — zero Lit runtime in @streem/lit dist; peerDependencies are @streem/core and @streem/dom
+- [Phase 04-02]: declare module target is '@streem/dom/jsx-runtime' not '@streem/dom' — must match TypeScript's jsxImportSource subpath resolution exactly
+- [Phase 04-02]: observeLitProp uses camelCase→kebab-case + '-changed' as default event name; optional event override for non-standard dispatch
+- [Phase 04-02]: bindLitProp uses el[propName] = value (not setAttribute) — property assignment preserves array/object/boolean type fidelity
 
 ### Pending Todos
 
@@ -115,5 +122,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 03-04-PLAN.md — batch/throttle/debounce combinators. Phase 3 complete. 42 tests passing across all five stream adapter + combinator test files.
+Stopped at: Completed 04-01-PLAN.md — prop:/attr:/on: prefix dispatch in applyProps(). 93 @streem/dom tests passing. Phase 4 in progress (1/3 plans done).
 Resume file: None

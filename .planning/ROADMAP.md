@@ -135,6 +135,6 @@ Note: Phase 3 (Streaming) depends only on Phase 1 and can be parallelized with P
 | 1. Reactive Core | 3/3 | Complete   | 2026-02-28 |
 | 2. JSX Runtime and Component Model | 5/5 | Complete   | 2026-02-28 |
 | 3. Streaming Primitives | 4/4 | Complete   | 2026-02-28 |
-| 4. Lit Web Component Interop | 0/3 | Not started | - |
+| 4. Lit Web Component Interop | 1/3 | In Progress|  |
 | 5. Package Assembly, CLI, and AI Skills | 0/3 | Not started | - |
 | 6. Landing Page (Dogfood) | 0/3 | Not started | - |
