@@ -49,7 +49,7 @@
 
 ### Developer Experience
 
-- [ ] **DX-01**: Developer can bootstrap a new Streem project using `create-streem` (or `npm create streem@latest`) with a Vite template that has correct `jsxImportSource` config and TypeScript setup out of the box
+- [x] **DX-01**: Developer can bootstrap a new Streem project using `create-streem` (or `npm create streem@latest`) with a Vite template that has correct `jsxImportSource` config and TypeScript setup out of the box
 - [x] **DX-02**: Dev-mode runtime emits a console warning when a signal is read outside any reactive tracking context (likely a snapshot bug)
 - [x] **DX-03**: Dev-mode runtime emits a console warning when a reactive computation is created without an active owner scope (likely a disposal bug)
 

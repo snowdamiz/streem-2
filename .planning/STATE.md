@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-last_updated: "2026-02-28T09:13:04.589Z"
+status: in_progress
+last_updated: "2026-02-28T17:49:00.000Z"
 progress:
-  total_phases: 4
+  total_phases: 6
   completed_phases: 4
-  total_plans: 15
-  completed_plans: 15
+  total_plans: 18
+  completed_plans: 16
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 4 - Lit Web Component Interop — COMPLETE (3 of 3 plans done)
+**Current focus:** Phase 5 - Package Assembly, CLI, and AI Skills — In Progress (1 of 3 plans done: 05-02)
 
 ## Current Position
 
-Phase: 4 of 6 (Lit Web Component Interop) — COMPLETE
-Plan: 3 of 3 in current phase (04-01, 04-02, 04-03 complete)
-Status: 04-03 complete — Vitest Browser Mode test suite + CEM tooling. Phase 4 COMPLETE.
-Last activity: 2026-02-28 — Completed 04-03: browser tests, gen-lit-types.ts, lit-elements.d.ts
+Phase: 5 of 6 (Package Assembly, CLI, and AI Skills) — IN PROGRESS
+Plan: 2 of 3 in current phase (05-02 complete)
+Status: 05-02 complete — create-streem CLI scaffolder with @clack/prompts + 6-file Vite+Streem template.
+Last activity: 2026-02-28 — Completed 05-02: create-streem package, CLI entry, template files
 
-Progress: [██████████████] 100% (15 of 15 plans complete)
+Progress: [██████████████░░] 88% (16 of 18 plans complete)
 
 ## Performance Metrics
 
@@ -51,6 +51,7 @@ Progress: [██████████████] 100% (15 of 15 plans comp
 
 *Updated after each plan completion*
 | Phase 04-lit-web-component-interop P03 | 13 | 2 tasks | 8 files |
+| Phase 05-package-assembly-cli-and-ai-skills P02 | 102s | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -114,6 +115,9 @@ Recent decisions affecting current work:
 - [Phase 04-03]: Lit static properties with constructor init (not class field initializers) avoids class-field-shadowing in Vitest browser mode
 - [Phase 04-03]: @vitest/browser must be installed separately from @vitest/browser-playwright for browser mode transformation pipeline to work
 - [Phase 04-03]: generateJsxTypes() from @wc-toolkit/jsx-types returns string and writes to disk when outdir+fileName provided; post-process to add declare module wrapper
+- [Phase 05-02]: Template package.json uses "streem": "latest" (not workspace:*) — prevents install failures outside monorepo
+- [Phase 05-02]: Template tsconfig.json is standalone (no extends) — user projects won't have tsconfig.base.json from the monorepo
+- [Phase 05-02]: Template jsxImportSource is "streem" (meta-package) not "@streem/dom" — consistent with published API surface
 
 ### Pending Todos
 
@@ -126,5 +130,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 04-03-PLAN.md — Vitest Browser Mode (Playwright Chromium) 7-test suite + CEM type generation tooling. Phase 4 COMPLETE (3/3 plans done). All 15 plans complete.
+Stopped at: Completed 05-02-PLAN.md — create-streem CLI scaffolder with @clack/prompts, 6-file Vite+Streem template (index.html, package.json, tsconfig.json, vite.config.ts, src/main.tsx, src/App.tsx). 2 tasks, 10 files.
 Resume file: None
