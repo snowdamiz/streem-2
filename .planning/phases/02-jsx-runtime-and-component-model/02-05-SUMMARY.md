@@ -170,3 +170,15 @@ None - no external service configuration required.
 ---
 *Phase: 02-jsx-runtime-and-component-model*
 *Completed: 2026-02-28*
+
+## Self-Check: PASSED
+
+All created files confirmed present on disk. All commits confirmed in git history.
+
+- packages/dom/src/hmr.ts: FOUND
+- packages/dom/src/hmr-plugin.ts: FOUND
+- packages/dom/tests/hmr.test.ts: FOUND
+- apps/demo/src/App.tsx: FOUND
+- Commit 722479c (Task 1): FOUND
+- Commit 1bdab10 (Task 2): FOUND
+- Commit 59449fc (docs): FOUND
