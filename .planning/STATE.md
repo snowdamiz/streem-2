@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 ## Current Position
 
 Phase: 1 of 6 (Reactive Core)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-28 — Completed 01-01: monorepo scaffold + internal reactive graph + owner tree
+Last activity: 2026-02-28 — Completed 01-02: signal.ts public API (signal/computed/effect) + vite build
 
-Progress: [█░░░░░░░░░] 5%
+Progress: [██░░░░░░░░] 10%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 6min
-- Total execution time: 6min
+- Total plans completed: 2
+- Average duration: 5min
+- Total execution time: 10min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-reactive-core | 1 | 6min | 6min |
+| 01-reactive-core | 2 | 10min | 5min |
 
 **Recent Trend:**
-- Last 5 plans: 6min
-- Trend: -
+- Last 5 plans: 6min, 4min
+- Trend: faster
 
 *Updated after each plan completion*
 
@@ -51,6 +51,9 @@ Recent decisions affecting current work:
 - 01-01: createEffectNode(fn, owner) accepts owner as parameter — prevents circular dependency, makes injection explicit
 - 01-01: disposeEffect exported from reactive.ts for use by Plan 01-02 signal.ts effect() wrapper
 - 01-01: packages/core devDependencies use version ranges not workspace:* (workspace:* is for internal packages only)
+- 01-02: signal.ts imports notifySubscribers from reactive.ts for use in setter — public wrapper never reimplements reactive graph logic
+- 01-02: computed() and effect() both register onCleanup() on owner AND return manual dispose fn — dual-path disposal
+- 01-02: if (import.meta.env.DEV) guards written inline, never assigned to intermediate variable — tree-shaking safe
 
 ### Pending Todos
 
@@ -65,5 +68,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 01-01-PLAN.md — ready for Plan 01-02 (signal.ts public API)
+Stopped at: Completed 01-02-PLAN.md — ready for Plan 01-03 (test suite + dev warnings verification)
 Resume file: None

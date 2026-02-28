@@ -7,9 +7,9 @@
 
 ### Reactive Signals
 
-- [ ] **SIGNAL-01**: Developer can create a typed reactive signal with an initial value using `signal()` from a plain TypeScript file — no build plugin required
-- [ ] **SIGNAL-02**: Developer can derive computed values that auto-update using `computed()` without manual dependency arrays
-- [ ] **SIGNAL-03**: Developer can create side effects that auto-track their reactive dependencies using `effect()` without dependency arrays
+- [x] **SIGNAL-01**: Developer can create a typed reactive signal with an initial value using `signal()` from a plain TypeScript file — no build plugin required
+- [x] **SIGNAL-02**: Developer can derive computed values that auto-update using `computed()` without manual dependency arrays
+- [x] **SIGNAL-03**: Developer can create side effects that auto-track their reactive dependencies using `effect()` without dependency arrays
 - [x] **SIGNAL-04**: Developer can scope reactive computations using `createRoot()` so that all nested effects and signals are disposed when the root is disposed
 - [x] **SIGNAL-05**: Developer can register cleanup callbacks using `onCleanup()` that fire when the containing reactive scope is disposed
 
@@ -50,8 +50,8 @@
 ### Developer Experience
 
 - [ ] **DX-01**: Developer can bootstrap a new Streem project using `create-streem` (or `npm create streem@latest`) with a Vite template that has correct `jsxImportSource` config and TypeScript setup out of the box
-- [ ] **DX-02**: Dev-mode runtime emits a console warning when a signal is read outside any reactive tracking context (likely a snapshot bug)
-- [ ] **DX-03**: Dev-mode runtime emits a console warning when a reactive computation is created without an active owner scope (likely a disposal bug)
+- [x] **DX-02**: Dev-mode runtime emits a console warning when a signal is read outside any reactive tracking context (likely a snapshot bug)
+- [x] **DX-03**: Dev-mode runtime emits a console warning when a reactive computation is created without an active owner scope (likely a disposal bug)
 
 ### AI Skills Installer
 

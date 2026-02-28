@@ -132,7 +132,7 @@ Note: Phase 3 (Streaming) depends only on Phase 1 and can be parallelized with P
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Reactive Core | 1/3 | In progress | - |
+| 1. Reactive Core | 2/3 | In Progress|  |
 | 2. JSX Runtime and Component Model | 0/5 | Not started | - |
 | 3. Streaming Primitives | 0/4 | Not started | - |
 | 4. Lit Web Component Interop | 0/3 | Not started | - |
