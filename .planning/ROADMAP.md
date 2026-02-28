@@ -67,13 +67,13 @@ Plans:
   3. The WebSocket adapter automatically reconnects with exponential backoff after a connection loss, without developer intervention
   4. At 200 messages/second through a WebSocket, wrapping writes in `batch()` prevents browser frame drops — the page remains interactive and `throttle()` / `debounce()` further reduce update frequency when needed
   5. All stream adapter tests run without a real server — adapters are testable using mock WebSocket and SSE implementations in Vitest
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 03-01: `@streem/streams` package scaffold; `fromWebSocket()` with `onCleanup` integration, typed status signal, exponential backoff reconnection
-- [ ] 03-02: `fromSSE()` with `onCleanup`, typed status signal, and SSE-specific concerns (auth, `Last-Event-ID`)
-- [ ] 03-03: `fromReadable()` (WHATWG ReadableStream) and `fromObservable()` (subscribable interface, RxJS 7.8 peer dep)
-- [ ] 03-04: `batch()`, `throttle()`, `debounce()` combinators; backpressure validation test suite at high message frequency
+- [ ] 03-01-PLAN.md — @streem/streams package scaffold; fromWebSocket() with onCleanup integration, typed status signal, exponential backoff reconnection
+- [ ] 03-02-PLAN.md — fromSSE() with onCleanup, typed status signal, and SSE-specific concerns (named events, native reconnect handling)
+- [ ] 03-03-PLAN.md — fromReadable() (WHATWG ReadableStream) and fromObservable() (Subscribable<T> structural interface, no RxJS runtime dep)
+- [ ] 03-04-PLAN.md — batch(), throttle(), debounce() combinators; startBatch/endBatch exported from @streem/core; backpressure test at 200 msg/sec
 
 ### Phase 4: Lit Web Component Interop
 **Goal**: Developers can import Lit web components into TSX files with TypeScript-typed props, use a `prop:` prefix to route values to element properties, attach events via direct element listeners (bypassing Shadow DOM event retargeting), and auto-generate type declarations from Custom Elements Manifest
