@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-last_updated: "2026-02-28T05:41:28.617Z"
+status: in_progress
+last_updated: "2026-02-28T05:47:34.000Z"
 progress:
   total_phases: 2
   completed_phases: 1
   total_plans: 8
-  completed_plans: 6
+  completed_plans: 7
 ---
 
 # Project State
@@ -18,33 +18,33 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 2 - JSX Runtime and Component Model (Plan 3 of 5 complete)
+**Current focus:** Phase 2 - JSX Runtime and Component Model (Plan 4 of 5 complete)
 
 ## Current Position
 
 Phase: 2 of 6 (JSX Runtime and Component Model) — IN PROGRESS
-Plan: 3 of 5 in current phase (02-03 complete)
-Status: 02-03 complete — component primitives: onMount(), Show(), For() — 58 tests passing
-Last activity: 2026-02-28 — Completed 02-03: onMount, Show, For implemented; DocumentFragment-first DOM insertion pattern; 26 new tests
+Plan: 4 of 5 in current phase (02-04 complete)
+Status: 02-04 complete — ErrorBoundary and Suspense — 82 tests passing
+Last activity: 2026-02-28 — Completed 02-04: ErrorBoundary (synchronous error isolation) and Suspense (thrown-Promise async pending state); 24 new tests
 
-Progress: [██████░░░░] 30%
+Progress: [███████░░░] 35%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
+- Total plans completed: 6
 - Average duration: 4min
-- Total execution time: 18min
+- Total execution time: 23min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-reactive-core | 3 | 14min | 5min |
-| 02-jsx-runtime-and-component-model | 3/5 | 14min | 4.7min |
+| 02-jsx-runtime-and-component-model | 4/5 | 19min | 4.75min |
 
 **Recent Trend:**
-- Last 5 plans: 4min, 4min, 3min, 4min, 7min
+- Last 5 plans: 4min, 3min, 4min, 7min, 5min
 - Trend: consistent
 
 *Updated after each plan completion*
@@ -80,6 +80,11 @@ Recent decisions affecting current work:
 - [Phase 02-03]: onMount implemented without effect() wrapper — direct fn() call avoids reactive tracking; onCleanup() registers cleanup on owner
 - [Phase 02-03]: Show/For return DocumentFragment instead of Comment anchor — fragment-first DOM insertion pattern required for initial render timing
 - [Phase 02-03]: Show children accepts render function () => Node for createRoot scope isolation per shown state
+- [Phase 02-04]: ErrorBoundary uses simple synchronous try/catch (not anchor-based) — returns child/fallback Node directly; in-place DOM swap deferred to Phase 3
+- [Phase 02-04]: Suspense uses queueMicrotask for initial render — anchor-based; required for async DOM swap on Promise resolve
+- [Phase 02-04]: Non-Promise error re-throw from Suspense is async (microtask) in Phase 2 — synchronous propagation to parent ErrorBoundary is Phase 3 scope
+- [Phase 02-04]: Phase 2 rejection policy: console.error for rejected Promises in Suspense; full async ErrorBoundary propagation awaits createResource protocol in Phase 3
+- [Phase 02-04]: ErrorBoundary MUST check instanceof Promise before error catch — critical invariant for ErrorBoundary > Suspense > children nesting
 
 ### Pending Todos
 
@@ -87,12 +92,12 @@ None yet.
 
 ### Blockers/Concerns
 
-- Phase 2: Suspense + streaming pending-state integration needs a concrete API design decision before Phase 2 starts (see research SUMMARY.md)
 - Phase 3: WebSocket reconnection strategy, SSE `Last-Event-ID` recovery, and Observable interop protocol are MEDIUM confidence — consider a research phase before planning Phase 3
+- Phase 3: createResource API design decision needed before Phase 3 planning (Suspense integration protocol defined; implementation awaits)
 - Phase 4: `createLitComponent` wrapper API design and CEM tooling integration are MEDIUM confidence — may benefit from targeted research before planning Phase 4
 
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 02-03-PLAN.md — component primitives complete. components.ts with onMount, Show, For; 58 tests passing. Ready for Plan 02-04 (ErrorBoundary, Suspense).
+Stopped at: Completed 02-04-PLAN.md — ErrorBoundary and Suspense complete. 82 tests passing. Ready for Plan 02-05 (final Phase 2 plan).
 Resume file: None

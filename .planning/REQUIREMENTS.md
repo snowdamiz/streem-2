@@ -20,8 +20,8 @@
 - [x] **COMP-03**: Developer can use `onMount()` to run code after a component is first mounted to the DOM
 - [x] **COMP-04**: Developer can render conditional content with a `<Show>` component that preserves reactive tracking inside the true branch
 - [x] **COMP-05**: Developer can render lists with a `<For>` component that fine-grain-updates individual items without re-rendering the whole list
-- [ ] **COMP-06**: Developer can catch errors thrown by child components using `<ErrorBoundary>` and render fallback UI
-- [ ] **COMP-07**: Developer can show a loading fallback while async or stream-backed signals are in a pending state using `<Suspense>`
+- [x] **COMP-06**: Developer can catch errors thrown by child components using `<ErrorBoundary>` and render fallback UI
+- [x] **COMP-07**: Developer can show a loading fallback while async or stream-backed signals are in a pending state using `<Suspense>`
 
 ### JSX Runtime
 
