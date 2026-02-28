@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-28T07:55:13.184Z"
+last_updated: "2026-02-28T07:58:30Z"
 progress:
   total_phases: 3
   completed_phases: 2
   total_plans: 12
-  completed_plans: 10
+  completed_plans: 11
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 3 - Streaming Primitives — IN PROGRESS (2 of 4 plans done)
+**Current focus:** Phase 3 - Streaming Primitives — IN PROGRESS (3 of 4 plans done)
 
 ## Current Position
 
 Phase: 3 of 6 (Streaming Primitives) — IN PROGRESS
-Plan: 2 of 4 in current phase (03-01, 03-02 complete)
-Status: 03-02 complete — fromSSE() adapter with MockEventSource test suite — 20 tests passing (11 SSE + 9 WS)
-Last activity: 2026-02-28 — Completed 03-02: fromSSE() using native EventSource, readyState-based error handling, named events, 11-test MockEventSource suite
+Plan: 3 of 4 in current phase (03-01, 03-02, 03-03 complete)
+Status: 03-03 complete — fromReadable() + fromObservable() adapters — 32 tests passing (9 WS + 11 SSE + 5 readable + 7 observable)
+Last activity: 2026-02-28 — Completed 03-03: ReadableStream adapter (getReader() + async loop) and Subscribable<T> structural adapter (no RxJS dep), 12 new tests
 
-Progress: [████████░░] 46%
+Progress: [█████████░] 50%
 
 ## Performance Metrics
 
@@ -42,7 +42,7 @@ Progress: [████████░░] 46%
 |-------|-------|-------|----------|
 | 01-reactive-core | 3 | 14min | 5min |
 | 02-jsx-runtime-and-component-model | 5/5 | 25min | 5min |
-| 03-streaming-primitives | 2/4 | 12min | 6min |
+| 03-streaming-primitives | 3/4 | 14min | 5min |
 
 **Recent Trend:**
 - Last 5 plans: 7min, 5min, 6min, 3min, 9min
@@ -96,6 +96,10 @@ Recent decisions affecting current work:
 - [Phase 03-01]: Adapter pattern established: onCleanup() registered BEFORE connect(); all stream adapters follow this cleanup-first invariant
 - [Phase 03-streaming-primitives]: MockEventSource over MSW sse() + eventsource v4 — eventsource v4 fetch not intercepted by MSW FetchInterceptor in happy-dom vitest environment due to CORS streaming; MockEventSource extends EventTarget gives synchronous behavioral coverage
 - [Phase 03-streaming-primitives]: [Phase 03-02]: Named SSE events share handleMessage handler — options.events[] each addEventListener with same function, all route to same data signal
+- [Phase 03-03]: reader.cancel().catch(() => {}) required — cancel() may itself reject if stream already closed; naked await would bubble unhandled
+- [Phase 03-03]: Cancellation error suppression checks err.name=AbortError AND message contains cancel/cancelled/canceled — environment-neutral detection
+- [Phase 03-03]: Subscribable<T> defined once in types.ts — from-observable.ts imports, does not re-declare; single source of truth
+- [Phase 03-03]: status='connecting' initialized before source.subscribe() — synchronous observables emit next() during subscribe(), setting 'connected' immediately; correct behavior
 
 ### Pending Todos
 
@@ -110,5 +114,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 03-02-PLAN.md — fromSSE() adapter + 11-test MockEventSource suite. 20 tests passing.
+Stopped at: Completed 03-03-PLAN.md — fromReadable() + fromObservable() adapters. 32 tests passing across all four adapters.
 Resume file: None

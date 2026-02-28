@@ -70,9 +70,9 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — @streem/streams package scaffold; fromWebSocket() with onCleanup integration, typed status signal, exponential backoff reconnection
-- [ ] 03-02-PLAN.md — fromSSE() with onCleanup, typed status signal, and SSE-specific concerns (named events, native reconnect handling)
-- [ ] 03-03-PLAN.md — fromReadable() (WHATWG ReadableStream) and fromObservable() (Subscribable<T> structural interface, no RxJS runtime dep)
+- [x] 03-01-PLAN.md — @streem/streams package scaffold; fromWebSocket() with onCleanup integration, typed status signal, exponential backoff reconnection
+- [x] 03-02-PLAN.md — fromSSE() with onCleanup, typed status signal, and SSE-specific concerns (named events, native reconnect handling)
+- [x] 03-03-PLAN.md — fromReadable() (WHATWG ReadableStream) and fromObservable() (Subscribable<T> structural interface, no RxJS runtime dep)
 - [ ] 03-04-PLAN.md — batch(), throttle(), debounce() combinators; startBatch/endBatch exported from @streem/core; backpressure test at 200 msg/sec
 
 ### Phase 4: Lit Web Component Interop
@@ -134,7 +134,7 @@ Note: Phase 3 (Streaming) depends only on Phase 1 and can be parallelized with P
 |-------|----------------|--------|-----------|
 | 1. Reactive Core | 3/3 | Complete   | 2026-02-28 |
 | 2. JSX Runtime and Component Model | 5/5 | Complete   | 2026-02-28 |
-| 3. Streaming Primitives | 2/4 | In Progress|  |
+| 3. Streaming Primitives | 3/4 | In Progress|  |
 | 4. Lit Web Component Interop | 0/3 | Not started | - |
 | 5. Package Assembly, CLI, and AI Skills | 0/3 | Not started | - |
 | 6. Landing Page (Dogfood) | 0/3 | Not started | - |
