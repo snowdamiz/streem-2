@@ -14,6 +14,8 @@
  * owner.ts passes the current owner when creating nodes).
  */
 
+import { setCurrentEffectCleanupTarget } from './owner.js'
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -214,14 +216,19 @@ function runEffect(effect: EffectNode): void {
   }
   effect.deps.clear()
 
-  // 3. Run the effect function under this subscriber context
+  // 3. Run the effect function under this subscriber context.
+  //    Set the effect as the current cleanup target so that onCleanup() calls
+  //    inside the effect body register on effect.cleanupFns (per-run cleanup)
+  //    rather than on the owner's cleanup list (disposal-only cleanup).
   const prevSubscriber = currentSubscriber
   currentSubscriber = effect
+  setCurrentEffectCleanupTarget(effect)
 
   try {
     effect.fn()
   } finally {
     currentSubscriber = prevSubscriber
+    setCurrentEffectCleanupTarget(null)
   }
 }
 

@@ -22,12 +22,31 @@ export interface Owner {
   disposed: boolean
 }
 
+/**
+ * Structural interface for an effect node's per-run cleanup store.
+ * Used by onCleanup() to register cleanup callbacks that fire before
+ * each effect re-run (not just on owner disposal).
+ *
+ * Structural to avoid importing reactive.ts (circular dep prevention).
+ */
+export interface EffectCleanupRef {
+  cleanupFns: (() => void)[]
+}
+
 // ---------------------------------------------------------------------------
 // Global owner state
 // ---------------------------------------------------------------------------
 
 /** The currently active owner scope */
 let currentOwner: Owner | null = null
+
+/**
+ * The currently executing effect's cleanup store, if any.
+ * Set by reactive.ts's runEffect() before invoking the effect fn.
+ * onCleanup() registers here when inside an effect body so that
+ * the callbacks fire before each effect re-run, not just on owner disposal.
+ */
+let currentEffectCleanupTarget: EffectCleanupRef | null = null
 
 // ---------------------------------------------------------------------------
 // Internal helpers
@@ -108,12 +127,17 @@ export function createRoot<T>(fn: (dispose: () => void) => T): T {
  * Register a cleanup callback on the current owner scope.
  *
  * The callback fires:
- *  1. When the containing scope is disposed (`createRoot` dispose called)
- *  2. Before each re-execution of the containing effect (if inside an effect)
+ *  1. Before each re-execution of the containing effect (if called inside an
+ *     effect body — registered on the effect's per-run cleanupFns store)
+ *  2. When the containing scope is disposed (`createRoot` dispose called or
+ *     effect manually disposed)
  *
- * If called outside any owner scope, the callback is silently dropped
- * (it will never be called). This is acceptable per design — owners are
- * opt-in, not required for basic signal reads.
+ * Priority: if called during an effect's execution (currentEffectCleanupTarget
+ * is set by runEffect), the callback registers on the effect's cleanupFns so
+ * it fires before each re-run. Otherwise falls back to the owner's cleanups.
+ *
+ * If called outside any owner scope and outside an effect, the callback is
+ * silently dropped (it will never be called). This is intentional per design.
  *
  * @example
  * ```ts
@@ -121,17 +145,41 @@ export function createRoot<T>(fn: (dispose: () => void) => T): T {
  *   effect(() => {
  *     const controller = new AbortController()
  *     fetch(url()).then(...)
- *     onCleanup(() => controller.abort())
+ *     onCleanup(() => controller.abort()) // fires before re-run and on dispose
  *   })
  * })
  * ```
  */
 export function onCleanup(fn: () => void): void {
-  if (currentOwner !== null) {
+  if (currentEffectCleanupTarget !== null) {
+    // Inside an effect body — register on effect's per-run cleanup store.
+    // This fires before each re-run AND is cleared on disposeEffect.
+    currentEffectCleanupTarget.cleanupFns.push(fn)
+  } else if (currentOwner !== null) {
+    // Inside a createRoot (but not an effect body) — register on owner.
     currentOwner.cleanups.push(fn)
   }
-  // Note: if called outside any owner, fn is never registered and never called.
+  // Note: if called outside any owner or effect, fn is silently dropped.
   // This is intentional — not a bug. See CONTEXT.md.
+}
+
+/**
+ * Set the currently executing effect's cleanup store.
+ * Called by reactive.ts's runEffect() before/after the effect fn runs.
+ * This is the bridge that lets onCleanup() register per-run cleanups
+ * without owner.ts needing to import from reactive.ts.
+ *
+ * @param target - The effect node's cleanup store, or null when not in an effect.
+ */
+export function setCurrentEffectCleanupTarget(target: EffectCleanupRef | null): void {
+  currentEffectCleanupTarget = target
+}
+
+/**
+ * Returns the currently active effect cleanup target (for reactive.ts use).
+ */
+export function getCurrentEffectCleanupTarget(): EffectCleanupRef | null {
+  return currentEffectCleanupTarget
 }
 
 /**
