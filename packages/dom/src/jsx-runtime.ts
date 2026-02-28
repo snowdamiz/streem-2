@@ -8,7 +8,21 @@
  *
  * Both map to h() since Streem doesn't need the jsx/jsxs distinction at runtime.
  */
-export { h as jsx, h as jsxs, Fragment } from './h.js'
+/**
+ * jsx/jsxs wrappers that accept the optional key argument but discard it.
+ * Forwarding key to h()'s ...children rest args would overwrite props.children.
+ */
+import { h, Fragment } from './h.js'
+
+export function jsx(
+  type: Parameters<typeof h>[0],
+  props: Record<string, unknown> | null,
+  _key?: string | number | null,
+): ReturnType<typeof h> {
+  return h(type, props)
+}
+
+export { jsx as jsxs, Fragment }
 
 /**
  * JSX type declarations for @streem/dom.
