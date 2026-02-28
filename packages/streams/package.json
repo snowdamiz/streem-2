@@ -1,0 +1,34 @@
+{
+  "name": "@streem/streams",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@streem/core": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0",
+    "vite-plugin-dts": "^4.0.0",
+    "vitest": "^4.0.0",
+    "typescript": "~5.8.0",
+    "happy-dom": "^14.0.0",
+    "vitest-websocket-mock": "^0.5.0",
+    "msw": "^2.12.0"
+  },
+  "peerDependencies": {
+    "rxjs": "^7.0.0 || ^8.0.0"
+  },
+  "peerDependenciesMeta": {
+    "rxjs": { "optional": true }
+  }
+}
