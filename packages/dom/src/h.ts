@@ -157,9 +157,12 @@ export function h(
 
   // Function component: run exactly once inside createRoot scope
   if (typeof type === 'function') {
-    const allProps: Record<string, unknown> = {
-      ...(props ?? {}),
-      children: normalizeChildren(children),
+    // The automatic JSX runtime (react-jsx transform) puts children inside
+    // props.children — rest args are always empty in that mode. Only overwrite
+    // props.children if rest args were actually provided (classic h() call).
+    const allProps: Record<string, unknown> = { ...(props ?? {}) }
+    if (children.length > 0) {
+      allProps.children = normalizeChildren(children)
     }
     let result: Node | Node[] | null | undefined = null
     createRoot((dispose) => {
@@ -176,6 +179,13 @@ export function h(
   if (props) {
     applyProps(el as HTMLElement, props)
   }
-  appendChildren(el, children)
+  // With the automatic JSX runtime children arrive via props.children (rest args = []).
+  // With the classic runtime they arrive as rest args. Support both.
+  if (children.length > 0) {
+    appendChildren(el, children)
+  } else if (props?.children != null) {
+    const pc = props.children
+    appendChildren(el, Array.isArray(pc) ? (pc as Children) : [pc])
+  }
   return el
 }
