@@ -13,6 +13,7 @@
  * Forwarding key to h()'s ...children rest args would overwrite props.children.
  */
 import { h, Fragment } from './h.js'
+import type { CSSProperties } from './types.js'
 
 export function jsx(
   type: Parameters<typeof h>[0],
@@ -52,7 +53,7 @@ export namespace JSX {
       ref?: (el: HTMLElement) => void
       class?: string | (() => string)
       classList?: Record<string, boolean> | (() => Record<string, boolean>)
-      style?: Partial<CSSStyleDeclaration> | (() => Partial<CSSStyleDeclaration>)
+      style?: CSSProperties | (() => CSSProperties)
     }
   }
 

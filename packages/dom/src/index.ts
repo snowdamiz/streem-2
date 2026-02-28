@@ -20,3 +20,5 @@ export { onMount, Show, For, ErrorBoundary, Suspense } from './components.js'
 export { registerForHMR, getRestoredValue, saveToHotData, canRestoreState, saveSignalCount, clearHMRRegistry } from './hmr.js'
 // Vite plugin
 export { streemHMR } from './hmr-plugin.js'
+// Types
+export type { CSSProperties } from './types.js'

@@ -1,4 +1,16 @@
 /**
+ * CSSProperties — typed style object for use as the `style` JSX prop
+ * or as an extracted variable.
+ *
+ * @example
+ * const containerStyle: CSSProperties = { display: 'grid', gap: '20px' }
+ * // In JSX:
+ * <div style={containerStyle} />
+ * <div style={{ display: 'flex', alignItems: 'center' }} />
+ */
+export type CSSProperties = Partial<CSSStyleDeclaration>
+
+/**
  * JSX type declarations for @streem/dom.
  * TypeScript reads these when jsxImportSource resolves to this package.
  */
@@ -21,7 +33,7 @@ export namespace JSX {
       ref?: (el: HTMLElement) => void
       class?: string | (() => string)
       classList?: Record<string, boolean> | (() => Record<string, boolean>)
-      style?: Partial<CSSStyleDeclaration> | (() => Partial<CSSStyleDeclaration>)
+      style?: CSSProperties | (() => CSSProperties)
     }
   }
 
