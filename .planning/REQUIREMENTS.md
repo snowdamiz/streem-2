@@ -100,13 +100,13 @@
 
 | Requirement | Phase | Phase Name | Status |
 |-------------|-------|------------|--------|
-| SIGNAL-01 | Phase 1 | Reactive Core | Pending |
-| SIGNAL-02 | Phase 1 | Reactive Core | Pending |
-| SIGNAL-03 | Phase 1 | Reactive Core | Pending |
-| SIGNAL-04 | Phase 1 | Reactive Core | Implemented (01-01) |
-| SIGNAL-05 | Phase 1 | Reactive Core | Implemented (01-01) |
-| DX-02 | Phase 1 | Reactive Core | Pending |
-| DX-03 | Phase 1 | Reactive Core | Pending |
+| SIGNAL-01 | Phase 1 | Reactive Core | Tested (01-03) |
+| SIGNAL-02 | Phase 1 | Reactive Core | Tested (01-03) |
+| SIGNAL-03 | Phase 1 | Reactive Core | Tested (01-03) |
+| SIGNAL-04 | Phase 1 | Reactive Core | Tested (01-03) |
+| SIGNAL-05 | Phase 1 | Reactive Core | Tested (01-03) |
+| DX-02 | Phase 1 | Reactive Core | Tested (01-03) |
+| DX-03 | Phase 1 | Reactive Core | Tested (01-03) |
 | COMP-01 | Phase 2 | JSX Runtime and Component Model | Pending |
 | COMP-02 | Phase 2 | JSX Runtime and Component Model | Pending |
 | COMP-03 | Phase 2 | JSX Runtime and Component Model | Pending |
@@ -143,4 +143,4 @@
 
 ---
 *Requirements defined: 2026-02-27*
-*Last updated: 2026-02-28 after 01-01 execution (SIGNAL-04, SIGNAL-05 implemented)*
+*Last updated: 2026-02-28 after 01-03 execution (all Phase 1 requirements tested: SIGNAL-01 through SIGNAL-05, DX-02, DX-03)*

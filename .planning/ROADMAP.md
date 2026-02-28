@@ -12,7 +12,7 @@ Streem is built in six phases that follow a strict dependency graph: the reactiv
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Reactive Core** - DOM-free signal primitives, owner/cleanup tree, and dev-mode reactive warnings
+- [x] **Phase 1: Reactive Core** - DOM-free signal primitives, owner/cleanup tree, and dev-mode reactive warnings (completed 2026-02-28)
 - [ ] **Phase 2: JSX Runtime and Component Model** - JSX factory, reactive DOM bindings, component primitives, and HMR
 - [ ] **Phase 3: Streaming Primitives** - All four stream adapters with automatic cleanup, backpressure, and reconnection
 - [ ] **Phase 4: Lit Web Component Interop** - TypeScript-typed Lit component bindings with correct Shadow DOM event handling
@@ -132,7 +132,7 @@ Note: Phase 3 (Streaming) depends only on Phase 1 and can be parallelized with P
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Reactive Core | 2/3 | In Progress|  |
+| 1. Reactive Core | 3/3 | Complete   | 2026-02-28 |
 | 2. JSX Runtime and Component Model | 0/5 | Not started | - |
 | 3. Streaming Primitives | 0/4 | Not started | - |
 | 4. Lit Web Component Interop | 0/3 | Not started | - |

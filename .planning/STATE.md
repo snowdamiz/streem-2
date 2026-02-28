@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 1 - Reactive Core
+**Current focus:** Phase 1 - Reactive Core (COMPLETE)
 
 ## Current Position
 
-Phase: 1 of 6 (Reactive Core)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-28 — Completed 01-02: signal.ts public API (signal/computed/effect) + vite build
+Phase: 1 of 6 (Reactive Core) — COMPLETE
+Plan: 3 of 3 in current phase (all plans complete)
+Status: Phase 1 complete — ready for Phase 2
+Last activity: 2026-02-28 — Completed 01-03: full Vitest test suite (40 tests) + onCleanup bug fix
 
-Progress: [██░░░░░░░░] 10%
+Progress: [███░░░░░░░] 15%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
+- Total plans completed: 3
 - Average duration: 5min
-- Total execution time: 10min
+- Total execution time: 14min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-reactive-core | 2 | 10min | 5min |
+| 01-reactive-core | 3 | 14min | 5min |
 
 **Recent Trend:**
-- Last 5 plans: 6min, 4min
-- Trend: faster
+- Last 5 plans: 6min, 4min, 4min
+- Trend: consistent
 
 *Updated after each plan completion*
 
@@ -54,6 +54,8 @@ Recent decisions affecting current work:
 - 01-02: signal.ts imports notifySubscribers from reactive.ts for use in setter — public wrapper never reimplements reactive graph logic
 - 01-02: computed() and effect() both register onCleanup() on owner AND return manual dispose fn — dual-path disposal
 - 01-02: if (import.meta.env.DEV) guards written inline, never assigned to intermediate variable — tree-shaking safe
+- 01-03: onCleanup() inside effect body must register on effect.cleanupFns (per-run), not owner.cleanups (disposal-only) — required EffectCleanupRef bridge interface
+- 01-03: setCurrentEffectCleanupTarget() exported from owner.ts, called by reactive.ts runEffect() — import direction owner→reactive preserved (no circular dep)
 
 ### Pending Todos
 
@@ -68,5 +70,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 01-02-PLAN.md — ready for Plan 01-03 (test suite + dev warnings verification)
+Stopped at: Completed 01-03-PLAN.md — Phase 1 (Reactive Core) complete. All 7 requirements have passing tests. Ready for Phase 2.
 Resume file: None
