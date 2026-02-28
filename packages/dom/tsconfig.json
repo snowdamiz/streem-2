@@ -4,7 +4,6 @@
     "composite": true,
     "declarationMap": true,
     "outDir": "./dist",
-    "rootDir": "./src",
     "jsx": "react-jsx",
     "jsxImportSource": "@streem/dom"
   },
