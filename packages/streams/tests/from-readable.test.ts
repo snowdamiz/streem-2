@@ -84,4 +84,35 @@ describe('fromReadable', () => {
     dispose()
     expect(status()).toBe('closed')
   })
+
+  it('sets status=error and error signal when ReadableStream controller.error() is called', async () => {
+    // Tests the pump() catch block — non-cancellation errors set status=error
+    let controller!: ReadableStreamDefaultController<string>
+    const errorStream = new ReadableStream<string>({
+      start(c) {
+        controller = c
+        c.enqueue('first value')
+      },
+    })
+
+    let data: any, status: any, error: any
+    const dispose = createRoot((d) => {
+      ;[data, status, error] = fromReadable(errorStream)
+      return d
+    })
+
+    // Wait for first chunk to be consumed
+    await new Promise(r => setTimeout(r, 20))
+    expect(data()).toBe('first value')
+
+    // Error the stream — pump() catch block should fire
+    const streamError = new Error('stream corrupted')
+    controller.error(streamError)
+
+    await new Promise(r => setTimeout(r, 20))
+    expect(status()).toBe('error')
+    expect(error()).toBeInstanceOf(Error)
+    expect(error().message).toBe('stream corrupted')
+    dispose()
+  })
 })

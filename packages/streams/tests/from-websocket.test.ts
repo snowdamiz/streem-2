@@ -137,4 +137,31 @@ describe('fromWebSocket', () => {
     expect(error()).toBeInstanceOf(MaxRetriesExceededError)
     dispose()
   })
+
+  it('cancels pending reconnect timer on owner disposal (disposed during reconnect backoff)', async () => {
+    // Tests that disposing during a reconnect backoff window cancels the timer
+    // and sets status=closed immediately (not after the timer fires)
+    let status: any
+    const dispose = createRoot((d) => {
+      ;[, status] = fromWebSocket(WS_URL, {
+        reconnect: { maxRetries: 5, initialDelay: 5000, maxDelay: 10000 }, // long delay
+      })
+      return d
+    })
+
+    await server.connected
+    // Trigger reconnect by closing server — will schedule a 5000ms+ backoff timer
+    server.close()
+    // Give a tick for the close event to fire and schedule the timer
+    await new Promise(r => setTimeout(r, 10))
+
+    // At this point status should be 'reconnecting' (timer pending)
+    expect(status()).toBe('reconnecting')
+
+    // Dispose the owner — should cancel the timer and set status=closed immediately
+    dispose()
+
+    // No need to wait for the timer (it was cancelled)
+    expect(status()).toBe('closed')
+  })
 })
