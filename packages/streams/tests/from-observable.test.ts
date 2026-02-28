@@ -137,4 +137,31 @@ describe('fromObservable', () => {
     dispose()
     expect(status()).toBe('closed')
   })
+
+  it('sets status=error after emitting values — error() fires after next() calls (STREAM-04)', () => {
+    // Tests that error() after values correctly sets error signal
+    // and that previous data is preserved (last emitted value stays in data signal)
+    const testError = new Error('late stream failure')
+    const obs: Subscribable<number> = {
+      subscribe(observer) {
+        observer.next?.(1)
+        observer.next?.(2)
+        observer.next?.(3)
+        observer.error?.(testError) // error after emitting values
+        return { unsubscribe() {} }
+      },
+    }
+
+    let data: any, status: any, error: any
+    const dispose = createRoot((d) => {
+      ;[data, status, error] = fromObservable(obs)
+      return d
+    })
+
+    // Synchronous observable: all calls happen during .subscribe()
+    expect(data()).toBe(3) // last emitted value preserved
+    expect(status()).toBe('error')
+    expect(error()).toBe(testError)
+    dispose()
+  })
 })
