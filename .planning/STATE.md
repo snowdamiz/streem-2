@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: in_progress
-last_updated: "2026-02-28T17:49:00.000Z"
+last_updated: "2026-02-28T17:51:00.000Z"
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 18
-  completed_plans: 16
+  completed_plans: 17
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 5 - Package Assembly, CLI, and AI Skills — In Progress (1 of 3 plans done: 05-02)
+**Current focus:** Phase 5 - Package Assembly, CLI, and AI Skills — In Progress (2 of 3 plans done: 05-01, 05-02)
 
 ## Current Position
 
 Phase: 5 of 6 (Package Assembly, CLI, and AI Skills) — IN PROGRESS
-Plan: 2 of 3 in current phase (05-02 complete)
-Status: 05-02 complete — create-streem CLI scaffolder with @clack/prompts + 6-file Vite+Streem template.
-Last activity: 2026-02-28 — Completed 05-02: create-streem package, CLI entry, template files
+Plan: 2 of 3 in current phase (05-01 and 05-02 complete)
+Status: 05-01 complete — streem meta-package with 666-byte barrel re-export + jsx-runtime subpaths.
+Last activity: 2026-02-28 — Completed 05-01: streem meta-package, 3-entry Vite build, jsxImportSource wiring
 
-Progress: [██████████████░░] 88% (16 of 18 plans complete)
+Progress: [███████████████░] 94% (17 of 18 plans complete)
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Progress: [██████████████░░] 88% (16 of 18 plans
 *Updated after each plan completion*
 | Phase 04-lit-web-component-interop P03 | 13 | 2 tasks | 8 files |
 | Phase 05-package-assembly-cli-and-ai-skills P02 | 102s | 2 tasks | 10 files |
+| Phase 05-package-assembly-cli-and-ai-skills P01 | 134s | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -118,6 +119,11 @@ Recent decisions affecting current work:
 - [Phase 05-02]: Template package.json uses "streem": "latest" (not workspace:*) — prevents install failures outside monorepo
 - [Phase 05-02]: Template tsconfig.json is standalone (no extends) — user projects won't have tsconfig.base.json from the monorepo
 - [Phase 05-02]: Template jsxImportSource is "streem" (meta-package) not "@streem/dom" — consistent with published API surface
+- [Phase 05-01]: streem meta-package uses explicit named re-exports (not export *) — controls public API surface precisely
+- [Phase 05-01]: Rollup external array must include @streem/dom/jsx-runtime and @streem/dom/jsx-dev-runtime separately — parent pkg externalization does not cover subpath imports; omitting causes Rollup to bundle h.js shared chunk
+- [Phase 05-01]: startBatch/endBatch NOT re-exported from streem — internal scheduling; batch() from @streem/streams is the public API
+- [Phase 05-01]: HMR internals not re-exported (registerForHMR, getRestoredValue, etc.); streemHMR Vite plugin IS re-exported
+- [Phase 05-01]: @streem/lit NOT in streem meta-package — Lit opt-in peer dep must remain separate
 
 ### Pending Todos
 
@@ -130,5 +136,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 05-02-PLAN.md — create-streem CLI scaffolder with @clack/prompts, 6-file Vite+Streem template (index.html, package.json, tsconfig.json, vite.config.ts, src/main.tsx, src/App.tsx). 2 tasks, 10 files.
+Stopped at: Completed 05-01-PLAN.md — streem meta-package with 3-entry Vite build (index, jsx-runtime, jsx-dev-runtime), 666-byte barrel re-export from @streem/core/@streem/dom/@streem/streams, jsxImportSource: 'streem' fully wired. 2 tasks, 6 files.
 Resume file: None
