@@ -98,43 +98,43 @@
 
 ## Traceability
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| SIGNAL-01 | Phase 1 | Pending |
-| SIGNAL-02 | Phase 1 | Pending |
-| SIGNAL-03 | Phase 1 | Pending |
-| SIGNAL-04 | Phase 1 | Pending |
-| SIGNAL-05 | Phase 1 | Pending |
-| COMP-01 | Phase 2 | Pending |
-| COMP-02 | Phase 2 | Pending |
-| COMP-03 | Phase 2 | Pending |
-| COMP-04 | Phase 2 | Pending |
-| COMP-05 | Phase 2 | Pending |
-| COMP-06 | Phase 2 | Pending |
-| COMP-07 | Phase 2 | Pending |
-| JSX-01 | Phase 2 | Pending |
-| JSX-02 | Phase 2 | Pending |
-| JSX-03 | Phase 2 | Pending |
-| STREAM-01 | Phase 3 | Pending |
-| STREAM-02 | Phase 3 | Pending |
-| STREAM-03 | Phase 3 | Pending |
-| STREAM-04 | Phase 3 | Pending |
-| STREAM-05 | Phase 3 | Pending |
-| STREAM-06 | Phase 3 | Pending |
-| STREAM-07 | Phase 3 | Pending |
-| STREAM-08 | Phase 3 | Pending |
-| LIT-01 | Phase 4 | Pending |
-| LIT-02 | Phase 4 | Pending |
-| LIT-03 | Phase 4 | Pending |
-| LIT-04 | Phase 4 | Pending |
-| DX-01 | Phase 5 | Pending |
-| DX-02 | Phase 1 | Pending |
-| DX-03 | Phase 1 | Pending |
-| SKILL-01 | Phase 5 | Pending |
-| SKILL-02 | Phase 5 | Pending |
-| LAND-01 | Phase 6 | Pending |
-| LAND-02 | Phase 6 | Pending |
-| LAND-03 | Phase 6 | Pending |
+| Requirement | Phase | Phase Name | Status |
+|-------------|-------|------------|--------|
+| SIGNAL-01 | Phase 1 | Reactive Core | Pending |
+| SIGNAL-02 | Phase 1 | Reactive Core | Pending |
+| SIGNAL-03 | Phase 1 | Reactive Core | Pending |
+| SIGNAL-04 | Phase 1 | Reactive Core | Pending |
+| SIGNAL-05 | Phase 1 | Reactive Core | Pending |
+| DX-02 | Phase 1 | Reactive Core | Pending |
+| DX-03 | Phase 1 | Reactive Core | Pending |
+| COMP-01 | Phase 2 | JSX Runtime and Component Model | Pending |
+| COMP-02 | Phase 2 | JSX Runtime and Component Model | Pending |
+| COMP-03 | Phase 2 | JSX Runtime and Component Model | Pending |
+| COMP-04 | Phase 2 | JSX Runtime and Component Model | Pending |
+| COMP-05 | Phase 2 | JSX Runtime and Component Model | Pending |
+| COMP-06 | Phase 2 | JSX Runtime and Component Model | Pending |
+| COMP-07 | Phase 2 | JSX Runtime and Component Model | Pending |
+| JSX-01 | Phase 2 | JSX Runtime and Component Model | Pending |
+| JSX-02 | Phase 2 | JSX Runtime and Component Model | Pending |
+| JSX-03 | Phase 2 | JSX Runtime and Component Model | Pending |
+| STREAM-01 | Phase 3 | Streaming Primitives | Pending |
+| STREAM-02 | Phase 3 | Streaming Primitives | Pending |
+| STREAM-03 | Phase 3 | Streaming Primitives | Pending |
+| STREAM-04 | Phase 3 | Streaming Primitives | Pending |
+| STREAM-05 | Phase 3 | Streaming Primitives | Pending |
+| STREAM-06 | Phase 3 | Streaming Primitives | Pending |
+| STREAM-07 | Phase 3 | Streaming Primitives | Pending |
+| STREAM-08 | Phase 3 | Streaming Primitives | Pending |
+| LIT-01 | Phase 4 | Lit Web Component Interop | Pending |
+| LIT-02 | Phase 4 | Lit Web Component Interop | Pending |
+| LIT-03 | Phase 4 | Lit Web Component Interop | Pending |
+| LIT-04 | Phase 4 | Lit Web Component Interop | Pending |
+| DX-01 | Phase 5 | Package Assembly, CLI, and AI Skills | Pending |
+| SKILL-01 | Phase 5 | Package Assembly, CLI, and AI Skills | Pending |
+| SKILL-02 | Phase 5 | Package Assembly, CLI, and AI Skills | Pending |
+| LAND-01 | Phase 6 | Landing Page (Dogfood) | Pending |
+| LAND-02 | Phase 6 | Landing Page (Dogfood) | Pending |
+| LAND-03 | Phase 6 | Landing Page (Dogfood) | Pending |
 
 **Coverage:**
 - v1 requirements: 35 total
@@ -143,4 +143,4 @@
 
 ---
 *Requirements defined: 2026-02-27*
-*Last updated: 2026-02-27 after initial definition*
+*Last updated: 2026-02-27 after roadmap creation*
