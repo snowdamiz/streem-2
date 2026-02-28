@@ -84,12 +84,12 @@ Plans:
   2. A `prop:value={signal()}` binding routes the reactive value to the element's JavaScript property (not an HTML attribute), updating reactively as the signal changes
   3. An event handler attached to a Lit component fires correctly even when the event originates inside the Shadow DOM — no event retargeting failure occurs (verified in a real browser with Playwright, not JSDOM)
   4. Developer runs the CEM analyzer against a Lit component source file and gets a generated TypeScript `IntrinsicElements` declaration that enables typed usage in TSX
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: `@streem/lit` package scaffold — `JSX.IntrinsicElements` augmentation, `prop:` / `attr:` / `on:` namespace handling in the JSX runtime
-- [ ] 04-02: Direct `addEventListener` event binding for Lit components (bypasses JSX delegation); Shadow DOM event retargeting test suite in Vitest Browser Mode (Playwright)
-- [ ] 04-03: CEM analyzer integration — script to generate `IntrinsicElements` declarations from Custom Elements Manifest
+- [ ] 04-01-PLAN.md — Extend applyProps() in @streem/dom with prop:/attr:/on: namespace prefix routing (additive, no regressions)
+- [ ] 04-02-PLAN.md — @streem/lit package scaffold: bindLitProp, observeLitProp utilities, base custom element TypeScript types
+- [ ] 04-03-PLAN.md — Vitest Browser Mode (Playwright) test suite for all 4 LIT behaviors + CEM type generation tooling
 
 ### Phase 5: Package Assembly, CLI, and AI Skills
 **Goal**: Developers can bootstrap a new Streem project in one command, install AI agent skills into their tools with one script, and consume the entire framework from a single `streem` import with a clean, stable API surface
@@ -134,7 +134,7 @@ Note: Phase 3 (Streaming) depends only on Phase 1 and can be parallelized with P
 |-------|----------------|--------|-----------|
 | 1. Reactive Core | 3/3 | Complete   | 2026-02-28 |
 | 2. JSX Runtime and Component Model | 5/5 | Complete   | 2026-02-28 |
-| 3. Streaming Primitives | 3/4 | In Progress|  |
+| 3. Streaming Primitives | 4/4 | Complete   | 2026-02-28 |
 | 4. Lit Web Component Interop | 0/3 | Not started | - |
 | 5. Package Assembly, CLI, and AI Skills | 0/3 | Not started | - |
 | 6. Landing Page (Dogfood) | 0/3 | Not started | - |
