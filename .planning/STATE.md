@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in_progress
-last_updated: "2026-02-28T05:30:14Z"
+status: unknown
+last_updated: "2026-02-28T05:41:28.617Z"
 progress:
-  total_phases: 6
+  total_phases: 2
   completed_phases: 1
   total_plans: 8
-  completed_plans: 5
+  completed_plans: 6
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 2 - JSX Runtime and Component Model (Plan 2 of 5 complete)
+**Current focus:** Phase 2 - JSX Runtime and Component Model (Plan 3 of 5 complete)
 
 ## Current Position
 
 Phase: 2 of 6 (JSX Runtime and Component Model) — IN PROGRESS
-Plan: 2 of 5 in current phase (02-02 complete)
-Status: 02-02 complete — reactive DOM bindings: bindTextNode, bindAttr, bindClass, bindClassList, bindStyle, bindEvent
-Last activity: 2026-02-28 — Completed 02-02: six reactive binding functions, applyProps() extended with function dispatch, 32 tests passing
+Plan: 3 of 5 in current phase (02-03 complete)
+Status: 02-03 complete — component primitives: onMount(), Show(), For() — 58 tests passing
+Last activity: 2026-02-28 — Completed 02-03: onMount, Show, For implemented; DocumentFragment-first DOM insertion pattern; 26 new tests
 
-Progress: [█████░░░░░] 25%
+Progress: [██████░░░░] 30%
 
 ## Performance Metrics
 
@@ -41,10 +41,10 @@ Progress: [█████░░░░░] 25%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-reactive-core | 3 | 14min | 5min |
-| 02-jsx-runtime-and-component-model | 2/5 | 7min | 3.5min |
+| 02-jsx-runtime-and-component-model | 3/5 | 14min | 4.7min |
 
 **Recent Trend:**
-- Last 5 plans: 6min, 4min, 4min, 3min, 4min
+- Last 5 plans: 4min, 4min, 3min, 4min, 7min
 - Trend: consistent
 
 *Updated after each plan completion*
@@ -77,6 +77,9 @@ Recent decisions affecting current work:
 - 02-02: Signal write API is .set(value) not callable setter — confirmed from signal.ts source; tests must use signal.set()
 - 02-02: MutationObserver in happy-dom is async — structural node identity check (same Text reference, correct nodeValue) is the correct surgical update verification in happy-dom
 - 02-02: bindEvent uses onCleanup() directly (not effect()) — event handlers are intentionally non-reactive per CONTEXT.md locked decision
+- [Phase 02-03]: onMount implemented without effect() wrapper — direct fn() call avoids reactive tracking; onCleanup() registers cleanup on owner
+- [Phase 02-03]: Show/For return DocumentFragment instead of Comment anchor — fragment-first DOM insertion pattern required for initial render timing
+- [Phase 02-03]: Show children accepts render function () => Node for createRoot scope isolation per shown state
 
 ### Pending Todos
 
@@ -91,5 +94,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 02-02-PLAN.md — reactive DOM bindings complete. bindings.ts with 6 bind* functions, h.ts applyProps() extended with function dispatch, 32 tests passing. Ready for Plan 02-03 (component primitives: onMount, etc).
+Stopped at: Completed 02-03-PLAN.md — component primitives complete. components.ts with onMount, Show, For; 58 tests passing. Ready for Plan 02-04 (ErrorBoundary, Suspense).
 Resume file: None
