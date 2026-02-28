@@ -1,0 +1,22 @@
+{
+  "name": "@streem/core",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0",
+    "vite-plugin-dts": "^4.0.0",
+    "vitest": "^4.0.0",
+    "typescript": "~5.8.0"
+  }
+}
