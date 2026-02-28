@@ -31,12 +31,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Dev-mode console shows a warning when a signal is read with no active reactive owner (snapshot read detected)
   4. Dev-mode console shows a warning when an effect or computed is created without an active owner scope (disposal leak detected)
   5. All signal primitives pass test suites running in Node with no DOM, confirming zero DOM dependency in the core package
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: Monorepo setup and `@streem/core` package scaffold (alien-signals integration, owner tree, `createRoot`, `onCleanup`)
-- [ ] 01-02: `signal()`, `computed()`, `effect()`, `getOwner()`, `runWithOwner()` public API with TypeScript generics
-- [ ] 01-03: Dev-mode reactive context warnings (`DX-02`, `DX-03`) and Node-runnable test suite
+- [ ] 01-01-PLAN.md — Monorepo scaffold + internal push-pull reactive graph and owner/cleanup tree
+- [ ] 01-02-PLAN.md — Public signal(), computed(), effect(), getOwner(), runWithOwner() API with dev warnings and vite build
+- [ ] 01-03-PLAN.md — Node-runnable TDD test suite covering all 7 Phase 1 requirements (SIGNAL-01 through SIGNAL-05, DX-02, DX-03)
 
 ### Phase 2: JSX Runtime and Component Model
 **Goal**: Developers can write function components in TSX that run once on mount, use reactive signal expressions for fine-grained DOM updates, and have access to `<Show>`, `<For>`, `<ErrorBoundary>`, and `<Suspense>` — with signal state preserved across Vite hot reloads
