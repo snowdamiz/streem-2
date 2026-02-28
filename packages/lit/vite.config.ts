@@ -11,5 +11,5 @@ export default defineConfig({
       external: ['@streem/core', '@streem/dom'],
     },
   },
-  plugins: [dts({ rollupTypes: true })],
+  plugins: [dts({ rollupTypes: true, include: ['src'] })],
 })
