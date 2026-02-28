@@ -21,9 +21,25 @@ Signals and streams are first-class primitives — not adapters or plugins — s
 - ✓ Landing page built with Streem (dogfood proof + official public site) — v1.0
 - ✓ CSR-only (browser rendering, no SSR) — v1.0
 
+## Current Milestone: v1.1 Quality & Polish
+
+**Goal:** Resolve known v1.0 gaps and surface Streem's performance story publicly.
+
+**Target features:**
+- Fix LIT-04: ship JSX IntrinsicElements for sl-* elements in @streem/lit dist/
+- E2E tests: Playwright coverage for create-streem CLI scaffold flow and HMR signal state preservation
+- Performance benchmarks: reactive core vs SolidJS/Preact signals, documented internally
+- Landing page benchmark bar chart: dogfooded Streem component showing perf comparison
+- Additional unit test coverage: @streem/dom and @streem/streams edge cases
+
 ### Active
 
-(None — planning next milestone)
+- [ ] LIT-04: JSX IntrinsicElements for sl-* elements in @streem/lit dist/
+- [ ] E2E Playwright tests for create-streem CLI scaffold
+- [ ] E2E Playwright tests for HMR signal state preservation
+- [ ] Reactive core performance benchmarks vs SolidJS/Preact signals
+- [ ] Landing page benchmark bar chart component (Streem dogfood)
+- [ ] Additional unit coverage for @streem/dom and @streem/streams edge cases
 
 ### Out of Scope
 
@@ -82,4 +98,4 @@ Packages:
 | Reactive signals outside Suspense scope | Streaming signals must be lifted above Suspense boundary to prevent retry-loop on reconnect | ✓ Good — ticker table skeleton bug fixed |
 
 ---
-*Last updated: 2026-02-28 after v1.0 milestone*
+*Last updated: 2026-02-28 after v1.1 milestone start*

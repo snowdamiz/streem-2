@@ -1,14 +1,14 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: MVP
-status: milestone_complete
-last_updated: "2026-02-28T22:04:59.885Z"
+milestone: v1.1
+milestone_name: Quality & Polish
+status: defining_requirements
+last_updated: "2026-02-28T00:00:00.000Z"
 progress:
-  total_phases: 6
-  completed_phases: 6
-  total_plans: 21
-  completed_plans: 21
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # Project State
@@ -18,13 +18,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-28)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Planning next milestone
+**Current focus:** v1.1 Quality & Polish
 
 ## Current Position
 
-v1.0 MVP shipped 2026-02-28. All 6 phases, 21 plans complete.
-
-Progress: [████████████████████] 100% (21 of 21 plans complete)
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-02-28 — Milestone v1.1 started
 
 ## Performance Metrics
 
