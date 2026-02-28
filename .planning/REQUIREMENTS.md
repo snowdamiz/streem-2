@@ -60,8 +60,8 @@
 
 ### Landing Page (Dogfood)
 
-- [ ] **LAND-01**: Official Streem landing page is built using Streem itself — every v1 feature must be used in production on the page before the framework ships
-- [ ] **LAND-02**: Landing page includes a live streaming demo (WebSocket or SSE) operating at >30 messages/second to validate backpressure handling under realistic conditions
+- [x] **LAND-01**: Official Streem landing page is built using Streem itself — every v1 feature must be used in production on the page before the framework ships
+- [x] **LAND-02**: Landing page includes a live streaming demo (WebSocket or SSE) operating at >30 messages/second to validate backpressure handling under realistic conditions
 - [ ] **LAND-03**: Landing page includes at least one Lit web component from a real design system to validate the Lit interop story in a production context
 
 ## v2 Requirements

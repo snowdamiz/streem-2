@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-28T18:02:23.667Z"
+last_updated: "2026-02-28T20:24:19.846Z"
 progress:
-  total_phases: 5
+  total_phases: 6
   completed_phases: 5
-  total_plans: 18
-  completed_plans: 18
+  total_plans: 21
+  completed_plans: 20
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 5 - Package Assembly, CLI, and AI Skills — COMPLETE (3 of 3 plans done: 05-01, 05-02, 05-03)
+**Current focus:** Phase 6 - Landing Page Dogfood — IN PROGRESS (2 of 3 plans done: 06-01, 06-02)
 
 ## Current Position
 
-Phase: 5 of 6 (Package Assembly, CLI, and AI Skills) — COMPLETE
-Plan: 3 of 3 in current phase (05-01, 05-02, 05-03 all complete)
-Status: 05-03 complete — five AI skill files + install-streem-skill.mjs with @clack/prompts interactive UI.
-Last activity: 2026-02-28 — Completed 05-03: five AI skill files, install-streem-skill.mjs for 6 AI tools
+Phase: 6 of 6 (Landing Page Dogfood) — IN PROGRESS
+Plan: 2 of 3 in current phase (06-01, 06-02 complete; 06-03 remaining)
+Status: 06-02 complete — all landing page content (Hero, TickerDemo, Features, CodeSample, DocsApp) built and building clean.
+Last activity: 2026-02-28 — Completed 06-02: landing page sections + DocsApp with full API reference
 
-Progress: [████████████████] 100% (18 of 18 plans complete)
+Progress: [████████████████████] 95% (20 of 21 plans complete)
 
 ## Performance Metrics
 
@@ -54,6 +54,7 @@ Progress: [████████████████] 100% (18 of 18 plan
 | Phase 05-package-assembly-cli-and-ai-skills P03 | 187s | 2 tasks | 7 files |
 | Phase 05-package-assembly-cli-and-ai-skills P02 | 102s | 2 tasks | 10 files |
 | Phase 05-package-assembly-cli-and-ai-skills P01 | 134s | 2 tasks | 6 files |
+| Phase 06-landing-page-dogfood P02 | 458s | 3 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -128,6 +129,10 @@ Recent decisions affecting current work:
 - [Phase 05-03]: Skill files use YAML frontmatter with name/description — machine-readable for AI tool indexing
 - [Phase 05-03]: @clack/prompts added as runtime dependency (not devDependency) — install script runs from published package
 - [Phase 05-03]: skillsSourceDir resolved from import.meta.url — install script is self-contained regardless of cwd
+- [Phase 06-02]: Streem Suspense uses thrown-Promise protocol (not undefined-signal); TickerTable throws initialPromise on first render, resolves in effect() on first tick
+- [Phase 06-02]: Signal.set() takes value only — no updater function support; use sig.set(sig() + 1) pattern
+- [Phase 06-02]: For component uses by prop (not key) for keyed list rendering
+- [Phase 06-02]: JSX.Element includes undefined so as unknown as Node cast needed when passing JSX to strict Node prop types
 
 ### Pending Todos
 
@@ -140,5 +145,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 05-03-PLAN.md — five AI skill files (SKILL.md + signals/streaming/components/lit-interop sub-skills) and install-streem-skill.mjs with @clack/prompts UI for 6 AI tools. Phase 5 COMPLETE.
+Stopped at: Completed 06-02-PLAN.md — landing page content (Hero, TickerDemo, Features, CodeSample, InstallCtaStub) and full DocsApp with 5-section API reference. Build clean, 3 JS bundles. Next: 06-03 (InstallCta with Shoelace sl-button, deployment).
 Resume file: None
