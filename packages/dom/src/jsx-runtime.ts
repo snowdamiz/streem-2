@@ -9,4 +9,44 @@
  * Both map to h() since Streem doesn't need the jsx/jsxs distinction at runtime.
  */
 export { h as jsx, h as jsxs, Fragment } from './h.js'
-export type { JSX } from './types.js'
+
+/**
+ * JSX type declarations for @streem/dom.
+ * TypeScript reads these when jsxImportSource resolves to this package.
+ * Declared inline here (rather than re-exported from types.ts) so that
+ * vite-plugin-dts rollupTypes preserves the full namespace members.
+ */
+export namespace JSX {
+  /**
+   * What a JSX expression evaluates to. Streem creates real DOM nodes —
+   * no virtual DOM. Arrays are returned for Fragments.
+   */
+  export type Element = Node | Node[] | null | undefined
+
+  /**
+   * Props for HTML intrinsic elements (div, span, input, etc.)
+   * Event handlers use onXxx naming convention (onClick, onInput, etc.)
+   */
+  export interface IntrinsicElements {
+    // Catch-all for all HTML tags
+    [tag: string]: {
+      [prop: string]: unknown
+      // Children accept static values, reactive accessor functions, and mixed arrays.
+      // Using `unknown` for the array case allows Streem's reactive child pattern:
+      // e.g. <p>Count: {() => count()}</p> — mixed string + accessor array.
+      children?: unknown
+      ref?: (el: HTMLElement) => void
+      class?: string | (() => string)
+      classList?: Record<string, boolean> | (() => Record<string, boolean>)
+      style?: Partial<CSSStyleDeclaration> | (() => Partial<CSSStyleDeclaration>)
+    }
+  }
+
+  /** Tells TypeScript which prop is used for children */
+  export interface ElementChildrenAttribute {
+    children: {}
+  }
+
+  /** Props that all components can receive */
+  export interface IntrinsicAttributes {}
+}

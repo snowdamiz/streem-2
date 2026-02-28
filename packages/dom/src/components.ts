@@ -213,7 +213,7 @@ export interface ForProps<T> {
   each: T[] | (() => T[])
   key: (item: T) => string | number
   fallback?: Node
-  children: (item: T, index: () => number) => Node | Node[]
+  children: (item: T, index: () => number) => Node | Node[] | null | undefined
 }
 
 type RowEntry = {
