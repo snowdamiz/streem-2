@@ -246,7 +246,6 @@ type RowEntry = {
  */
 export function For<T>(props: ForProps<T>): DocumentFragment {
   const renderItem = props.children
-  console.log('[For] props keys:', Object.keys(props), '| children type:', typeof renderItem, '| children:', renderItem)
   const anchor = document.createComment('For')
   const frag = document.createDocumentFragment()
 
@@ -299,7 +298,6 @@ export function For<T>(props: ForProps<T>): DocumentFragment {
 
         createRoot((d) => {
           dispose = d
-          console.log('[For] createRoot: renderItem type:', typeof renderItem, '| props.children type:', typeof props.children)
           const result = renderItem(item, getIndex)
           nodes = Array.isArray(result)
             ? result.filter((n): n is Node => n != null)
