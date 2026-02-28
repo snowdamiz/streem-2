@@ -10,7 +10,13 @@
  *   For             — Keyed list rendering component
  *   ErrorBoundary   — Synchronous error isolation with fallback UI
  *   Suspense        — Async pending state via thrown-Promise protocol
+ *   HMR utilities   — registerForHMR, getRestoredValue, saveToHotData, etc.
+ *   streemHMR()     — Vite plugin for HMR integration
  */
 export { h, Fragment } from './h.js'
 export { render } from './render.js'
 export { onMount, Show, For, ErrorBoundary, Suspense } from './components.js'
+// HMR utilities (tree-shaken in production builds)
+export { registerForHMR, getRestoredValue, saveToHotData, canRestoreState, saveSignalCount, clearHMRRegistry } from './hmr.js'
+// Vite plugin
+export { streemHMR } from './hmr-plugin.js'
