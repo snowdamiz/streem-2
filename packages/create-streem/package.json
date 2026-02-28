@@ -1,0 +1,22 @@
+{
+  "name": "create-streem",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "create-streem": "dist/index.js"
+  },
+  "files": ["dist", "templates"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.0.1",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "tsup": "^8.4.0",
+    "typescript": "~5.8.0"
+  },
+  "engines": { "node": ">=20.19.0" }
+}
