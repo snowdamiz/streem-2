@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-28T07:03:49.873Z"
+last_updated: "2026-02-28T07:55:13.184Z"
 progress:
-  total_phases: 6
+  total_phases: 3
   completed_phases: 2
   total_plans: 12
-  completed_plans: 9
+  completed_plans: 10
 ---
 
 # Project State
@@ -18,23 +18,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 3 - Streaming Primitives — IN PROGRESS (1 of 4 plans done)
+**Current focus:** Phase 3 - Streaming Primitives — IN PROGRESS (2 of 4 plans done)
 
 ## Current Position
 
 Phase: 3 of 6 (Streaming Primitives) — IN PROGRESS
-Plan: 1 of 4 in current phase (03-01 complete)
-Status: 03-01 complete — @streem/streams scaffold + fromWebSocket() adapter — 9 tests passing
-Last activity: 2026-02-28 — Completed 03-01: @streem/streams package, fromWebSocket() with exponential backoff reconnect, vitest-websocket-mock test suite
+Plan: 2 of 4 in current phase (03-01, 03-02 complete)
+Status: 03-02 complete — fromSSE() adapter with MockEventSource test suite — 20 tests passing (11 SSE + 9 WS)
+Last activity: 2026-02-28 — Completed 03-02: fromSSE() using native EventSource, readyState-based error handling, named events, 11-test MockEventSource suite
 
-Progress: [████████░░] 42%
+Progress: [████████░░] 46%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
+- Total plans completed: 10
 - Average duration: 4min
-- Total execution time: 29min
+- Total execution time: 38min
 
 **By Phase:**
 
@@ -42,10 +42,10 @@ Progress: [████████░░] 42%
 |-------|-------|-------|----------|
 | 01-reactive-core | 3 | 14min | 5min |
 | 02-jsx-runtime-and-component-model | 5/5 | 25min | 5min |
-| 03-streaming-primitives | 1/4 | 3min | 3min |
+| 03-streaming-primitives | 2/4 | 12min | 6min |
 
 **Recent Trend:**
-- Last 5 plans: 4min, 7min, 5min, 6min, 3min
+- Last 5 plans: 7min, 5min, 6min, 3min, 9min
 - Trend: consistent
 
 *Updated after each plan completion*
@@ -94,6 +94,8 @@ Recent decisions affecting current work:
 - [Phase 03-01]: maxRetries exhaustion test uses maxRetries:0 — fake timers incompatible with vitest-websocket-mock 0.5.0 Promise-based server.connected API
 - [Phase 03-01]: happy-dom environment required for @streem/streams vitest — node env lacks WebSocket global pre-Node 22, mock-socket patching fails silently
 - [Phase 03-01]: Adapter pattern established: onCleanup() registered BEFORE connect(); all stream adapters follow this cleanup-first invariant
+- [Phase 03-streaming-primitives]: MockEventSource over MSW sse() + eventsource v4 — eventsource v4 fetch not intercepted by MSW FetchInterceptor in happy-dom vitest environment due to CORS streaming; MockEventSource extends EventTarget gives synchronous behavioral coverage
+- [Phase 03-streaming-primitives]: [Phase 03-02]: Named SSE events share handleMessage handler — options.events[] each addEventListener with same function, all route to same data signal
 
 ### Pending Todos
 
@@ -108,5 +110,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 03-01-PLAN.md — @streem/streams scaffold + fromWebSocket() adapter. 9 tests passing.
+Stopped at: Completed 03-02-PLAN.md — fromSSE() adapter + 11-test MockEventSource suite. 20 tests passing.
 Resume file: None

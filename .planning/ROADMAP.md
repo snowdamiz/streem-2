@@ -35,8 +35,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md — Monorepo scaffold + internal push-pull reactive graph and owner/cleanup tree
-- [ ] 01-02-PLAN.md — Public signal(), computed(), effect(), getOwner(), runWithOwner() API with dev warnings and vite build
-- [ ] 01-03-PLAN.md — Node-runnable TDD test suite covering all 7 Phase 1 requirements (SIGNAL-01 through SIGNAL-05, DX-02, DX-03)
+- [x] 01-02-PLAN.md — Public signal(), computed(), effect(), getOwner(), runWithOwner() API with dev warnings and vite build
+- [x] 01-03-PLAN.md — Node-runnable TDD test suite covering all 7 Phase 1 requirements (SIGNAL-01 through SIGNAL-05, DX-02, DX-03)
 
 ### Phase 2: JSX Runtime and Component Model
 **Goal**: Developers can write function components in TSX that run once on mount, use reactive signal expressions for fine-grained DOM updates, and have access to `<Show>`, `<For>`, `<ErrorBoundary>`, and `<Suspense>` — with signal state preserved across Vite hot reloads
@@ -51,11 +51,11 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — @streem/dom package scaffold: h(), Fragment, render(), JSX type declarations, jsxImportSource wiring, Vite/Vitest config
-- [ ] 02-02-PLAN.md — Reactive DOM bindings (TDD): bindTextNode, bindAttr, bindClass, bindClassList, bindStyle, bindEvent; applyProps reactive dispatch
-- [ ] 02-03-PLAN.md — onMount(), component-runs-once model, Show and For components (TDD)
-- [ ] 02-04-PLAN.md — ErrorBoundary and Suspense components with thrown-Promise protocol (TDD)
-- [ ] 02-05-PLAN.md — Vite HMR integration: signal state registry, streemHMR() plugin, demo app with jsxImportSource
+- [x] 02-01-PLAN.md — @streem/dom package scaffold: h(), Fragment, render(), JSX type declarations, jsxImportSource wiring, Vite/Vitest config
+- [x] 02-02-PLAN.md — Reactive DOM bindings (TDD): bindTextNode, bindAttr, bindClass, bindClassList, bindStyle, bindEvent; applyProps reactive dispatch
+- [x] 02-03-PLAN.md — onMount(), component-runs-once model, Show and For components (TDD)
+- [x] 02-04-PLAN.md — ErrorBoundary and Suspense components with thrown-Promise protocol (TDD)
+- [x] 02-05-PLAN.md — Vite HMR integration: signal state registry, streemHMR() plugin, demo app with jsxImportSource
 
 ### Phase 3: Streaming Primitives
 **Goal**: Developers can bind any real-time source (WebSocket, SSE, ReadableStream, Observable) to a signal with one line, automatic cleanup on unmount, typed connection status, and built-in backpressure protection — and the adapters are DOM-agnostic (no renderer dependency)
@@ -134,7 +134,7 @@ Note: Phase 3 (Streaming) depends only on Phase 1 and can be parallelized with P
 |-------|----------------|--------|-----------|
 | 1. Reactive Core | 3/3 | Complete   | 2026-02-28 |
 | 2. JSX Runtime and Component Model | 5/5 | Complete   | 2026-02-28 |
-| 3. Streaming Primitives | 0/4 | Not started | - |
+| 3. Streaming Primitives | 2/4 | In Progress|  |
 | 4. Lit Web Component Interop | 0/3 | Not started | - |
 | 5. Package Assembly, CLI, and AI Skills | 0/3 | Not started | - |
 | 6. Landing Page (Dogfood) | 0/3 | Not started | - |
