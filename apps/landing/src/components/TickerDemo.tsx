@@ -41,18 +41,17 @@ function TickerSkeleton(): Node {
 }
 
 function Sparkline({ history }: { history: () => number[] }): Node {
-  return (
-    <svg width="80" height="24" viewBox="0 0 80 24" style="overflow:visible">
-      <path
-        d={() => buildSparklinePath(history())}
-        stroke="var(--color-accent)"
-        fill="none"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-  ) as unknown as Node
+  // SVG must be created via createElementNS — document.createElement('svg') produces
+  // an HTMLUnknownElement that won't render. Use innerHTML on a wrapper div to parse
+  // the SVG correctly, then extract the SVG node.
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = '<svg width="80" height="24" viewBox="0 0 80 24" style="overflow:visible"><path stroke="var(--color-accent)" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  const svg = wrapper.firstElementChild as SVGElement
+  const path = svg.firstElementChild as SVGPathElement
+  effect(() => {
+    path.setAttribute('d', buildSparklinePath(history()))
+  })
+  return svg as unknown as Node
 }
 
 function TickerRowComponent({ row }: { row: TickerRow }): Node {
