@@ -7,6 +7,7 @@ export { createRoot } from './owner.js'
 export { onCleanup } from './owner.js'
 export { getOwner } from './owner.js'
 export { runWithOwner } from './owner.js'
+export { startBatch, endBatch } from './reactive.js'
 
 export type { Signal } from './signal.js'
 export type { Owner } from './owner.js'
