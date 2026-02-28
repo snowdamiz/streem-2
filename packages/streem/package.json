@@ -16,7 +16,7 @@
       "types": "./dist/jsx-dev-runtime.d.ts"
     }
   },
-  "files": ["dist"],
+  "files": ["dist", "skills", "install-streem-skill.mjs"],
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --noEmit"
@@ -24,7 +24,8 @@
   "dependencies": {
     "@streem/core": "workspace:*",
     "@streem/dom": "workspace:*",
-    "@streem/streams": "workspace:*"
+    "@streem/streams": "workspace:*",
+    "@clack/prompts": "^1.0.1"
   },
   "devDependencies": {
     "vite": "^7.0.0",
