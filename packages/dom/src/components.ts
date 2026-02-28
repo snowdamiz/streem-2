@@ -211,7 +211,7 @@ export function Show(props: ShowProps): DocumentFragment {
 
 export interface ForProps<T> {
   each: T[] | (() => T[])
-  key: (item: T) => string | number
+  by: (item: T) => string | number
   fallback?: Node
   children: (item: T, index: () => number) => Node | Node[] | null | undefined
 }
@@ -257,7 +257,7 @@ export function For<T>(props: ForProps<T>): DocumentFragment {
 
   effect(() => {
     const items = getEach()
-    const newKeys = new Set(items.map(props.key))
+    const newKeys = new Set(items.map(props.by))
 
     // Remove stale rows (keys no longer in new list)
     for (const [k, row] of rows) {
@@ -273,7 +273,7 @@ export function For<T>(props: ForProps<T>): DocumentFragment {
     // Add new rows / update index for existing rows
     for (let i = 0; i < items.length; i++) {
       const item = items[i]
-      const k = props.key(item)
+      const k = props.by(item)
 
       if (rows.has(k)) {
         // Existing row — update index ref only, no DOM recreation
@@ -311,7 +311,7 @@ export function For<T>(props: ForProps<T>): DocumentFragment {
     // insertBefore moves existing nodes, so this handles reorder without recreation
     const parent = anchor.parentNode!
     for (let i = 0; i < items.length; i++) {
-      const k = props.key(items[i])
+      const k = props.by(items[i])
       const row = rows.get(k)!
       for (const node of row.nodes) {
         parent.insertBefore(node, anchor)

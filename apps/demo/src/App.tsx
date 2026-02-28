@@ -43,7 +43,7 @@ export function App() {
 
       <h2>Items</h2>
       <ul>
-        <For each={() => items()} key={(item) => item.id}>
+        <For each={() => items()} by={(item) => item.id}>
           {(item) => <li>{item.name}</li>}
         </For>
       </ul>

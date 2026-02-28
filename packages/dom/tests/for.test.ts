@@ -25,7 +25,7 @@ describe('For — initial render', () => {
       dispose = d
       const frag = For({
         each: () => items(),
-        key: (item) => item.id,
+        by: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
       container.appendChild(frag)
@@ -42,7 +42,7 @@ describe('For — initial render', () => {
       dispose = d
       const frag = For({
         each: () => items(),
-        key: (item) => item.id,
+        by: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
       container.appendChild(frag)
@@ -56,7 +56,7 @@ describe('For — initial render', () => {
     createRoot((dispose) => {
       const frag = For({
         each: [{ id: 1, name: 'X' }, { id: 2, name: 'Y' }],
-        key: (item) => item.id,
+        by: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
       container.appendChild(frag)
@@ -77,7 +77,7 @@ describe('For — adding items', () => {
       dispose = d
       const frag = For({
         each: () => items(),
-        key: (item) => item.id,
+        by: (item) => item.id,
         children: (item, _index) => {
           renderCounts.set(item.id, (renderCounts.get(item.id) ?? 0) + 1)
           return document.createTextNode(item.name)
@@ -116,7 +116,7 @@ describe('For — removing items', () => {
       dispose = d
       const frag = For({
         each: () => items(),
-        key: (item) => item.id,
+        by: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
       container.appendChild(frag)
@@ -141,7 +141,7 @@ describe('For — removing items', () => {
       dispose = d
       const frag = For({
         each: () => items(),
-        key: (item) => item.id,
+        by: (item) => item.id,
         children: (item, _index) => {
           if (item.id === 2) {
             effect(() => {
@@ -188,7 +188,7 @@ describe('For — reordering items', () => {
       dispose = d
       const frag = For({
         each: () => items(),
-        key: (item) => item.id,
+        by: (item) => item.id,
         children: (item, _index) => {
           renderCounts.set(item.id, (renderCounts.get(item.id) ?? 0) + 1)
           return document.createTextNode(item.name)
@@ -230,7 +230,7 @@ describe('For — reordering items', () => {
       dispose = d
       const frag = For({
         each: () => items(),
-        key: (item) => item.id,
+        by: (item) => item.id,
         children: (item, index) => {
           indexGetters.set(item.id, index)
           return document.createTextNode(item.name)
@@ -269,7 +269,7 @@ describe('For — edge cases', () => {
       dispose = d
       const frag = For({
         each: () => items(),
-        key: (item) => item.id,
+        by: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
       container.appendChild(frag)
@@ -294,7 +294,7 @@ describe('For — edge cases', () => {
       dispose = d
       const frag = For({
         each: () => items(),
-        key: (item) => item.id,
+        by: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
       container.appendChild(frag)
