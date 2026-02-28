@@ -15,7 +15,7 @@
 
 ### Component Model
 
-- [ ] **COMP-01**: Developer can write components as TypeScript functions returning JSX with fully typed props
+- [x] **COMP-01**: Developer can write components as TypeScript functions returning JSX with fully typed props
 - [ ] **COMP-02**: Component function body runs exactly once on mount; reactivity lives in JSX expressions and effects, not in repeated function re-execution
 - [ ] **COMP-03**: Developer can use `onMount()` to run code after a component is first mounted to the DOM
 - [ ] **COMP-04**: Developer can render conditional content with a `<Show>` component that preserves reactive tracking inside the true branch
@@ -25,7 +25,7 @@
 
 ### JSX Runtime
 
-- [ ] **JSX-01**: Developer configures Streem's JSX runtime via `jsxImportSource: "streem"` in `tsconfig.json` with no Babel or custom compiler step required
+- [x] **JSX-01**: Developer configures Streem's JSX runtime via `jsxImportSource: "streem"` in `tsconfig.json` with no Babel or custom compiler step required
 - [ ] **JSX-02**: Reactive signal values used in JSX update only the exact affected DOM node — no full component re-render triggered
 - [ ] **JSX-03**: Vite dev server preserves signal state and stream connection state across hot module reloads of component files
 
