@@ -235,3 +235,89 @@ describe('ErrorBoundary — scope cleanup', () => {
     expect(container.textContent).toContain('recovered')
   })
 })
+
+// ---------------------------------------------------------------------------
+// Nested ErrorBoundary edge cases
+// ---------------------------------------------------------------------------
+
+describe('ErrorBoundary — nested boundaries', () => {
+  it('inner ErrorBoundary catches its own error without triggering outer boundary', () => {
+    const outerFallbackCalled = vi.fn()
+    const innerFallbackCalled = vi.fn()
+    const container = document.createElement('div')
+
+    createRoot((dispose) => {
+      const node = ErrorBoundary({
+        fallback: (_err, _reset) => {
+          outerFallbackCalled()
+          return document.createTextNode('outer fallback')
+        },
+        children: () =>
+          ErrorBoundary({
+            fallback: (_err, _reset) => {
+              innerFallbackCalled()
+              return document.createTextNode('inner fallback')
+            },
+            children: () => {
+              throw new Error('inner error')
+            },
+          }) as unknown as Node,
+      })
+      container.appendChild(node as Node)
+      dispose()
+    })
+
+    // Inner boundary catches the error — outer boundary is NOT triggered
+    expect(innerFallbackCalled).toHaveBeenCalledTimes(1)
+    expect(outerFallbackCalled).not.toHaveBeenCalled()
+    expect(container.textContent).toContain('inner fallback')
+    expect(container.textContent).not.toContain('outer fallback')
+  })
+
+  it('outer ErrorBoundary catches errors that escape the inner boundary', () => {
+    // An error thrown outside the inner boundary's children but inside the outer boundary
+    const outerFallbackCalled = vi.fn()
+    const container = document.createElement('div')
+
+    createRoot((dispose) => {
+      const node = ErrorBoundary({
+        fallback: (_err, _reset) => {
+          outerFallbackCalled()
+          return document.createTextNode('outer caught it')
+        },
+        children: () => {
+          // This throws directly inside the outer boundary (not via inner boundary's children)
+          throw new Error('outer scope error')
+        },
+      })
+      container.appendChild(node as Node)
+      dispose()
+    })
+
+    expect(outerFallbackCalled).toHaveBeenCalledTimes(1)
+    expect(container.textContent).toContain('outer caught it')
+  })
+
+  it('two sibling ErrorBoundaries are independent — one failing does not affect the other', () => {
+    const container = document.createElement('div')
+    let siblings!: Node[]
+
+    createRoot((dispose) => {
+      const a = ErrorBoundary({
+        fallback: (_err, _reset) => document.createTextNode('A-fallback'),
+        children: () => { throw new Error('A broken') },
+      })
+      const b = ErrorBoundary({
+        fallback: (_err, _reset) => document.createTextNode('B-ok'),
+        children: document.createTextNode('B content'),
+      })
+      siblings = [a as Node, b as Node]
+      for (const n of siblings) container.appendChild(n)
+      dispose()
+    })
+
+    expect(container.textContent).toContain('A-fallback')
+    expect(container.textContent).toContain('B content')
+    expect(container.textContent).not.toContain('B-ok')
+  })
+})

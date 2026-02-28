@@ -344,6 +344,105 @@ describe('Suspense — non-Promise error propagation', () => {
   })
 })
 
+// ---------------------------------------------------------------------------
+// Suspense async error propagation (Phase 3 — onError prop)
+// ---------------------------------------------------------------------------
+
+describe('Suspense — async error propagation via onError', () => {
+  it('calls onError when child Promise rejects', async () => {
+    const onError = vi.fn()
+    let rejectIt!: (err: Error) => void
+    const rejectingPromise = new Promise<void>((_resolve, reject) => {
+      rejectIt = reject
+    })
+
+    const container = document.createElement('div')
+    let dispose!: () => void
+    createRoot((d) => {
+      dispose = d
+      const anchor = Suspense({
+        fallback: document.createTextNode('loading'),
+        onError,
+        children: () => {
+          throw rejectingPromise
+        },
+      })
+      container.appendChild(anchor)
+    })
+
+    await flushMicrotasks()
+    expect(container.textContent).toContain('loading')
+
+    const rejectionError = new Error('async failure')
+    rejectIt(rejectionError)
+    await rejectingPromise.catch(() => {})
+    await flushMicrotasks()
+
+    expect(onError).toHaveBeenCalledTimes(1)
+    expect(onError).toHaveBeenCalledWith(rejectionError)
+    dispose()
+  })
+
+  it('does NOT call console.error when onError is provided', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const onError = vi.fn()
+    let rejectIt!: (err: Error) => void
+    const rejectingPromise = new Promise<void>((_resolve, reject) => {
+      rejectIt = reject
+    })
+
+    const container = document.createElement('div')
+    let dispose!: () => void
+    createRoot((d) => {
+      dispose = d
+      const anchor = Suspense({
+        fallback: document.createTextNode('loading'),
+        onError,
+        children: () => { throw rejectingPromise },
+      })
+      container.appendChild(anchor)
+    })
+
+    await flushMicrotasks()
+    rejectIt(new Error('silent'))
+    await rejectingPromise.catch(() => {})
+    await flushMicrotasks()
+
+    expect(consoleSpy).not.toHaveBeenCalled()
+    consoleSpy.mockRestore()
+    dispose()
+  })
+
+  it('falls back to console.error when onError is not provided', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    let rejectIt!: (err: Error) => void
+    const rejectingPromise = new Promise<void>((_resolve, reject) => {
+      rejectIt = reject
+    })
+
+    const container = document.createElement('div')
+    let dispose!: () => void
+    createRoot((d) => {
+      dispose = d
+      const anchor = Suspense({
+        fallback: document.createTextNode('loading'),
+        // No onError prop — should fall back to console.error
+        children: () => { throw rejectingPromise },
+      })
+      container.appendChild(anchor)
+    })
+
+    await flushMicrotasks()
+    rejectIt(new Error('expected console error'))
+    await rejectingPromise.catch(() => {})
+    await flushMicrotasks()
+
+    expect(consoleSpy).toHaveBeenCalledTimes(1)
+    consoleSpy.mockRestore()
+    dispose()
+  })
+})
+
 describe('ErrorBoundary + Suspense integration', () => {
   it('Promise thrown inside Suspense is handled by Suspense, not ErrorBoundary', async () => {
     const container = document.createElement('div')
