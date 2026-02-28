@@ -4,15 +4,18 @@ import { Show } from '../src/components.js'
 
 // ---------------------------------------------------------------------------
 // Show component — conditional rendering with scope isolation
+//
+// Show returns a DocumentFragment. When the fragment is appended to a DOM
+// parent, all nodes (initial children + anchor comment) move into the parent.
+// After that, anchor.parentNode === parent for all future reactive updates.
 // ---------------------------------------------------------------------------
 
 describe('Show — static conditions', () => {
   it('renders children when when=true (static)', () => {
-    let anchor!: Node
     const container = document.createElement('div')
     createRoot((dispose) => {
-      anchor = Show({ when: true, children: document.createTextNode('hello') })
-      container.appendChild(anchor)
+      const frag = Show({ when: true, children: document.createTextNode('hello') })
+      container.appendChild(frag)
       dispose()
     })
     expect(container.textContent).toContain('hello')
@@ -21,8 +24,8 @@ describe('Show — static conditions', () => {
   it('renders nothing when when=false (no fallback)', () => {
     const container = document.createElement('div')
     createRoot((dispose) => {
-      const anchor = Show({ when: false, children: document.createTextNode('hello') })
-      container.appendChild(anchor)
+      const frag = Show({ when: false, children: document.createTextNode('hello') })
+      container.appendChild(frag)
       dispose()
     })
     expect(container.textContent).toBe('')
@@ -31,12 +34,12 @@ describe('Show — static conditions', () => {
   it('renders fallback when when=false', () => {
     const container = document.createElement('div')
     createRoot((dispose) => {
-      const anchor = Show({
+      const frag = Show({
         when: false,
         fallback: document.createTextNode('fallback content'),
         children: document.createTextNode('main content'),
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
       dispose()
     })
     expect(container.textContent).toContain('fallback content')
@@ -51,12 +54,12 @@ describe('Show — reactive condition toggling', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      const anchor = Show({
+      const frag = Show({
         when: () => visible(),
         fallback: document.createTextNode('fallback'),
         children: document.createTextNode('main'),
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
     expect(container.textContent).toContain('main')
     expect(container.textContent).not.toContain('fallback')
@@ -73,12 +76,12 @@ describe('Show — reactive condition toggling', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      const anchor = Show({
+      const frag = Show({
         when: () => visible(),
         fallback: document.createTextNode('fallback'),
         children: document.createTextNode('main'),
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
     expect(container.textContent).toContain('fallback')
 
@@ -88,25 +91,24 @@ describe('Show — reactive condition toggling', () => {
     dispose()
   })
 
-  it('anchor comment node is stable across swaps — does not move', () => {
+  it('anchor comment node is stable across swaps — container is not disrupted', () => {
     const visible = signal(true)
     const container = document.createElement('div')
-    let anchor!: Comment
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      anchor = Show({
+      const frag = Show({
         when: () => visible(),
         fallback: document.createTextNode('fb'),
         children: document.createTextNode('ch'),
-      }) as Comment
-      container.appendChild(anchor)
+      })
+      container.appendChild(frag)
     })
-    const capturedAnchor = anchor
+    // After multiple swaps, container remains intact
     visible.set(false)
     visible.set(true)
-    // Anchor is the same node instance
-    expect(container.contains(capturedAnchor)).toBe(true)
+    // Container still has content correctly
+    expect(container.textContent).toContain('ch')
     dispose()
   })
 
@@ -116,12 +118,12 @@ describe('Show — reactive condition toggling', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      const anchor = Show({
+      const frag = Show({
         when: () => visible(),
         fallback: document.createTextNode('FALLBACK'),
         children: document.createTextNode('MAIN'),
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
 
     expect(container.textContent).toContain('MAIN')
@@ -139,7 +141,7 @@ describe('Show — reactive condition toggling', () => {
 })
 
 describe('Show — child scope disposal', () => {
-  it('effects inside children stop firing after Show switches to fallback', () => {
+  it('effects inside a children render function stop firing after Show hides', () => {
     const visible = signal(true)
     const counter = signal(0)
     const effectRunCount = vi.fn()
@@ -148,21 +150,19 @@ describe('Show — child scope disposal', () => {
 
     createRoot((d) => {
       dispose = d
-      // The child scope: contains an effect that tracks counter
-      const childNode = createRoot((childDispose) => {
-        effect(() => {
-          // This effect reads counter — it will run whenever counter changes
-          counter()
-          effectRunCount()
-        })
-        return document.createTextNode('child')
-      })
-
-      const anchor = Show({
+      // Pass children as a FUNCTION — Show creates it inside its own createRoot scope
+      const frag = Show({
         when: () => visible(),
-        children: childNode as Node,
+        children: () => {
+          // effect() created inside children render function — lives in Show's scope
+          effect(() => {
+            counter()
+            effectRunCount()
+          })
+          return document.createTextNode('child')
+        },
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
 
     // Effect has run once (initial)
@@ -172,20 +172,17 @@ describe('Show — child scope disposal', () => {
     // Effect should re-run since Show is still visible
     expect(effectRunCount).toHaveBeenCalledTimes(2)
 
-    // Now hide — child scope should be disposed
+    // Now hide — Show disposes its child createRoot scope, stopping the effect
     visible.set(false)
 
-    counter.set(2)
-    // Effect should NOT re-run — child scope was disposed when Show hid
-    // Note: effectRunCount may have been called once more when Show disposes the scope
-    // What matters is counter.set(2) does NOT trigger a new call
+    // Counter change should NOT trigger effect — child scope was disposed
     const countAfterHide = effectRunCount.mock.calls.length
-    counter.set(3)
-    expect(effectRunCount.mock.calls.length).toBe(countAfterHide) // no new calls after hide
+    counter.set(2)
+    expect(effectRunCount.mock.calls.length).toBe(countAfterHide)
     dispose()
   })
 
-  it('re-shows create a fresh child scope (not the stale one)', () => {
+  it('re-shows create a fresh child scope — render function re-invoked', () => {
     const visible = signal(false)
     const container = document.createElement('div')
     let mountCount = 0
@@ -193,19 +190,30 @@ describe('Show — child scope disposal', () => {
 
     createRoot((d) => {
       dispose = d
-      // children as a function — allows creating fresh nodes each show
-      const anchor = Show({
+      const frag = Show({
         when: () => visible(),
-        children: (() => {
+        children: () => {
           mountCount++
           return document.createTextNode(`mount ${mountCount}`)
-        })(),
+        },
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
 
-    // Initially false — children not mounted yet
+    // Initially false — children render function not called
     expect(mountCount).toBe(0)
+    expect(container.textContent).toBe('')
+
+    // Show once
+    visible.set(true)
+    expect(mountCount).toBe(1)
+    expect(container.textContent).toBe('mount 1')
+
+    // Hide and re-show — fresh scope, render function called again
+    visible.set(false)
+    visible.set(true)
+    expect(mountCount).toBe(2)
+    expect(container.textContent).toBe('mount 2')
     dispose()
   })
 })

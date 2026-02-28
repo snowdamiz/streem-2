@@ -6,6 +6,10 @@ type Item = { id: number; name: string }
 
 // ---------------------------------------------------------------------------
 // For component — keyed list rendering with reconciliation
+//
+// For returns a DocumentFragment. When appended to a DOM parent, all nodes
+// (initial items + anchor comment) move into the parent. After that,
+// anchor.parentNode === parent for reactive updates (insertBefore anchor).
 // ---------------------------------------------------------------------------
 
 describe('For — initial render', () => {
@@ -19,12 +23,12 @@ describe('For — initial render', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      const anchor = For({
+      const frag = For({
         each: () => items(),
         key: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
     expect(container.textContent).toBe('AliceBobCarol')
     dispose()
@@ -36,12 +40,12 @@ describe('For — initial render', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      const anchor = For({
+      const frag = For({
         each: () => items(),
         key: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
     expect(container.textContent).toBe('')
     dispose()
@@ -50,12 +54,12 @@ describe('For — initial render', () => {
   it('renders with static array (non-function each)', () => {
     const container = document.createElement('div')
     createRoot((dispose) => {
-      const anchor = For({
+      const frag = For({
         each: [{ id: 1, name: 'X' }, { id: 2, name: 'Y' }],
         key: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
       dispose()
     })
     expect(container.textContent).toBe('XY')
@@ -71,7 +75,7 @@ describe('For — adding items', () => {
 
     createRoot((d) => {
       dispose = d
-      const anchor = For({
+      const frag = For({
         each: () => items(),
         key: (item) => item.id,
         children: (item, _index) => {
@@ -79,7 +83,7 @@ describe('For — adding items', () => {
           return document.createTextNode(item.name)
         },
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
 
     // Initially rendered items 1 and 2 once each
@@ -110,12 +114,12 @@ describe('For — removing items', () => {
 
     createRoot((d) => {
       dispose = d
-      const anchor = For({
+      const frag = For({
         each: () => items(),
         key: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
 
     expect(container.textContent).toBe('ABC')
@@ -126,7 +130,7 @@ describe('For — removing items', () => {
     dispose()
   })
 
-  it('removed item\'s effects stop firing after removal', () => {
+  it("removed item's effects stop firing after removal", () => {
     const items = signal<Item[]>([{ id: 1, name: 'A' }, { id: 2, name: 'B' }])
     const counter = signal(0)
     const effectCallsForItem2 = vi.fn()
@@ -135,7 +139,7 @@ describe('For — removing items', () => {
 
     createRoot((d) => {
       dispose = d
-      const anchor = For({
+      const frag = For({
         each: () => items(),
         key: (item) => item.id,
         children: (item, _index) => {
@@ -148,7 +152,7 @@ describe('For — removing items', () => {
           return document.createTextNode(item.name)
         },
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
 
     // Effect ran once (initial)
@@ -182,7 +186,7 @@ describe('For — reordering items', () => {
 
     createRoot((d) => {
       dispose = d
-      const anchor = For({
+      const frag = For({
         each: () => items(),
         key: (item) => item.id,
         children: (item, _index) => {
@@ -190,7 +194,7 @@ describe('For — reordering items', () => {
           return document.createTextNode(item.name)
         },
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
 
     expect(container.textContent).toBe('ABC')
@@ -224,7 +228,7 @@ describe('For — reordering items', () => {
 
     createRoot((d) => {
       dispose = d
-      const anchor = For({
+      const frag = For({
         each: () => items(),
         key: (item) => item.id,
         children: (item, index) => {
@@ -232,7 +236,7 @@ describe('For — reordering items', () => {
           return document.createTextNode(item.name)
         },
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
 
     // Initial indices
@@ -263,12 +267,12 @@ describe('For — edge cases', () => {
 
     createRoot((d) => {
       dispose = d
-      const anchor = For({
+      const frag = For({
         each: () => items(),
         key: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
 
     expect(container.textContent).toBe('AB')
@@ -288,12 +292,12 @@ describe('For — edge cases', () => {
 
     createRoot((d) => {
       dispose = d
-      const anchor = For({
+      const frag = For({
         each: () => items(),
         key: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
-      container.appendChild(anchor)
+      container.appendChild(frag)
     })
 
     expect(container.textContent).toBe('ABC')
