@@ -1,14 +1,12 @@
-/**
- * @streem/core — Public entry point
- *
- * Phase 1 Plan 01-02 will export the public signal(), computed(), effect(),
- * createRoot(), onCleanup(), getOwner(), and runWithOwner() APIs from here.
- *
- * This file exists to satisfy the TypeScript project configuration and
- * vite lib mode entry point. No public exports in Plan 01-01.
- */
+/// <reference types="vite/client" />
 
-// Internal modules — not exported in public API yet
-// export * from './reactive.js'   // Phase 01-02
-// export * from './owner.js'      // Phase 01-02
-// export * from './signal.js'     // Phase 01-02
+export { signal } from './signal.js'
+export { computed } from './signal.js'
+export { effect } from './signal.js'
+export { createRoot } from './owner.js'
+export { onCleanup } from './owner.js'
+export { getOwner } from './owner.js'
+export { runWithOwner } from './owner.js'
+
+export type { Signal } from './signal.js'
+export type { Owner } from './owner.js'
