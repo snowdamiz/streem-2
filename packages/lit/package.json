@@ -1,0 +1,34 @@
+{
+  "name": "@streem/lit",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:browser": "vitest run --config vitest.browser.config.ts",
+    "gen:lit-types": "cem analyze --litelement && tsx scripts/gen-lit-types.ts"
+  },
+  "peerDependencies": {
+    "@streem/core": "workspace:*",
+    "@streem/dom": "workspace:*"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.5",
+    "@vitest/browser-playwright": "^4.0.0",
+    "@wc-toolkit/jsx-types": "latest",
+    "lit": "^3.0.0",
+    "playwright": "^1.0.0",
+    "tsx": "latest",
+    "typescript": "~5.8.0",
+    "vite": "^7.0.0",
+    "vite-plugin-dts": "^4.0.0",
+    "vitest": "^4.0.0"
+  }
+}
