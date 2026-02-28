@@ -10,8 +10,8 @@
 - [ ] **SIGNAL-01**: Developer can create a typed reactive signal with an initial value using `signal()` from a plain TypeScript file — no build plugin required
 - [ ] **SIGNAL-02**: Developer can derive computed values that auto-update using `computed()` without manual dependency arrays
 - [ ] **SIGNAL-03**: Developer can create side effects that auto-track their reactive dependencies using `effect()` without dependency arrays
-- [ ] **SIGNAL-04**: Developer can scope reactive computations using `createRoot()` so that all nested effects and signals are disposed when the root is disposed
-- [ ] **SIGNAL-05**: Developer can register cleanup callbacks using `onCleanup()` that fire when the containing reactive scope is disposed
+- [x] **SIGNAL-04**: Developer can scope reactive computations using `createRoot()` so that all nested effects and signals are disposed when the root is disposed
+- [x] **SIGNAL-05**: Developer can register cleanup callbacks using `onCleanup()` that fire when the containing reactive scope is disposed
 
 ### Component Model
 
@@ -103,8 +103,8 @@
 | SIGNAL-01 | Phase 1 | Reactive Core | Pending |
 | SIGNAL-02 | Phase 1 | Reactive Core | Pending |
 | SIGNAL-03 | Phase 1 | Reactive Core | Pending |
-| SIGNAL-04 | Phase 1 | Reactive Core | Pending |
-| SIGNAL-05 | Phase 1 | Reactive Core | Pending |
+| SIGNAL-04 | Phase 1 | Reactive Core | Implemented (01-01) |
+| SIGNAL-05 | Phase 1 | Reactive Core | Implemented (01-01) |
 | DX-02 | Phase 1 | Reactive Core | Pending |
 | DX-03 | Phase 1 | Reactive Core | Pending |
 | COMP-01 | Phase 2 | JSX Runtime and Component Model | Pending |
@@ -143,4 +143,4 @@
 
 ---
 *Requirements defined: 2026-02-27*
-*Last updated: 2026-02-27 after roadmap creation*
+*Last updated: 2026-02-28 after 01-01 execution (SIGNAL-04, SIGNAL-05 implemented)*

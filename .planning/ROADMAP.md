@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Monorepo scaffold + internal push-pull reactive graph and owner/cleanup tree
+- [x] 01-01-PLAN.md — Monorepo scaffold + internal push-pull reactive graph and owner/cleanup tree
 - [ ] 01-02-PLAN.md — Public signal(), computed(), effect(), getOwner(), runWithOwner() API with dev warnings and vite build
 - [ ] 01-03-PLAN.md — Node-runnable TDD test suite covering all 7 Phase 1 requirements (SIGNAL-01 through SIGNAL-05, DX-02, DX-03)
 
@@ -132,7 +132,7 @@ Note: Phase 3 (Streaming) depends only on Phase 1 and can be parallelized with P
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Reactive Core | 0/3 | Not started | - |
+| 1. Reactive Core | 1/3 | In progress | - |
 | 2. JSX Runtime and Component Model | 0/5 | Not started | - |
 | 3. Streaming Primitives | 0/4 | Not started | - |
 | 4. Lit Web Component Interop | 0/3 | Not started | - |

@@ -10,27 +10,27 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 ## Current Position
 
 Phase: 1 of 6 (Reactive Core)
-Plan: 0 of 3 in current phase
-Status: Ready to plan
-Last activity: 2026-02-27 — Roadmap created from requirements and research
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-28 — Completed 01-01: monorepo scaffold + internal reactive graph + owner tree
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 5%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: -
-- Total execution time: -
+- Total plans completed: 1
+- Average duration: 6min
+- Total execution time: 6min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-reactive-core | 1 | 6min | 6min |
 
 **Recent Trend:**
-- Last 5 plans: -
+- Last 5 plans: 6min
 - Trend: -
 
 *Updated after each plan completion*
@@ -47,6 +47,10 @@ Recent decisions affecting current work:
 - Roadmap: Phase 3 (Streaming) depends only on Phase 1 — can parallelize with Phase 2 if needed
 - Roadmap: Backpressure (`batch`, `throttle`, `debounce`) ships with Phase 3, not as follow-up
 - Roadmap: Lit interop tests must use Vitest Browser Mode + Playwright — JSDOM will not surface Shadow DOM event retargeting failures
+- 01-01: reactive.ts uses OwnerRef structural interface to avoid circular import with owner.ts; getCurrentOwner lives in owner.ts
+- 01-01: createEffectNode(fn, owner) accepts owner as parameter — prevents circular dependency, makes injection explicit
+- 01-01: disposeEffect exported from reactive.ts for use by Plan 01-02 signal.ts effect() wrapper
+- 01-01: packages/core devDependencies use version ranges not workspace:* (workspace:* is for internal packages only)
 
 ### Pending Todos
 
@@ -60,6 +64,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-27
-Stopped at: Roadmap created — ready to plan Phase 1
+Last session: 2026-02-28
+Stopped at: Completed 01-01-PLAN.md — ready for Plan 01-02 (signal.ts public API)
 Resume file: None
