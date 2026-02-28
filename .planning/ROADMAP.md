@@ -42,7 +42,13 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
   3. `CSSProperties` is importable from `@streem/dom` and from the `streem` meta-package
   4. Unit tests for @streem/dom cover nested ErrorBoundary, Suspense async error propagation, and For keyed list reordering without failures
   5. Unit tests for @streem/streams cover reconnect backoff exhaustion, cancellation during read, and subscription error paths without failures
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — Fix @streem/lit dist to include JSX IntrinsicElements type augmentation for sl-* elements (LIT-01)
+- [ ] 07-02-PLAN.md — Define and export CSSProperties from @streem/dom and streem meta-package; add CSS Modules docs (STYLE-01/02/03)
+- [ ] 07-03-PLAN.md — Implement Suspense onError async propagation and add nested ErrorBoundary + Suspense tests (@streem/dom) (TEST-03)
+- [ ] 07-04-PLAN.md — Add missing edge-case tests for @streem/streams: ReadableStream error path, cancel-during-reconnect, error-after-values (TEST-04)
 
 ### Phase 8: E2E Test Coverage
 **Goal**: Playwright end-to-end tests verify the create-streem CLI scaffold flow produces a working project and that signal state survives a Vite HMR reload
@@ -87,7 +93,7 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 | 4. Lit Web Component Interop | v1.0 | 3/3 | Complete | 2026-02-28 |
 | 5. Package Assembly, CLI, and AI Skills | v1.0 | 3/3 | Complete | 2026-02-28 |
 | 6. Landing Page (Dogfood) | v1.0 | 3/3 | Complete | 2026-02-28 |
-| 7. Package Quality | v1.1 | 0/TBD | Not started | - |
+| 7. Package Quality | v1.1 | 0/4 | Not started | - |
 | 8. E2E Test Coverage | v1.1 | 0/TBD | Not started | - |
 | 9. Performance Benchmarks | v1.1 | 0/TBD | Not started | - |
 | 10. Landing Page Polish | v1.1 | 0/TBD | Not started | - |
