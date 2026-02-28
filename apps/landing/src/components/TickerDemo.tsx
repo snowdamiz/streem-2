@@ -8,6 +8,10 @@ interface TickerRow {
   price: ReturnType<typeof signal<number>>
   change: ReturnType<typeof signal<number>>
   history: ReturnType<typeof signal<number[]>>
+  // Plain mutable buffer — read inside the main effect without reactive tracking.
+  // Reading row.history() inside an effect that also calls row.history.set()
+  // would create a cycle (re-triggers the effect). Buffer breaks that cycle.
+  historyBuf: number[]
 }
 
 // Skeleton shown by <Suspense> until the first stream tick arrives.
@@ -78,6 +82,7 @@ export function TickerDemo(): Node {
     price: signal(100 + Math.random() * 400),
     change: signal(0),
     history: signal<number[]>([]),
+    historyBuf: [] as number[],
   }))
 
   const source = createTickerSource(SYMBOLS)
@@ -100,9 +105,10 @@ export function TickerDemo(): Node {
         if (row) {
           row.price.set(tick.price)
           row.change.set(tick.change)
-          // Keep last 20 price points for sparkline
-          const prev = row.history()
-          row.history.set([...prev.slice(-19), tick.price])
+          // historyBuf is a plain array — reading it here does not subscribe
+          // this effect to row.history, which would cause an infinite loop.
+          row.historyBuf = [...row.historyBuf.slice(-19), tick.price]
+          row.history.set(row.historyBuf)
         }
       }
     })
