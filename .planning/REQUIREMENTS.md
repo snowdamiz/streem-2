@@ -16,7 +16,7 @@ Requirements for the Quality & Polish milestone. Each maps to a roadmap phase.
 
 - [ ] **TEST-01**: Playwright E2E test verifies `npm create streem@latest` scaffolds a buildable project without errors
 - [ ] **TEST-02**: Playwright E2E test verifies signal state is preserved across a Vite HMR hot reload in the browser
-- [ ] **TEST-03**: Unit tests cover @streem/dom edge cases: nested ErrorBoundary, Suspense async error propagation, For keyed list reordering
+- [x] **TEST-03**: Unit tests cover @streem/dom edge cases: nested ErrorBoundary, Suspense async error propagation, For keyed list reordering
 - [ ] **TEST-04**: Unit tests cover @streem/streams edge cases: reconnect backoff exhaustion, cancellation during read, subscription error paths
 
 ### Performance
@@ -55,7 +55,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | LIT-01 | Phase 7 | Pending |
-| TEST-03 | Phase 7 | Pending |
+| TEST-03 | Phase 7 | Complete |
 | TEST-04 | Phase 7 | Pending |
 | STYLE-01 | Phase 7 | Pending |
 | STYLE-02 | Phase 7 | Pending |

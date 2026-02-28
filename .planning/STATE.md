@@ -1,14 +1,14 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
+milestone: v1.0
 milestone_name: Quality & Polish
-status: ready_to_plan
-last_updated: "2026-02-28T00:00:00.000Z"
+status: unknown
+last_updated: "2026-02-28T23:52:47.334Z"
 progress:
-  total_phases: 4
+  total_phases: 1
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 4
+  completed_plans: 2
 ---
 
 # Project State
@@ -45,6 +45,8 @@ Progress: [░░░░░░░░░░] 0% (v1.1)
 **v1.1 metrics:** Not started
 
 *Updated after each plan completion*
+| Phase 07 P03 | 4 | 2 tasks | 3 files |
+| Phase 07-package-quality P04 | 2 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -57,6 +59,9 @@ Recent decisions affecting current work:
 - v1.0: HMR state preservation, E2E CLI scaffold, and performance profiling require interactive environments — Phase 8 (E2E) and Phase 9 (benchmarks) handle these
 - Roadmap: Phase 8 and Phase 9 can run in parallel once Phase 7 is complete (no cross-dependency)
 - Roadmap: Phase 10 depends on both Phase 7 (style objects) and Phase 9 (benchmark data for bar chart)
+- [Phase 07]: Used onError prop (Approach A) for Suspense async error propagation — cleaner, testable API vs DOM event dispatch (07-03)
+- [Phase 07]: Suspense onError is optional, backward-compatible fallback to console.error — no breaking change (07-03)
+- [Phase 07-04]: Fixed fromReadable bug: non-cancellation errors preserve status=error (not overwritten by status=closed)
 
 ### Pending Todos
 
