@@ -298,7 +298,9 @@ export function For<T>(props: ForProps<T>): DocumentFragment {
         createRoot((d) => {
           dispose = d
           const result = props.children(item, getIndex)
-          nodes = Array.isArray(result) ? result : [result]
+          nodes = Array.isArray(result)
+            ? result.filter((n): n is Node => n != null)
+            : result != null ? [result] : []
         })
 
         rows.set(k, { dispose, nodes, setIndex, getIndex })
