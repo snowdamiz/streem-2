@@ -45,7 +45,7 @@
 - [x] **LIT-01**: Developer can import and render Lit web components in TSX files with TypeScript-typed props — no runtime wrapper library required
 - [x] **LIT-02**: Lit component property bindings use a `prop:` namespace prefix in JSX to route values to element properties rather than HTML attributes
 - [x] **LIT-03**: Lit component event listeners attach directly to the element ref (not via JSX event delegation) to prevent Shadow DOM event retargeting failures
-- [ ] **LIT-04**: Developer can auto-generate JSX `IntrinsicElements` type declarations for Lit components by running the Custom Elements Manifest analyzer against the component source
+- [x] **LIT-04**: Developer can auto-generate JSX `IntrinsicElements` type declarations for Lit components by running the Custom Elements Manifest analyzer against the component source
 
 ### Developer Experience
 
