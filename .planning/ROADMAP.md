@@ -73,7 +73,7 @@ Plans:
 - [x] 03-01-PLAN.md — @streem/streams package scaffold; fromWebSocket() with onCleanup integration, typed status signal, exponential backoff reconnection
 - [x] 03-02-PLAN.md — fromSSE() with onCleanup, typed status signal, and SSE-specific concerns (named events, native reconnect handling)
 - [x] 03-03-PLAN.md — fromReadable() (WHATWG ReadableStream) and fromObservable() (Subscribable<T> structural interface, no RxJS runtime dep)
-- [ ] 03-04-PLAN.md — batch(), throttle(), debounce() combinators; startBatch/endBatch exported from @streem/core; backpressure test at 200 msg/sec
+- [x] 03-04-PLAN.md — batch(), throttle(), debounce() combinators; startBatch/endBatch exported from @streem/core; backpressure test at 200 msg/sec
 
 ### Phase 4: Lit Web Component Interop
 **Goal**: Developers can import Lit web components into TSX files with TypeScript-typed props, use a `prop:` prefix to route values to element properties, attach events via direct element listeners (bypassing Shadow DOM event retargeting), and auto-generate type declarations from Custom Elements Manifest
