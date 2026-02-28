@@ -1,4 +1,4 @@
-import { createRoot, onCleanup } from '@streem/core'
+import { createRoot, effect, onCleanup } from '@streem/core'
 import {
   bindTextNode,
   bindAttr,
@@ -58,7 +58,12 @@ function appendChildren(parent: Element, children: Children): void {
  * Dispatch rules (in priority order):
  *   key === 'children'                            → skip (handled by h())
  *   key === 'ref' + typeof value === 'function'   → call ref(el)
- *   key starts with 'on' + typeof value === 'function' → bindEvent
+ *   key starts with 'prop:' + typeof value === 'function' → effect() → el[propName] = accessor()
+ *   key starts with 'prop:' + static value               → el[propName] = value (direct JS prop)
+ *   key starts with 'attr:' + typeof value === 'function' → bindAttr
+ *   key starts with 'attr:' + static value               → setAttribute
+ *   key starts with 'on:'                                 → bindEvent with name preserved exactly
+ *   key starts with 'on' + typeof value === 'function' → bindEvent (lowercased, JSX convention)
  *   key === 'class' + typeof value === 'function' → bindClass
  *   key === 'class' + static string              → el.className = value
  *   key === 'classList'                           → bindClassList (fn or wrap object)
@@ -76,6 +81,41 @@ export function applyProps(el: HTMLElement, props: Record<string, unknown>): voi
 
     if (key === 'ref' && typeof value === 'function') {
       ;(value as (el: HTMLElement) => void)(el)
+      continue
+    }
+
+    // prop: — JS property assignment (bypasses setAttribute entirely)
+    if (key.startsWith('prop:')) {
+      const propName = key.slice(5)  // 'prop:value' → 'value'
+      if (typeof value === 'function') {
+        // Reactive: create effect() that keeps el[propName] in sync with signal accessor.
+        effect(() => {
+          ;(el as unknown as Record<string, unknown>)[propName] = (value as () => unknown)()
+        })
+      } else if (value !== undefined) {
+        ;(el as unknown as Record<string, unknown>)[propName] = value
+      }
+      continue
+    }
+
+    // attr: — explicit attribute assignment (force setAttribute path)
+    if (key.startsWith('attr:')) {
+      const attrName = key.slice(5)  // 'attr:disabled' → 'disabled'
+      if (typeof value === 'function') {
+        bindAttr(el, attrName, value as () => unknown)
+      } else if (value != null && value !== false) {
+        el.setAttribute(attrName, value === true ? attrName : String(value))
+      }
+      continue
+    }
+
+    // on: — direct addEventListener with event name preserved exactly (no lowercasing)
+    // MUST appear before the existing on* handler which lowercases the event name.
+    if (key.startsWith('on:')) {
+      const eventName = key.slice(3)  // 'on:my-event' → 'my-event' (NO lowercasing)
+      if (typeof value === 'function') {
+        bindEvent(el, eventName, value as EventListener)
+      }
       continue
     }
 
