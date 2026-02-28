@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-last_updated: "2026-02-28T03:53:36.936Z"
+status: in_progress
+last_updated: "2026-02-28T05:23:38Z"
 progress:
-  total_phases: 1
+  total_phases: 6
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 8
+  completed_plans: 4
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 1 - Reactive Core (COMPLETE)
+**Current focus:** Phase 2 - JSX Runtime and Component Model (Plan 1 of 5 complete)
 
 ## Current Position
 
-Phase: 1 of 6 (Reactive Core) — COMPLETE
-Plan: 3 of 3 in current phase (all plans complete)
-Status: Phase 1 complete — ready for Phase 2
-Last activity: 2026-02-28 — Completed 01-03: full Vitest test suite (40 tests) + onCleanup bug fix
+Phase: 2 of 6 (JSX Runtime and Component Model) — IN PROGRESS
+Plan: 1 of 5 in current phase (02-01 complete)
+Status: 02-01 complete — @streem/dom scaffold with h(), render(), JSX types
+Last activity: 2026-02-28 — Completed 02-01: @streem/dom package scaffold, JSX runtime, h() factory, render(), 5 tests passing
 
-Progress: [███░░░░░░░] 15%
+Progress: [████░░░░░░] 20%
 
 ## Performance Metrics
 
@@ -41,9 +41,10 @@ Progress: [███░░░░░░░] 15%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-reactive-core | 3 | 14min | 5min |
+| 02-jsx-runtime-and-component-model | 1/5 | 3min | 3min |
 
 **Recent Trend:**
-- Last 5 plans: 6min, 4min, 4min
+- Last 5 plans: 6min, 4min, 4min, 3min
 - Trend: consistent
 
 *Updated after each plan completion*
@@ -69,6 +70,10 @@ Recent decisions affecting current work:
 - 01-02: if (import.meta.env.DEV) guards written inline, never assigned to intermediate variable — tree-shaking safe
 - 01-03: onCleanup() inside effect body must register on effect.cleanupFns (per-run), not owner.cleanups (disposal-only) — required EffectCleanupRef bridge interface
 - 01-03: setCurrentEffectCleanupTarget() exported from owner.ts, called by reactive.ts runEffect() — import direction owner→reactive preserved (no circular dep)
+- 02-01: tsconfig.json for @streem/dom omits explicit rootDir — tests/ alongside src/ requires TypeScript to infer rootDir (mirrors @streem/core pattern, avoids TS6059)
+- 02-01: @streem/core in dependencies (not devDependencies) for @streem/dom — it is a runtime import consumed by h() and render()
+- 02-01: applyProps() in Plan 02-01 handles static attributes only — reactive binding dispatch deferred to Plan 02-02 as specified in plan
+- 02-01: jsx-dev-runtime re-exports production runtime in Phase 2 — source location enrichment deferred to Phase 5
 
 ### Pending Todos
 
@@ -83,5 +88,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 01-03-PLAN.md — Phase 1 (Reactive Core) complete. All 7 requirements have passing tests. Ready for Phase 2.
+Stopped at: Completed 02-01-PLAN.md — @streem/dom package scaffold complete. JSX runtime, h() factory, render(), JSX types all implemented. 5 tests passing in happy-dom. Ready for Plan 02-02 (reactive DOM bindings).
 Resume file: None
