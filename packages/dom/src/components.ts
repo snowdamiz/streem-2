@@ -338,6 +338,23 @@ export function For<T>(props: ForProps<T>): DocumentFragment {
 export interface SuspenseProps {
   fallback: Node | Node[] | (() => Node | Node[] | null)
   children: Node | Node[] | (() => Node | Node[] | null)
+  /**
+   * Called when a thrown Promise inside this Suspense boundary rejects.
+   * Use this to propagate async errors to an outer ErrorBoundary scope.
+   * If omitted, rejection errors are logged to console.error.
+   *
+   * @example
+   * let outerError: unknown = undefined
+   * const node = ErrorBoundary({
+   *   fallback: (err) => ...,
+   *   children: () => Suspense({
+   *     fallback: ...,
+   *     onError: (err) => { outerError = err }, // capture for outer scope
+   *     children: ...,
+   *   }) as unknown as Node
+   * })
+   */
+  onError?: (err: unknown) => void
 }
 
 /**
@@ -349,10 +366,10 @@ export interface SuspenseProps {
  * queueMicrotask (so the anchor must be in the DOM before children insert).
  * Caller must append the anchor node to a DOM parent.
  *
- * Phase 2 behavior:
+ * Phase 3 behavior:
  *   - Child throws Promise → show fallback; attach .then() to retry on resolve
  *   - Promise resolves → retry tryRenderChildren(); replace fallback with children
- *   - Promise rejects → log via console.error (full async propagation is Phase 3)
+ *   - Promise rejects → call props.onError(err) if provided; else console.error
  *   - Child throws non-Promise Error → re-throw (propagates to ErrorBoundary above)
  *   - Multiple Promises thrown → pendingCount tracks; retry after all resolve
  *     (simple counter approach — progressive resolution is Phase 3 + createResource)
@@ -411,10 +428,11 @@ export function Suspense(props: SuspenseProps): Comment {
           }
         },
         (rejectionError: unknown) => {
-          // Phase 2: log rejected Promise.
-          // Full async propagation to ErrorBoundary is implemented in Phase 3
-          // alongside createResource.
-          console.error('Streem <Suspense>: resource rejected:', rejectionError)
+          if (props.onError) {
+            props.onError(rejectionError)
+          } else {
+            console.error('Streem <Suspense>: resource rejected:', rejectionError)
+          }
         },
       )
     }
