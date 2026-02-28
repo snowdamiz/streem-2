@@ -163,8 +163,9 @@ describe('ErrorBoundary — Promise re-throw (critical invariant)', () => {
     // CRITICAL: ErrorBoundary MUST re-throw thrown Promises so Suspense can catch them.
     // This is the key contract for ErrorBoundary > Suspense > children nesting.
     const pendingPromise = new Promise<void>(() => {}) // never resolves
+    let caughtError: unknown = undefined
 
-    expect(() => {
+    try {
       createRoot((dispose) => {
         try {
           ErrorBoundary({
@@ -177,7 +178,12 @@ describe('ErrorBoundary — Promise re-throw (critical invariant)', () => {
           dispose()
         }
       })
-    }).toThrow(pendingPromise)
+    } catch (e) {
+      caughtError = e
+    }
+
+    // The Promise was re-thrown (not swallowed as an error)
+    expect(caughtError).toBe(pendingPromise)
   })
 
   it('fallback is NOT called when child throws a Promise', () => {

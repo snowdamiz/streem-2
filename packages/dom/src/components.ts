@@ -1,6 +1,79 @@
 import { createRoot, effect, onCleanup } from '@streem/core'
 
 // ---------------------------------------------------------------------------
+// ErrorBoundary component
+// ---------------------------------------------------------------------------
+
+export interface ErrorBoundaryProps {
+  fallback: (err: unknown, reset: () => void) => Node | Node[] | null
+  children: Node | Node[] | (() => Node | Node[] | null)
+}
+
+/**
+ * ErrorBoundary(props) — wraps children in try/catch to isolate synchronous
+ * render errors. When an error is caught, renders fallback(err, reset) instead.
+ *
+ * CRITICAL invariant: ErrorBoundary MUST re-throw thrown Promises so that
+ * parent Suspense components can catch them. Only non-Promise errors are caught
+ * and turned into fallback UI.
+ *
+ * Phase 2 design (simple, correct):
+ *   - ErrorBoundary renders children synchronously in try/catch
+ *   - Returns the child Node directly (or fallback Node on error)
+ *   - reset() is provided to the fallback function — in Phase 2 it triggers a
+ *     re-render attempt; in-place DOM swap infrastructure is Phase 3+ scope
+ *
+ * Key link: if (err instanceof Promise) throw err  — this re-throw is critical.
+ * Without it, thrown Promises would be caught here and show error fallback UI
+ * instead of Suspense's loading fallback.
+ */
+export function ErrorBoundary(props: ErrorBoundaryProps): Node | Node[] {
+  let childResult: Node | Node[] | null = null
+  let childDispose: (() => void) | null = null
+
+  const attemptRender = (): Node | Node[] | null => {
+    let result: Node | Node[] | null = null
+    try {
+      createRoot((d) => {
+        childDispose = d
+        const child = typeof props.children === 'function' ? props.children() : props.children
+        result = child ?? null
+      })
+    } catch (err) {
+      // CRITICAL: re-throw Promises so Suspense above can catch them
+      if (err instanceof Promise) throw err
+
+      // Synchronous error — dispose failed child scope and render fallback
+      childDispose?.()
+      childDispose = null
+
+      const reset = () => {
+        // Phase 2: reset triggers a new render attempt. The returned node is
+        // not swapped in-place (that requires anchor infrastructure, Phase 3+).
+        // reset() is callable without throwing — the caller owns the DOM swap.
+        attemptRender()
+      }
+
+      result = props.fallback(err, reset) ?? null
+    }
+    return result
+  }
+
+  childResult = attemptRender()
+
+  onCleanup(() => {
+    childDispose?.()
+    childDispose = null
+  })
+
+  // Return children node(s) or fallback node(s) — caller appends to DOM
+  if (childResult === null) {
+    return document.createComment('ErrorBoundary:empty')
+  }
+  return childResult
+}
+
+// ---------------------------------------------------------------------------
 // onMount()
 // ---------------------------------------------------------------------------
 
@@ -253,4 +326,107 @@ export function For<T>(props: ForProps<T>): DocumentFragment {
   })
 
   return frag
+}
+
+// ---------------------------------------------------------------------------
+// Suspense component
+// ---------------------------------------------------------------------------
+
+export interface SuspenseProps {
+  fallback: Node | Node[] | (() => Node | Node[] | null)
+  children: Node | Node[] | (() => Node | Node[] | null)
+}
+
+/**
+ * Suspense(props) — catches thrown Promises from children (thrown-Promise
+ * protocol, like React Suspense). Shows fallback while pending; swaps to
+ * children when the Promise resolves.
+ *
+ * Returns a Comment anchor. Children are inserted before the anchor using
+ * queueMicrotask (so the anchor must be in the DOM before children insert).
+ * Caller must append the anchor node to a DOM parent.
+ *
+ * Phase 2 behavior:
+ *   - Child throws Promise → show fallback; attach .then() to retry on resolve
+ *   - Promise resolves → retry tryRenderChildren(); replace fallback with children
+ *   - Promise rejects → log via console.error (full async propagation is Phase 3)
+ *   - Child throws non-Promise Error → re-throw (propagates to ErrorBoundary above)
+ *   - Multiple Promises thrown → pendingCount tracks; retry after all resolve
+ *     (simple counter approach — progressive resolution is Phase 3 + createResource)
+ *
+ * Key link: err instanceof Promise check (MUST happen in Suspense before re-throw)
+ * ensures non-Promise errors propagate to ErrorBoundary while Promises are handled
+ * by Suspense's loading state mechanism.
+ */
+export function Suspense(props: SuspenseProps): Comment {
+  const anchor = document.createComment('Suspense')
+  let pendingCount = 0
+  let currentNodes: Node[] = []
+
+  const removeCurrentNodes = () => {
+    for (const n of currentNodes) {
+      n.parentNode?.removeChild(n)
+    }
+    currentNodes = []
+  }
+
+  const insertBefore = (nodes: Node | Node[] | null | undefined) => {
+    if (!nodes) return
+    const arr = Array.isArray(nodes) ? nodes : [nodes]
+    removeCurrentNodes()
+    currentNodes = arr
+    for (const n of arr) {
+      anchor.parentNode?.insertBefore(n, anchor)
+    }
+  }
+
+  const getFallback = (): Node | Node[] | null => {
+    const fb = typeof props.fallback === 'function' ? props.fallback() : props.fallback
+    return fb ?? null
+  }
+
+  const tryRenderChildren = (): void => {
+    try {
+      const child = typeof props.children === 'function' ? props.children() : props.children
+      insertBefore(child ?? null)
+    } catch (err) {
+      if (!(err instanceof Promise)) {
+        // Non-Promise errors propagate up to ErrorBoundary above
+        throw err
+      }
+
+      // Pending Promise: show fallback, attach resolve/reject handlers
+      pendingCount++
+      insertBefore(getFallback())
+
+      err.then(
+        () => {
+          pendingCount--
+          if (pendingCount === 0) {
+            // All Promises resolved — retry rendering children
+            queueMicrotask(() => tryRenderChildren())
+          }
+        },
+        (rejectionError: unknown) => {
+          // Phase 2: log rejected Promise.
+          // Full async propagation to ErrorBoundary is implemented in Phase 3
+          // alongside createResource.
+          console.error('Streem <Suspense>: resource rejected:', rejectionError)
+        },
+      )
+    }
+  }
+
+  // Initial render deferred via queueMicrotask so the anchor is in the DOM
+  // by the time insertBefore() runs (anchor.parentNode !== null after caller
+  // appends the anchor to the DOM).
+  queueMicrotask(() => {
+    tryRenderChildren()
+  })
+
+  onCleanup(() => {
+    removeCurrentNodes()
+  })
+
+  return anchor
 }
