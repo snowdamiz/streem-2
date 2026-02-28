@@ -151,6 +151,28 @@ importers:
         specifier: ^0.5.0
         version: 0.5.0(vitest@4.0.18)
 
+  packages/streem:
+    dependencies:
+      '@streem/core':
+        specifier: workspace:*
+        version: link:../core
+      '@streem/dom':
+        specifier: workspace:*
+        version: link:../dom
+      '@streem/streams':
+        specifier: workspace:*
+        version: link:../streams
+    devDependencies:
+      typescript:
+        specifier: ~5.8.0
+        version: 5.8.3
+      vite:
+        specifier: ^7.0.0
+        version: 7.3.1(tsx@4.21.0)
+      vite-plugin-dts:
+        specifier: ^4.0.0
+        version: 4.5.4(rollup@4.59.0)(typescript@5.8.3)(vite@7.3.1(tsx@4.21.0))
+
 packages:
 
   '@babel/helper-string-parser@7.27.1':

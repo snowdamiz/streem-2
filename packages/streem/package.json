@@ -1,0 +1,35 @@
+{
+  "name": "streem",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./jsx-runtime": {
+      "import": "./dist/jsx-runtime.js",
+      "types": "./dist/jsx-runtime.d.ts"
+    },
+    "./jsx-dev-runtime": {
+      "import": "./dist/jsx-dev-runtime.js",
+      "types": "./dist/jsx-dev-runtime.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@streem/core": "workspace:*",
+    "@streem/dom": "workspace:*",
+    "@streem/streams": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0",
+    "vite-plugin-dts": "^4.0.0",
+    "typescript": "~5.8.0"
+  },
+  "engines": { "node": ">=20.19.0" }
+}
