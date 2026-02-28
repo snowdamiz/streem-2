@@ -12,7 +12,13 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['@streem/core', '@streem/dom', '@streem/streams'],
+      external: [
+        '@streem/core',
+        '@streem/dom',
+        '@streem/dom/jsx-runtime',
+        '@streem/dom/jsx-dev-runtime',
+        '@streem/streams',
+      ],
     },
     target: 'es2022',
     minify: false,
