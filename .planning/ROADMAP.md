@@ -25,7 +25,7 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 
 **Milestone Goal:** Resolve v1.0 quality gaps — ship JSX type coverage for sl-* elements, add E2E and unit test coverage, document and run performance benchmarks, and migrate the landing page to CSS Modules with a live benchmark bar chart.
 
-- [ ] **Phase 7: Package Quality** - Fix LIT-04 type gap, add unit tests for @streem/dom and @streem/streams edge cases, and ship style object support + CSSProperties export
+- [x] **Phase 7: Package Quality** - Fix LIT-04 type gap, add unit tests for @streem/dom and @streem/streams edge cases, and ship style object support + CSSProperties export (completed 2026-02-28)
 - [ ] **Phase 8: E2E Test Coverage** - Playwright tests for the create-streem CLI scaffold flow and HMR signal-state preservation
 - [ ] **Phase 9: Performance Benchmarks** - Measure signal/computed/effect throughput against SolidJS and Preact signals and commit results with documented methodology
 - [ ] **Phase 10: Landing Page Polish** - Bar chart dogfood component displaying benchmark results, plus CSS Modules migration for landing page components
@@ -93,7 +93,7 @@ Plans:
 | 4. Lit Web Component Interop | v1.0 | 3/3 | Complete | 2026-02-28 |
 | 5. Package Assembly, CLI, and AI Skills | v1.0 | 3/3 | Complete | 2026-02-28 |
 | 6. Landing Page (Dogfood) | v1.0 | 3/3 | Complete | 2026-02-28 |
-| 7. Package Quality | 2/4 | In Progress|  | - |
+| 7. Package Quality | 4/4 | Complete   | 2026-02-28 | - |
 | 8. E2E Test Coverage | v1.1 | 0/TBD | Not started | - |
 | 9. Performance Benchmarks | v1.1 | 0/TBD | Not started | - |
 | 10. Landing Page Polish | v1.1 | 0/TBD | Not started | - |

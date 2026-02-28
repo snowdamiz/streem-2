@@ -10,7 +10,7 @@ Requirements for the Quality & Polish milestone. Each maps to a roadmap phase.
 
 ### Type Safety
 
-- [ ] **LIT-01**: Developer gets TypeScript IntrinsicElements autocomplete and type-checking for sl-* elements when @streem/lit is installed (fixes missing JSX type augmentation in dist/)
+- [x] **LIT-01**: Developer gets TypeScript IntrinsicElements autocomplete and type-checking for sl-* elements when @streem/lit is installed (fixes missing JSX type augmentation in dist/)
 
 ### Testing
 
@@ -30,9 +30,9 @@ Requirements for the Quality & Polish milestone. Each maps to a roadmap phase.
 
 ### Styling
 
-- [ ] **STYLE-01**: `style` prop accepts a `CSSProperties` object (e.g., `style={{ display: 'grid', gap: '20px' }}`) in addition to a CSS string
-- [ ] **STYLE-02**: `CSSProperties` type is exported from `@streem/dom` and the `streem` meta-package so style objects can be typed and extracted as variables
-- [ ] **STYLE-03**: CSS Modules are documented as the recommended pattern for component-level styles (Vite-native; includes example in docs or README)
+- [x] **STYLE-01**: `style` prop accepts a `CSSProperties` object (e.g., `style={{ display: 'grid', gap: '20px' }}`) in addition to a CSS string
+- [x] **STYLE-02**: `CSSProperties` type is exported from `@streem/dom` and the `streem` meta-package so style objects can be typed and extracted as variables
+- [x] **STYLE-03**: CSS Modules are documented as the recommended pattern for component-level styles (Vite-native; includes example in docs or README)
 - [ ] **STYLE-04**: Landing page components are migrated from inline `<style>` string blocks to CSS Modules and style objects as dogfood proof
 
 ## Future Requirements
@@ -54,12 +54,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| LIT-01 | Phase 7 | Pending |
+| LIT-01 | Phase 7 | Complete |
 | TEST-03 | Phase 7 | Complete |
 | TEST-04 | Phase 7 | Complete |
-| STYLE-01 | Phase 7 | Pending |
-| STYLE-02 | Phase 7 | Pending |
-| STYLE-03 | Phase 7 | Pending |
+| STYLE-01 | Phase 7 | Complete |
+| STYLE-02 | Phase 7 | Complete |
+| STYLE-03 | Phase 7 | Complete |
 | TEST-01 | Phase 8 | Pending |
 | TEST-02 | Phase 8 | Pending |
 | PERF-01 | Phase 9 | Pending |
