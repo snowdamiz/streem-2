@@ -11,6 +11,25 @@ import {
 /** Sentinel symbol for JSX Fragment (<> </>) */
 export const Fragment = Symbol('Fragment')
 
+const SVG_NS = 'http://www.w3.org/2000/svg'
+
+// SVG element tag names that must be created with createElementNS.
+// Excludes ambiguous tags that exist in both HTML and SVG (a, script, style, title).
+const SVG_TAGS = new Set([
+  'animate', 'animateMotion', 'animateTransform', 'circle', 'clipPath',
+  'defs', 'desc', 'ellipse',
+  'feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite',
+  'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap',
+  'feDistantLight', 'feDropShadow', 'feFlood', 'feFuncA', 'feFuncB',
+  'feFuncG', 'feFuncR', 'feGaussianBlur', 'feImage', 'feMerge',
+  'feMergeNode', 'feMorphology', 'feOffset', 'fePointLight',
+  'feSpecularLighting', 'feSpotLight', 'feTile', 'feTurbulence',
+  'filter', 'foreignObject', 'g', 'image', 'line', 'linearGradient',
+  'marker', 'mask', 'metadata', 'mpath', 'path', 'pattern', 'polygon',
+  'polyline', 'radialGradient', 'rect', 'set', 'stop', 'svg', 'switch',
+  'symbol', 'text', 'textPath', 'tspan', 'use', 'view',
+])
+
 type Children = unknown[]
 
 function normalizeChildren(children: Children): unknown {
@@ -75,12 +94,12 @@ function appendChildren(parent: Element, children: Children): void {
  * CRITICAL: typeof value === 'function' MUST be checked before any invocation
  * of value. Calling value() here would consume a snapshot, breaking reactivity.
  */
-export function applyProps(el: HTMLElement, props: Record<string, unknown>): void {
+export function applyProps(el: Element, props: Record<string, unknown>): void {
   for (const [key, value] of Object.entries(props)) {
     if (key === 'children') continue
 
     if (key === 'ref' && typeof value === 'function') {
-      ;(value as (el: HTMLElement) => void)(el)
+      ;(value as (el: Element) => void)(el)
       continue
     }
 
@@ -129,7 +148,7 @@ export function applyProps(el: HTMLElement, props: Record<string, unknown>): voi
       if (typeof value === 'function') {
         bindClass(el, value as () => string)
       } else if (value != null) {
-        el.className = String(value)
+        el.setAttribute('class', String(value))
       }
       continue
     }
@@ -145,13 +164,14 @@ export function applyProps(el: HTMLElement, props: Record<string, unknown>): voi
     }
 
     if (key === 'style') {
+      const styledEl = el as HTMLElement | SVGElement
       if (typeof value === 'function') {
-        bindStyle(el, value as () => Partial<CSSStyleDeclaration> | string)
+        bindStyle(styledEl, value as () => Partial<CSSStyleDeclaration> | string)
       } else if (typeof value === 'string') {
-        bindStyle(el, () => value)
+        bindStyle(styledEl, () => value)
       } else if (value != null && typeof value === 'object') {
         // Static style object: wrap in accessor
-        bindStyle(el, () => value as Partial<CSSStyleDeclaration>)
+        bindStyle(styledEl, () => value as Partial<CSSStyleDeclaration>)
       }
       continue
     }
@@ -216,8 +236,11 @@ export function h(
     return result ?? null
   }
 
-  // HTML intrinsic element: create DOM node
-  const el = document.createElement(type as string)
+  // Intrinsic element: use SVG namespace for known SVG tags, HTML otherwise
+  const tag = type as string
+  const el = SVG_TAGS.has(tag)
+    ? document.createElementNS(SVG_NS, tag)
+    : document.createElement(tag)
   if (props) {
     applyProps(el as HTMLElement, props)
   }

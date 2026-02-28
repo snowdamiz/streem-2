@@ -56,7 +56,7 @@ export function bindAttr(
  */
 export function bindClass(el: Element, accessor: () => string): void {
   effect(() => {
-    el.className = accessor()
+    el.setAttribute('class', accessor())
   })
 }
 
@@ -86,7 +86,7 @@ export function bindClassList(
  * whenever any signal read inside the accessor changes.
  */
 export function bindStyle(
-  el: HTMLElement,
+  el: HTMLElement | SVGElement,
   accessor: () => Partial<CSSStyleDeclaration> | string,
 ): void {
   effect(() => {
