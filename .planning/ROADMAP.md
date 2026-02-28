@@ -46,7 +46,7 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 
 Plans:
 - [ ] 07-01-PLAN.md — Fix @streem/lit dist to include JSX IntrinsicElements type augmentation for sl-* elements (LIT-01)
-- [ ] 07-02-PLAN.md — Define and export CSSProperties from @streem/dom and streem meta-package; add CSS Modules docs (STYLE-01/02/03)
+- [x] 07-02-PLAN.md — Define and export CSSProperties from @streem/dom and streem meta-package; add CSS Modules docs (STYLE-01/02/03)
 - [ ] 07-03-PLAN.md — Implement Suspense onError async propagation and add nested ErrorBoundary + Suspense tests (@streem/dom) (TEST-03)
 - [ ] 07-04-PLAN.md — Add missing edge-case tests for @streem/streams: ReadableStream error path, cancel-during-reconnect, error-after-values (TEST-04)
 
