@@ -5,10 +5,10 @@ milestone_name: milestone
 status: unknown
 last_updated: "2026-02-28T07:03:49.873Z"
 progress:
-  total_phases: 2
+  total_phases: 6
   completed_phases: 2
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 12
+  completed_plans: 9
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 2 - JSX Runtime and Component Model — COMPLETE (all 5 plans done)
+**Current focus:** Phase 3 - Streaming Primitives — IN PROGRESS (1 of 4 plans done)
 
 ## Current Position
 
-Phase: 2 of 6 (JSX Runtime and Component Model) — COMPLETE
-Plan: 5 of 5 in current phase (02-05 complete)
-Status: 02-05 complete — HMR integration and demo app — 131 tests passing
-Last activity: 2026-02-28 — Completed 02-05: HMR signal state registry, streemHMR() Vite plugin, apps/demo with jsxImportSource; fixed JSX type chain for reactive children
+Phase: 3 of 6 (Streaming Primitives) — IN PROGRESS
+Plan: 1 of 4 in current phase (03-01 complete)
+Status: 03-01 complete — @streem/streams scaffold + fromWebSocket() adapter — 9 tests passing
+Last activity: 2026-02-28 — Completed 03-01: @streem/streams package, fromWebSocket() with exponential backoff reconnect, vitest-websocket-mock test suite
 
-Progress: [████████░░] 40%
+Progress: [████████░░] 42%
 
 ## Performance Metrics
 
@@ -42,9 +42,10 @@ Progress: [████████░░] 40%
 |-------|-------|-------|----------|
 | 01-reactive-core | 3 | 14min | 5min |
 | 02-jsx-runtime-and-component-model | 5/5 | 25min | 5min |
+| 03-streaming-primitives | 1/4 | 3min | 3min |
 
 **Recent Trend:**
-- Last 5 plans: 3min, 4min, 7min, 5min, 6min
+- Last 5 plans: 4min, 7min, 5min, 6min, 3min
 - Trend: consistent
 
 *Updated after each plan completion*
@@ -89,6 +90,10 @@ Recent decisions affecting current work:
 - [Phase 02-05]: IntrinsicElements.children typed as unknown to accept reactive accessor arrays from mixed JSX children (e.g. [string, () => number])
 - [Phase 02-05]: ForProps.children return type widened to Node | Node[] | null | undefined to match JSX.Element (nullable)
 - [Phase 02-05]: HMR dispose pattern: mutate import.meta.hot.data properties — never re-assign the data object itself
+- [Phase 03-01]: vitest-websocket-mock version fixed to ^0.5.0 (plan specified ^2.0.0 which doesn't exist on npm)
+- [Phase 03-01]: maxRetries exhaustion test uses maxRetries:0 — fake timers incompatible with vitest-websocket-mock 0.5.0 Promise-based server.connected API
+- [Phase 03-01]: happy-dom environment required for @streem/streams vitest — node env lacks WebSocket global pre-Node 22, mock-socket patching fails silently
+- [Phase 03-01]: Adapter pattern established: onCleanup() registered BEFORE connect(); all stream adapters follow this cleanup-first invariant
 
 ### Pending Todos
 
@@ -103,5 +108,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 02-05-PLAN.md — HMR integration and demo app complete. Phase 2 complete. 131 tests passing. Ready for Phase 3 planning.
+Stopped at: Completed 03-01-PLAN.md — @streem/streams scaffold + fromWebSocket() adapter. 9 tests passing.
 Resume file: None
