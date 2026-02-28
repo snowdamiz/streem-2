@@ -37,6 +37,28 @@ importers:
         specifier: ^7.0.0
         version: 7.3.1(tsx@4.21.0)
 
+  apps/landing:
+    dependencies:
+      '@shoelace-style/shoelace':
+        specifier: ^2.20.1
+        version: 2.20.1(@floating-ui/utils@0.2.10)(@types/react@19.2.14)
+      '@streem/lit':
+        specifier: workspace:*
+        version: link:../../packages/lit
+      streem:
+        specifier: workspace:*
+        version: link:../../packages/streem
+    devDependencies:
+      typescript:
+        specifier: ~5.8.0
+        version: 5.8.3
+      vite:
+        specifier: ^7.0.0
+        version: 7.3.1(tsx@4.21.0)
+      vite-plugin-static-copy:
+        specifier: latest
+        version: 3.2.0(vite@7.3.1(tsx@4.21.0))
+
   packages/core:
     devDependencies:
       typescript:
@@ -169,6 +191,9 @@ importers:
 
   packages/streem:
     dependencies:
+      '@clack/prompts':
+        specifier: ^1.0.1
+        version: 1.0.1
       '@streem/core':
         specifier: workspace:*
         version: link:../core
@@ -213,6 +238,10 @@ packages:
 
   '@clack/prompts@1.0.1':
     resolution: {integrity: sha512-/42G73JkuYdyWZ6m8d/CJtBrGl1Hegyc7Fy78m5Ob+jF85TOUmLR5XLce/U3LxYAw0kJ8CT5aI99RIvPHcGp/Q==}
+
+  '@ctrl/tinycolor@4.2.0':
+    resolution: {integrity: sha512-kzyuwOAQnXJNLS9PSyrk0CWk35nWJW/zl/6KvnTBMFK65gm7U1/Z5BqjxeapjZCIhQcM/DsrEmcbRwDyXyXK4A==}
+    engines: {node: '>=14'}
 
   '@custom-elements-manifest/analyzer@0.10.10':
     resolution: {integrity: sha512-R1pbKssP3Psb2OiGfheiUbXtBgTGQ0Vu5cn2CHSdZoJV66oZPSSw/TdCf8WlnQ6dfKSy5L8hNneClnmD80GEwA==}
@@ -377,6 +406,15 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@floating-ui/core@1.7.4':
+    resolution: {integrity: sha512-C3HlIdsBxszvm5McXlB8PeOEWfBhcGBTZGkGlWc2U0KFY5IwG5OQEuQ8rq52DZmcHDlPLd+YFBK+cZcytwIFWg==}
+
+  '@floating-ui/dom@1.7.5':
+    resolution: {integrity: sha512-N0bD2kIPInNHUHehXhMke1rBGs1dwqvC9O9KYMyyjK7iXt7GAhnro7UlcuYcGdS/yYOlq0MAVgrow8IbWJwyqg==}
+
+  '@floating-ui/utils@0.2.10':
+    resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
+
   '@github/catalyst@1.8.0':
     resolution: {integrity: sha512-uLpi/D/mKfylYaFLfzNuloXNENi0AlcM0Z7hwYLH8Z030jBCr+ueMdX2xLxCzpMH/keYXKh0uPrHSMfcbxU6KA==}
 
@@ -430,6 +468,11 @@ packages:
 
   '@lit-labs/ssr-dom-shim@1.5.1':
     resolution: {integrity: sha512-Aou5UdlSpr5whQe8AA/bZG0jMj96CoJIWbGfZ91qieWu5AWUMKw8VR/pAkQkJYvBNhmCcWnZlyyk5oze8JIqYA==}
+
+  '@lit/react@1.0.8':
+    resolution: {integrity: sha512-p2+YcF+JE67SRX3mMlJ1TKCSTsgyOVdAwd/nxp3NuV1+Cb6MWALbN6nT7Ld4tpmYofcE5kcaSY1YBB9erY+6fw==}
+    peerDependencies:
+      '@types/react': 17 || 18 || 19
 
   '@lit/reactive-element@2.1.2':
     resolution: {integrity: sha512-pbCDiVMnne1lYUIaYNN5wrwQXDtHaYtg7YEFPeW+hws6U47WeFvISGUWekPGKWOP1ygrs0ef0o1VJMk1exos5A==}
@@ -644,6 +687,16 @@ packages:
   '@rushstack/ts-command-line@5.3.3':
     resolution: {integrity: sha512-c+ltdcvC7ym+10lhwR/vWiOhsrm/bP3By2VsFcs5qTKv+6tTmxgbVrtJ5NdNjANiV5TcmOZgUN+5KYQ4llsvEw==}
 
+  '@shoelace-style/animations@1.2.0':
+    resolution: {integrity: sha512-avvo1xxkLbv2dgtabdewBbqcJfV0e0zCwFqkPMnHFGbJbBHorRFfMAHh1NG9ymmXn0jW95ibUVH03E1NYXD6Gw==}
+
+  '@shoelace-style/localize@3.2.1':
+    resolution: {integrity: sha512-r4C9C/5kSfMBIr0D9imvpRdCNXtUNgyYThc4YlS6K5Hchv1UyxNQ9mxwj+BTRH2i1Neits260sR3OjKMnplsFA==}
+
+  '@shoelace-style/shoelace@2.20.1':
+    resolution: {integrity: sha512-FSghU95jZPGbwr/mybVvk66qRZYpx5FkXL+vLNpy1Vp8UsdwSxXjIHE3fsvMbKWTKi9UFfewHTkc5e7jAqRYoQ==}
+    engines: {node: '>=14.17.0'}
+
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
@@ -658,6 +711,9 @@ packages:
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
+
+  '@types/react@19.2.14':
+    resolution: {integrity: sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w==}
 
   '@types/statuses@2.0.6':
     resolution: {integrity: sha512-xMAgYwceFhRA2zY+XbEA7mxYbA093wdiW8Vu6gZPGWy9cmOyU9XesH1tNcEWsKFd5Vzrqx5T3D38PWx1FIIXkA==}
@@ -902,6 +958,10 @@ packages:
     resolution: {integrity: sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==}
     engines: {node: '>= 8.10.0'}
 
+  chokidar@3.6.0:
+    resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
+    engines: {node: '>= 8.10.0'}
+
   chokidar@4.0.3:
     resolution: {integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==}
     engines: {node: '>= 14.16.0'}
@@ -936,6 +996,11 @@ packages:
   compare-versions@6.1.1:
     resolution: {integrity: sha512-4hm4VPpIecmlg59CHXnRDnqGplJFrbLG4aFEl5vl6cK1u76ws3LLvX7ikFnTDl5vo39sjWD6AaDPYodJp/NNHg==}
 
+  composed-offset-position@0.0.6:
+    resolution: {integrity: sha512-Q7dLompI6lUwd7LWyIcP66r4WcS9u7AL2h8HaeipiRfCRPLMWqRx8fYsjb4OHi6UQFifO7XtNC2IlEJ1ozIFxw==}
+    peerDependencies:
+      '@floating-ui/utils': ^0.2.5
+
   confbox@0.1.8:
     resolution: {integrity: sha512-RMtmw0iFkeR4YV+fUOSucriAQNb9g8zFR52MWCtl+cCZOFRNL6zeB395vPzFhEjjn4fMxXudmELnl/KF/WrK6w==}
 
@@ -949,6 +1014,9 @@ packages:
   cookie@1.1.1:
     resolution: {integrity: sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==}
     engines: {node: '>=18'}
+
+  csstype@3.2.3:
+    resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
   custom-elements-manifest@1.0.0:
     resolution: {integrity: sha512-j59k0ExGCKA8T6Mzaq+7axc+KVHwpEphEERU7VZ99260npu/p/9kd+Db+I3cGKxHkM5y6q5gnlXn00mzRQkX2A==}
@@ -1274,6 +1342,10 @@ packages:
   outvariant@1.4.3:
     resolution: {integrity: sha512-+Sl2UErvtsoajRDKCE5/dBz4DIvHXQQnAxtQTF04OJxY0+DyZXSo5P5Bb7XYWOh81syohlYL24hbDwxedPUJCA==}
 
+  p-map@7.0.4:
+    resolution: {integrity: sha512-tkAQEw8ysMzmkhgw8k+1U/iPhWNhykKnSk4Rd5zLoPJCuJaGRPo6YposrZgaxHKzDHdDWWZvE/Sk7hsL2X/CpQ==}
+    engines: {node: '>=18'}
+
   path-browserify@1.0.1:
     resolution: {integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==}
 
@@ -1355,6 +1427,9 @@ packages:
     resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
     engines: {node: '>=14'}
     hasBin: true
+
+  qr-creator@1.0.0:
+    resolution: {integrity: sha512-C0cqfbS1P5hfqN4NhsYsUXePlk9BO+a45bAQ3xLYjBL3bOIFzoVEjs79Fado9u9BPBD3buHi3+vY+C8tHh4qMQ==}
 
   quansync@0.2.11:
     resolution: {integrity: sha512-AifT7QEbW9Nri4tAwR5M/uzpBuqfZf+zwaEM/QkzEjj7NBuFD2rBuy0K3dE+8wltbezDV7JMA0WfnCPYRSYbXA==}
@@ -1620,6 +1695,12 @@ packages:
       vite:
         optional: true
 
+  vite-plugin-static-copy@3.2.0:
+    resolution: {integrity: sha512-g2k9z8B/1Bx7D4wnFjPLx9dyYGrqWMLTpwTtPHhcU+ElNZP2O4+4OsyaficiDClus0dzVhdGvoGFYMJxoXZ12Q==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    peerDependencies:
+      vite: ^5.0.0 || ^6.0.0 || ^7.0.0
+
   vite@7.3.1:
     resolution: {integrity: sha512-w+N7Hifpc3gRjZ63vYBXA56dvvRlNWRczTdmCBBa+CotUzAPf5b7YMdMR/8CQoeYE5LX3W4wj6RYTgonm1b9DA==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -1780,6 +1861,8 @@ snapshots:
       picocolors: 1.1.1
       sisteransi: 1.0.5
 
+  '@ctrl/tinycolor@4.2.0': {}
+
   '@custom-elements-manifest/analyzer@0.10.10':
     dependencies:
       '@custom-elements-manifest/find-dependencies': 0.0.6
@@ -1875,6 +1958,17 @@ snapshots:
   '@esbuild/win32-x64@0.27.3':
     optional: true
 
+  '@floating-ui/core@1.7.4':
+    dependencies:
+      '@floating-ui/utils': 0.2.10
+
+  '@floating-ui/dom@1.7.5':
+    dependencies:
+      '@floating-ui/core': 1.7.4
+      '@floating-ui/utils': 0.2.10
+
+  '@floating-ui/utils@0.2.10': {}
+
   '@github/catalyst@1.8.0': {}
 
   '@inquirer/ansi@1.0.2': {}
@@ -1914,6 +2008,10 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.5
 
   '@lit-labs/ssr-dom-shim@1.5.1': {}
+
+  '@lit/react@1.0.8(@types/react@19.2.14)':
+    dependencies:
+      '@types/react': 19.2.14
 
   '@lit/reactive-element@2.1.2':
     dependencies:
@@ -2108,6 +2206,24 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
+  '@shoelace-style/animations@1.2.0': {}
+
+  '@shoelace-style/localize@3.2.1': {}
+
+  '@shoelace-style/shoelace@2.20.1(@floating-ui/utils@0.2.10)(@types/react@19.2.14)':
+    dependencies:
+      '@ctrl/tinycolor': 4.2.0
+      '@floating-ui/dom': 1.7.5
+      '@lit/react': 1.0.8(@types/react@19.2.14)
+      '@shoelace-style/animations': 1.2.0
+      '@shoelace-style/localize': 3.2.1
+      composed-offset-position: 0.0.6(@floating-ui/utils@0.2.10)
+      lit: 3.3.2
+      qr-creator: 1.0.0
+    transitivePeerDependencies:
+      - '@floating-ui/utils'
+      - '@types/react'
+
   '@standard-schema/spec@1.1.0': {}
 
   '@types/argparse@1.0.38': {}
@@ -2120,6 +2236,10 @@ snapshots:
   '@types/deep-eql@4.0.2': {}
 
   '@types/estree@1.0.8': {}
+
+  '@types/react@19.2.14':
+    dependencies:
+      csstype: 3.2.3
 
   '@types/statuses@2.0.6': {}
 
@@ -2370,6 +2490,18 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
+  chokidar@3.6.0:
+    dependencies:
+      anymatch: 3.1.3
+      braces: 3.0.3
+      glob-parent: 5.1.2
+      is-binary-path: 2.1.0
+      is-glob: 4.0.3
+      normalize-path: 3.0.0
+      readdirp: 3.6.0
+    optionalDependencies:
+      fsevents: 2.3.3
+
   chokidar@4.0.3:
     dependencies:
       readdirp: 4.1.2
@@ -2401,6 +2533,10 @@ snapshots:
 
   compare-versions@6.1.1: {}
 
+  composed-offset-position@0.0.6(@floating-ui/utils@0.2.10):
+    dependencies:
+      '@floating-ui/utils': 0.2.10
+
   confbox@0.1.8: {}
 
   confbox@0.2.4: {}
@@ -2408,6 +2544,8 @@ snapshots:
   consola@3.4.2: {}
 
   cookie@1.1.1: {}
+
+  csstype@3.2.3: {}
 
   custom-elements-manifest@1.0.0: {}
 
@@ -2722,6 +2860,8 @@ snapshots:
 
   outvariant@1.4.3: {}
 
+  p-map@7.0.4: {}
+
   path-browserify@1.0.1: {}
 
   path-parse@1.0.7: {}
@@ -2780,6 +2920,8 @@ snapshots:
       source-map-js: 1.2.1
 
   prettier@3.8.1: {}
+
+  qr-creator@1.0.0: {}
 
   quansync@0.2.11: {}
 
@@ -3043,6 +3185,14 @@ snapshots:
       - '@types/node'
       - rollup
       - supports-color
+
+  vite-plugin-static-copy@3.2.0(vite@7.3.1(tsx@4.21.0)):
+    dependencies:
+      chokidar: 3.6.0
+      p-map: 7.0.4
+      picocolors: 1.1.1
+      tinyglobby: 0.2.15
+      vite: 7.3.1(tsx@4.21.0)
 
   vite@7.3.1(tsx@4.21.0):
     dependencies:

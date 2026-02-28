@@ -1,0 +1,21 @@
+{
+  "name": "@streem/landing",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "streem": "workspace:*",
+    "@streem/lit": "workspace:*",
+    "@shoelace-style/shoelace": "^2.20.1"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0",
+    "vite-plugin-static-copy": "latest",
+    "typescript": "~5.8.0"
+  }
+}
