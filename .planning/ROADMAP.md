@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: JSX Runtime and Component Model** - JSX factory, reactive DOM bindings, component primitives, and HMR (completed 2026-02-28)
 - [ ] **Phase 3: Streaming Primitives** - All four stream adapters with automatic cleanup, backpressure, and reconnection
 - [x] **Phase 4: Lit Web Component Interop** - TypeScript-typed Lit component bindings with correct Shadow DOM event handling (completed 2026-02-28)
-- [ ] **Phase 5: Package Assembly, CLI, and AI Skills** - Meta-package, create-streem starter, and progressive-disclosure skill files
+- [x] **Phase 5: Package Assembly, CLI, and AI Skills** - Meta-package, create-streem starter, and progressive-disclosure skill files (completed 2026-02-28)
 - [ ] **Phase 6: Landing Page (Dogfood)** - Official Streem landing page built with Streem, validating every v1 feature in production
 
 ## Phase Details
@@ -136,5 +136,5 @@ Note: Phase 3 (Streaming) depends only on Phase 1 and can be parallelized with P
 | 2. JSX Runtime and Component Model | 5/5 | Complete   | 2026-02-28 |
 | 3. Streaming Primitives | 4/4 | Complete   | 2026-02-28 |
 | 4. Lit Web Component Interop | 3/3 | Complete   | 2026-02-28 |
-| 5. Package Assembly, CLI, and AI Skills | 2/3 | In Progress|  |
+| 5. Package Assembly, CLI, and AI Skills | 3/3 | Complete   | 2026-02-28 |
 | 6. Landing Page (Dogfood) | 0/3 | Not started | - |

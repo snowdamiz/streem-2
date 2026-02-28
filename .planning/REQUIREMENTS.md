@@ -55,8 +55,8 @@
 
 ### AI Skills Installer
 
-- [ ] **SKILL-01**: Developer can run `install-streem-skill.mjs` to copy Streem's `SKILL.md` and sub-skill files into their AI tool directories (Claude, Codex, Copilot, Gemini, Windsurf, OpenCode)
-- [ ] **SKILL-02**: Streem skill files use progressive disclosure — a root `SKILL.md` routes to topic sub-skills (`signals.md`, `streaming.md`, `components.md`, `lit-interop.md`)
+- [x] **SKILL-01**: Developer can run `install-streem-skill.mjs` to copy Streem's `SKILL.md` and sub-skill files into their AI tool directories (Claude, Codex, Copilot, Gemini, Windsurf, OpenCode)
+- [x] **SKILL-02**: Streem skill files use progressive disclosure — a root `SKILL.md` routes to topic sub-skills (`signals.md`, `streaming.md`, `components.md`, `lit-interop.md`)
 
 ### Landing Page (Dogfood)
 

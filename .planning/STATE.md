@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 5 - Package Assembly, CLI, and AI Skills — In Progress (2 of 3 plans done: 05-01, 05-02)
+**Current focus:** Phase 5 - Package Assembly, CLI, and AI Skills — COMPLETE (3 of 3 plans done: 05-01, 05-02, 05-03)
 
 ## Current Position
 
-Phase: 5 of 6 (Package Assembly, CLI, and AI Skills) — IN PROGRESS
-Plan: 2 of 3 in current phase (05-01 and 05-02 complete)
-Status: 05-01 complete — streem meta-package with 666-byte barrel re-export + jsx-runtime subpaths.
-Last activity: 2026-02-28 — Completed 05-01: streem meta-package, 3-entry Vite build, jsxImportSource wiring
+Phase: 5 of 6 (Package Assembly, CLI, and AI Skills) — COMPLETE
+Plan: 3 of 3 in current phase (05-01, 05-02, 05-03 all complete)
+Status: 05-03 complete — five AI skill files + install-streem-skill.mjs with @clack/prompts interactive UI.
+Last activity: 2026-02-28 — Completed 05-03: five AI skill files, install-streem-skill.mjs for 6 AI tools
 
-Progress: [███████████████░] 94% (17 of 18 plans complete)
+Progress: [████████████████] 100% (18 of 18 plans complete)
 
 ## Performance Metrics
 
@@ -51,6 +51,7 @@ Progress: [███████████████░] 94% (17 of 18 plans
 
 *Updated after each plan completion*
 | Phase 04-lit-web-component-interop P03 | 13 | 2 tasks | 8 files |
+| Phase 05-package-assembly-cli-and-ai-skills P03 | 187s | 2 tasks | 7 files |
 | Phase 05-package-assembly-cli-and-ai-skills P02 | 102s | 2 tasks | 10 files |
 | Phase 05-package-assembly-cli-and-ai-skills P01 | 134s | 2 tasks | 6 files |
 
@@ -124,6 +125,9 @@ Recent decisions affecting current work:
 - [Phase 05-01]: startBatch/endBatch NOT re-exported from streem — internal scheduling; batch() from @streem/streams is the public API
 - [Phase 05-01]: HMR internals not re-exported (registerForHMR, getRestoredValue, etc.); streemHMR Vite plugin IS re-exported
 - [Phase 05-01]: @streem/lit NOT in streem meta-package — Lit opt-in peer dep must remain separate
+- [Phase 05-03]: Skill files use YAML frontmatter with name/description — machine-readable for AI tool indexing
+- [Phase 05-03]: @clack/prompts added as runtime dependency (not devDependency) — install script runs from published package
+- [Phase 05-03]: skillsSourceDir resolved from import.meta.url — install script is self-contained regardless of cwd
 
 ### Pending Todos
 
@@ -136,5 +140,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 05-01-PLAN.md — streem meta-package with 3-entry Vite build (index, jsx-runtime, jsx-dev-runtime), 666-byte barrel re-export from @streem/core/@streem/dom/@streem/streams, jsxImportSource: 'streem' fully wired. 2 tasks, 6 files.
+Stopped at: Completed 05-03-PLAN.md — five AI skill files (SKILL.md + signals/streaming/components/lit-interop sub-skills) and install-streem-skill.mjs with @clack/prompts UI for 6 AI tools. Phase 5 COMPLETE.
 Resume file: None
