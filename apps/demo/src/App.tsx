@@ -13,14 +13,14 @@ const items = signal([
   { id: 3, name: 'Gamma' },
 ])
 
-// Register signals for HMR state save
+// Save signal state before this module is replaced (HMR).
+// main.tsx is the HMR boundary — it disposes the old tree and re-renders.
 if (import.meta.hot) {
   import.meta.hot.dispose((data) => {
     data.count = count()
     data.showExtra = showExtra()
     saveSignalCount(data, SIGNAL_KEYS.length)
   })
-  import.meta.hot.accept()
 }
 
 export function App() {
