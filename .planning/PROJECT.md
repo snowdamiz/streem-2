@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Streem is a TypeScript-first, JSX/TSX front-end framework built around reactive signals and real-time data streams. It targets developers who want fine-grained reactivity (signals, no VDOM diffing) with first-class support for WebSockets, SSE, fetch streams, and observable-style sources — without the complexity of a custom compiler. It is published open source and its landing page is built with the framework itself.
+Streem is a TypeScript-first, JSX/TSX front-end framework built around reactive signals and real-time data streams. It ships as four packages (`@streem/core`, `@streem/dom`, `@streem/streams`, `@streem/lit`) plus a `streem` meta-package, a `create-streem` CLI scaffolder, and a progressive-disclosure AI skills system. The official landing page (`apps/landing`) is built with the framework itself. It targets developers who want fine-grained reactivity (signals, no VDOM diffing) with first-class support for WebSockets, SSE, fetch streams, and observable-style sources — without the complexity of a custom compiler.
 
 ## Core Value
 
@@ -12,32 +12,53 @@ Signals and streams are first-class primitives — not adapters or plugins — s
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ JSX/TSX authoring with no custom compiler (Vite-powered) — v1.0
+- ✓ Fine-grained reactive signals for local and shared state — v1.0
+- ✓ First-class streaming primitives: WebSocket, SSE, fetch streams, Observable/RxJS-compatible sources — v1.0
+- ✓ Native Lit component interop: import and use Lit web components in TSX with typed props — v1.0
+- ✓ AI agent skills installer: script copies SKILL.md + sub-skills into developer AI tools during project init — v1.0
+- ✓ Framework skills written with progressive disclosure (SKILL.md → sub-skill files) — v1.0
+- ✓ Landing page built with Streem (dogfood proof + official public site) — v1.0
+- ✓ CSR-only (browser rendering, no SSR) — v1.0
 
 ### Active
 
-- [ ] JSX/TSX authoring with no custom compiler (Vite-powered)
-- [ ] Fine-grained reactive signals for local and shared state
-- [ ] First-class streaming primitives: WebSocket, SSE, fetch streams, Observable/RxJS-compatible sources
-- [ ] Native Lit component interop: import and use Lit web components in TSX with typed props
-- [ ] AI agent skills installer: script copies SKILL.md + sub-skills into developer AI tools (Claude, Codex, Copilot, etc.) during project init
-- [ ] Framework skills written with progressive disclosure (SKILL.md → sub-skill files)
-- [ ] Landing page built with Streem (dogfood proof + official public site)
-- [ ] CSR-only (browser rendering, no SSR)
+(None — planning next milestone)
 
 ### Out of Scope
 
-- Custom compiler / rune syntax — v1 lesson: not worth the DX cost
-- Server-side rendering — CSR-only for now; SSR may come in a future milestone
-- Generating or wrapping Lit components — interop is consume-only (use Lit in TSX, not compile to Lit)
+- Custom compiler / rune syntax — v1 lesson: DX overhead compounds without proportional value; breaks standard tooling and AI codegen; Svelte 5's compiler is a cautionary example
+- Server-side rendering — Fundamentally changes the streaming model; CSR-only is a valid v1 constraint for SPA/dashboard use cases
+- First-party router — Scope creep; TanStack Router covers this well; build only if persistent integration friction is observed
+- Built-in store library — Signals with `createRoot` are already composable state; a store layer adds API surface without new capability
+- CSS-in-JS / scoped styles — Requires either a compiler transform or runtime style injection; document Tailwind and CSS Modules instead
+- Directive system (v-if, x-bind style) — JSX operators and `<Show>`/`<For>` components are sufficient
+- Two-way data binding (`bind:` shorthand) — Controlled inputs are explicit and TypeScript-friendly
+- Virtual DOM / VDOM diffing — Defeats the purpose of fine-grained signals
+- `@lit/react` or React wrappers for Lit — Wrong interop direction
+- Generating or wrapping Lit components — Interop is consume-only
 
 ## Context
 
-- **v1 lesson:** Streem v1 used a Svelte-like rune syntax with a custom compiler. The DX overhead wasn't justified by the gains. v2 drops the compiler entirely and adopts standard TSX via Vite.
-- **Streaming model:** All four stream types (WebSocket, SSE, ReadableStream, Observable) should bind directly to signals or template expressions — no manual subscription management in userland.
-- **Agent skills pattern:** Modeled on the Cadence installer (`install-cadence-skill.mjs`) — a script copies skill files into `~/.claude/skills/`, `~/.codex/skills/`, etc. The skill itself uses progressive disclosure: a root `SKILL.md` routes to topic sub-skills (components, signals, streaming, Lit interop, etc.).
-- **Dogfood constraint:** The landing page is not a demo afterthought. It must be built with Streem and shipped as the official site. If something is painful to build on the landing page, that's a framework bug.
-- **Audience:** Open source public release — API ergonomics, documentation quality, and first-run DX matter.
+**v1.0 shipped 2026-02-28.** 6 phases, 21 plans, ~17,684 lines TypeScript/TSX, 186 files.
+
+Tech stack: TypeScript, JSX/TSX (jsxImportSource: "streem"), Vite + tsup, Vitest (Node + Browser/Playwright), pnpm workspaces, Shoelace web components, GitHub Actions (Pages deployment).
+
+Packages:
+- `@streem/core` — push-pull reactive graph: signal(), computed(), effect(), createRoot(), onCleanup(), dev-mode warnings
+- `@streem/dom` — JSX runtime: h(), render(), reactive DOM bindings, Show/For/ErrorBoundary/Suspense, Vite HMR
+- `@streem/streams` — fromWebSocket(), fromSSE(), fromReadable(), fromObservable(), batch(), throttle(), debounce()
+- `@streem/lit` — bindLitProp(), observeLitProp(), CEM type generation tooling
+- `streem` — meta-package barrel re-exporting all primitives
+- `create-streem` — CLI scaffolder (npm create streem@latest)
+- `apps/landing` — official landing page (deployed via GitHub Actions to GitHub Pages)
+
+**Key v1 lesson:** Drop the rune/compiler approach entirely — standard TSX via Vite is the right call.
+
+**Known tech debt from v1.0:**
+- LIT-04 type augmentation not in dist/: JSX IntrinsicElements for sl-* elements fall back to catch-all (runtime unaffected)
+- Phase 6 VERIFICATION.md predates final sl-badge/Suspense fixes — documentation staleness only
+- HMR, E2E CLI, and performance profiling require interactive environments — not statically verifiable
 
 ## Constraints
 
@@ -50,10 +71,15 @@ Signals and streams are first-class primitives — not adapters or plugins — s
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Drop rune/compiler approach | v1 proved the complexity/reward ratio is unfavorable | — Pending |
-| Vite as build foundation | Ecosystem, HMR, plugin support — no bespoke toolchain | — Pending |
-| CSR-only for v1 | Keeps scope tight; SSR adds significant complexity | — Pending |
-| Progressive disclosure for AI skills | Root SKILL.md routes to sub-skills rather than one monolithic doc | — Pending |
+| Drop rune/compiler approach | v1 proved the complexity/reward ratio is unfavorable | ✓ Good — standard TSX works cleanly, no friction |
+| Vite as build foundation | Ecosystem, HMR, plugin support — no bespoke toolchain | ✓ Good — HMR plugin straightforward via hotUpdate hook |
+| CSR-only for v1 | Keeps scope tight; SSR adds significant complexity | ✓ Good — no SSR pressure encountered |
+| Progressive disclosure for AI skills | Root SKILL.md routes to sub-skills rather than one monolithic doc | ✓ Good — install script verified against 6 tool dirs |
+| pnpm workspaces monorepo | All packages share node_modules, faster CI | ✓ Good — workspace protocol prevented version drift |
+| external @streem/core in streams build | Prevents reactive singleton duplication across packages | ✓ Good — fixed a real production bug (reactive context lost across package boundary) |
+| CEM analyzer for Lit type generation | Auto-generate IntrinsicElements from source, not manual hand-roll | ✓ Good — full Shoelace component catalog typed |
+| SVG createElement via innerHTML | SVGElement namespace requires document.createElementNS — JSX factory needed special case | ✓ Good — sparkline renders correctly |
+| Reactive signals outside Suspense scope | Streaming signals must be lifted above Suspense boundary to prevent retry-loop on reconnect | ✓ Good — ticker table skeleton bug fixed |
 
 ---
-*Last updated: 2026-02-27 after initialization*
+*Last updated: 2026-02-28 after v1.0 milestone*

@@ -1,9 +1,9 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.0
-milestone_name: milestone
-status: unknown
-last_updated: "2026-02-28T21:30:55.197Z"
+milestone_name: MVP
+status: milestone_complete
+last_updated: "2026-02-28T22:04:59.885Z"
 progress:
   total_phases: 6
   completed_phases: 6
@@ -15,19 +15,16 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-02-27)
+See: .planning/PROJECT.md (updated 2026-02-28)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 6 - Landing Page Dogfood — IN PROGRESS (2 of 3 plans done: 06-01, 06-02)
+**Current focus:** Planning next milestone
 
 ## Current Position
 
-Phase: 6 of 6 (Landing Page Dogfood) — IN PROGRESS
-Plan: 2 of 3 in current phase (06-01, 06-02 complete; 06-03 remaining)
-Status: 06-02 complete — all landing page content (Hero, TickerDemo, Features, CodeSample, DocsApp) built and building clean.
-Last activity: 2026-02-28 — Completed 06-02: landing page sections + DocsApp with full API reference
+v1.0 MVP shipped 2026-02-28. All 6 phases, 21 plans complete.
 
-Progress: [████████████████████] 95% (20 of 21 plans complete)
+Progress: [████████████████████] 100% (21 of 21 plans complete)
 
 ## Performance Metrics
 
@@ -136,7 +133,7 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-None yet.
+None — v1.0 milestone complete. Start `/gsd:new-milestone` for next milestone.
 
 ### Blockers/Concerns
 
@@ -145,5 +142,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 06-02-PLAN.md — landing page content (Hero, TickerDemo, Features, CodeSample, InstallCtaStub) and full DocsApp with 5-section API reference. Build clean, 3 JS bundles. Next: 06-03 (InstallCta with Shoelace sl-button, deployment).
+Stopped at: v1.0 milestone archived. Next: `/gsd:new-milestone` for v1.1 or v2.0.
 Resume file: None
