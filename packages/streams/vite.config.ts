@@ -10,6 +10,9 @@ export default defineConfig({
     },
     target: 'es2022',
     minify: false,
+    rollupOptions: {
+      external: ['@streem/core'],
+    },
   },
   plugins: [
     dts({ rollupTypes: true }),
