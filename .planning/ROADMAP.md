@@ -48,14 +48,14 @@ Plans:
   3. Component function body executes exactly once on mount; a signal read directly in the body (not wrapped in JSX) captures a snapshot and does not update
   4. `<Show>`, `<For>`, `<ErrorBoundary>`, and `<Suspense>` components render and react correctly — conditional branches track signals, list items update individually, errors are caught and fallback rendered, pending state shows loader
   5. After a Vite HMR reload of a component file, signal values and stream connection state are preserved — the UI does not reset to initial state
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 02-01: `@streem/dom` package scaffold — `h()`, `Fragment`, `render()`, JSX type declarations (`jsxImportSource`), Vite config
-- [ ] 02-02: Reactive DOM bindings — text node, attribute, class, style, event bindings using accessor-function pattern
-- [ ] 02-03: `onMount()` lifecycle hook; component function-runs-once model; `<Show>` and `<For>` implementation
-- [ ] 02-04: `<ErrorBoundary>` and `<Suspense>` components; Suspense/stream pending-state integration design
-- [ ] 02-05: Vite HMR integration — signal state and stream connection preservation across hot reloads
+- [ ] 02-01-PLAN.md — @streem/dom package scaffold: h(), Fragment, render(), JSX type declarations, jsxImportSource wiring, Vite/Vitest config
+- [ ] 02-02-PLAN.md — Reactive DOM bindings (TDD): bindTextNode, bindAttr, bindClass, bindClassList, bindStyle, bindEvent; applyProps reactive dispatch
+- [ ] 02-03-PLAN.md — onMount(), component-runs-once model, Show and For components (TDD)
+- [ ] 02-04-PLAN.md — ErrorBoundary and Suspense components with thrown-Promise protocol (TDD)
+- [ ] 02-05-PLAN.md — Vite HMR integration: signal state registry, streemHMR() plugin, demo app with jsxImportSource
 
 ### Phase 3: Streaming Primitives
 **Goal**: Developers can bind any real-time source (WebSocket, SSE, ReadableStream, Observable) to a signal with one line, automatic cleanup on unmount, typed connection status, and built-in backpressure protection — and the adapters are DOM-agnostic (no renderer dependency)
