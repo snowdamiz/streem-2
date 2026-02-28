@@ -7,6 +7,7 @@ export type { Signal, Owner } from '@streem/core'
 // NOTE: HMR utilities (registerForHMR, getRestoredValue, saveToHotData, etc.) are internal — NOT re-exported
 // NOTE: streemHMR IS exported — it is a developer-facing Vite plugin needed in vite.config.ts
 export { h, Fragment, render, onMount, Show, For, ErrorBoundary, Suspense, streemHMR } from '@streem/dom'
+export type { CSSProperties } from '@streem/dom'
 
 // Streaming primitives
 export { fromWebSocket, fromSSE, fromReadable, fromObservable, batch, throttle, debounce, MaxRetriesExceededError } from '@streem/streams'
