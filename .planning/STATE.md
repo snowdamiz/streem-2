@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-last_updated: "2026-02-28T07:58:30Z"
+status: in-progress
+last_updated: "2026-02-28T08:05:00Z"
 progress:
-  total_phases: 3
-  completed_phases: 2
+  total_phases: 6
+  completed_phases: 3
   total_plans: 12
-  completed_plans: 11
+  completed_plans: 12
 ---
 
 # Project State
@@ -18,23 +18,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 3 - Streaming Primitives — IN PROGRESS (3 of 4 plans done)
+**Current focus:** Phase 3 - Streaming Primitives — COMPLETE (4 of 4 plans done)
 
 ## Current Position
 
-Phase: 3 of 6 (Streaming Primitives) — IN PROGRESS
-Plan: 3 of 4 in current phase (03-01, 03-02, 03-03 complete)
-Status: 03-03 complete — fromReadable() + fromObservable() adapters — 32 tests passing (9 WS + 11 SSE + 5 readable + 7 observable)
-Last activity: 2026-02-28 — Completed 03-03: ReadableStream adapter (getReader() + async loop) and Subscribable<T> structural adapter (no RxJS dep), 12 new tests
+Phase: 3 of 6 (Streaming Primitives) — COMPLETE
+Plan: 4 of 4 in current phase (03-01, 03-02, 03-03, 03-04 complete)
+Status: 03-04 complete — batch/throttle/debounce combinators — 42 tests passing (9 WS + 11 SSE + 5 readable + 7 observable + 10 combinators)
+Last activity: 2026-02-28 — Completed 03-04: batch() for backpressure (200 writes = 1 effect flush), throttle() leading-edge, debounce() trailing-edge
 
-Progress: [█████████░] 50%
+Progress: [██████████] 58% (3 of 6 phases complete — phase 4 next)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
+- Total plans completed: 12
 - Average duration: 4min
-- Total execution time: 38min
+- Total execution time: 42min
 
 **By Phase:**
 
@@ -42,10 +42,10 @@ Progress: [█████████░] 50%
 |-------|-------|-------|----------|
 | 01-reactive-core | 3 | 14min | 5min |
 | 02-jsx-runtime-and-component-model | 5/5 | 25min | 5min |
-| 03-streaming-primitives | 3/4 | 14min | 5min |
+| 03-streaming-primitives | 4/4 | 18min | 5min |
 
 **Recent Trend:**
-- Last 5 plans: 7min, 5min, 6min, 3min, 9min
+- Last 5 plans: 5min, 6min, 3min, 9min, 4min
 - Trend: consistent
 
 *Updated after each plan completion*
@@ -100,6 +100,9 @@ Recent decisions affecting current work:
 - [Phase 03-03]: Cancellation error suppression checks err.name=AbortError AND message contains cancel/cancelled/canceled — environment-neutral detection
 - [Phase 03-03]: Subscribable<T> defined once in types.ts — from-observable.ts imports, does not re-declare; single source of truth
 - [Phase 03-03]: status='connecting' initialized before source.subscribe() — synchronous observables emit next() during subscribe(), setting 'connected' immediately; correct behavior
+- [Phase 03-04]: startBatch/endBatch exported from @streem/core/src/index.ts — were implemented as Phase 3 extension points in reactive.ts; plan 03-04 opens the export gate
+- [Phase 03-04]: batch() uses try/finally to guarantee endBatch() always called even when fn() throws — error propagation safe
+- [Phase 03-04]: throttle() and debounce() must be called inside a reactive scope (createRoot/component body) — same ownership invariant as effect(), documented in JSDoc
 
 ### Pending Todos
 
@@ -107,12 +110,10 @@ None yet.
 
 ### Blockers/Concerns
 
-- Phase 3: WebSocket reconnection strategy, SSE `Last-Event-ID` recovery, and Observable interop protocol are MEDIUM confidence — consider a research phase before planning Phase 3
-- Phase 3: createResource API design decision needed before Phase 3 planning (Suspense integration protocol defined; implementation awaits)
 - Phase 4: `createLitComponent` wrapper API design and CEM tooling integration are MEDIUM confidence — may benefit from targeted research before planning Phase 4
 
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 03-03-PLAN.md — fromReadable() + fromObservable() adapters. 32 tests passing across all four adapters.
+Stopped at: Completed 03-04-PLAN.md — batch/throttle/debounce combinators. Phase 3 complete. 42 tests passing across all five stream adapter + combinator test files.
 Resume file: None

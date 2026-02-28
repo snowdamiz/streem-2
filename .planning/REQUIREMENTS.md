@@ -35,8 +35,8 @@
 - [x] **STREAM-02**: Developer can bind a Server-Sent Events stream to a signal using `fromSSE()` — connection is automatically closed via `onCleanup()` when the component unmounts
 - [x] **STREAM-03**: Developer can bind a WHATWG `ReadableStream` (Fetch API) to a signal using `fromReadable()` — stream is automatically cancelled via `onCleanup()` when the component unmounts
 - [x] **STREAM-04**: Developer can bind an Observable or RxJS source to a signal using `fromObservable()` — subscription is automatically unsubscribed via `onCleanup()` when the component unmounts
-- [ ] **STREAM-05**: Developer can batch multiple synchronous signal writes using `batch()` to prevent browser freeze on high-frequency streams (>30 messages/second)
-- [ ] **STREAM-06**: Developer can throttle or debounce signal updates from streams using `throttle()` and `debounce()` combinators
+- [x] **STREAM-05**: Developer can batch multiple synchronous signal writes using `batch()` to prevent browser freeze on high-frequency streams (>30 messages/second)
+- [x] **STREAM-06**: Developer can throttle or debounce signal updates from streams using `throttle()` and `debounce()` combinators
 - [x] **STREAM-07**: Each stream adapter exposes a typed connection-status signal reflecting the current state (`connected | reconnecting | error | closed`)
 - [x] **STREAM-08**: WebSocket adapter automatically reconnects with exponential backoff on connection loss
 
