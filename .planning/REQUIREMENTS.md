@@ -27,7 +27,7 @@
 
 - [x] **JSX-01**: Developer configures Streem's JSX runtime via `jsxImportSource: "streem"` in `tsconfig.json` with no Babel or custom compiler step required
 - [x] **JSX-02**: Reactive signal values used in JSX update only the exact affected DOM node — no full component re-render triggered
-- [ ] **JSX-03**: Vite dev server preserves signal state and stream connection state across hot module reloads of component files
+- [x] **JSX-03**: Vite dev server preserves signal state and stream connection state across hot module reloads of component files
 
 ### Streaming Primitives
 

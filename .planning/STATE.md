@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: in_progress
-last_updated: "2026-02-28T05:47:34.000Z"
+last_updated: "2026-02-28T05:56:30.000Z"
 progress:
   total_phases: 2
   completed_phases: 1
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # Project State
@@ -18,33 +18,33 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 2 - JSX Runtime and Component Model (Plan 4 of 5 complete)
+**Current focus:** Phase 2 - JSX Runtime and Component Model — COMPLETE (all 5 plans done)
 
 ## Current Position
 
-Phase: 2 of 6 (JSX Runtime and Component Model) — IN PROGRESS
-Plan: 4 of 5 in current phase (02-04 complete)
-Status: 02-04 complete — ErrorBoundary and Suspense — 82 tests passing
-Last activity: 2026-02-28 — Completed 02-04: ErrorBoundary (synchronous error isolation) and Suspense (thrown-Promise async pending state); 24 new tests
+Phase: 2 of 6 (JSX Runtime and Component Model) — COMPLETE
+Plan: 5 of 5 in current phase (02-05 complete)
+Status: 02-05 complete — HMR integration and demo app — 131 tests passing
+Last activity: 2026-02-28 — Completed 02-05: HMR signal state registry, streemHMR() Vite plugin, apps/demo with jsxImportSource; fixed JSX type chain for reactive children
 
-Progress: [███████░░░] 35%
+Progress: [████████░░] 40%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
+- Total plans completed: 8
 - Average duration: 4min
-- Total execution time: 23min
+- Total execution time: 29min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-reactive-core | 3 | 14min | 5min |
-| 02-jsx-runtime-and-component-model | 4/5 | 19min | 4.75min |
+| 02-jsx-runtime-and-component-model | 5/5 | 25min | 5min |
 
 **Recent Trend:**
-- Last 5 plans: 4min, 3min, 4min, 7min, 5min
+- Last 5 plans: 3min, 4min, 7min, 5min, 6min
 - Trend: consistent
 
 *Updated after each plan completion*
@@ -85,6 +85,10 @@ Recent decisions affecting current work:
 - [Phase 02-04]: Non-Promise error re-throw from Suspense is async (microtask) in Phase 2 — synchronous propagation to parent ErrorBoundary is Phase 3 scope
 - [Phase 02-04]: Phase 2 rejection policy: console.error for rejected Promises in Suspense; full async ErrorBoundary propagation awaits createResource protocol in Phase 3
 - [Phase 02-04]: ErrorBoundary MUST check instanceof Promise before error catch — critical invariant for ErrorBoundary > Suspense > children nesting
+- [Phase 02-05]: JSX namespace declared inline in jsx-runtime.ts (not re-exported from types.ts) — vite-plugin-dts rollupTypes silently strips re-exported namespace members
+- [Phase 02-05]: IntrinsicElements.children typed as unknown to accept reactive accessor arrays from mixed JSX children (e.g. [string, () => number])
+- [Phase 02-05]: ForProps.children return type widened to Node | Node[] | null | undefined to match JSX.Element (nullable)
+- [Phase 02-05]: HMR dispose pattern: mutate import.meta.hot.data properties — never re-assign the data object itself
 
 ### Pending Todos
 
@@ -99,5 +103,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 02-04-PLAN.md — ErrorBoundary and Suspense complete. 82 tests passing. Ready for Plan 02-05 (final Phase 2 plan).
+Stopped at: Completed 02-05-PLAN.md — HMR integration and demo app complete. Phase 2 complete. 131 tests passing. Ready for Phase 3 planning.
 Resume file: None
