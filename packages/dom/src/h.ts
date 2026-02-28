@@ -1,4 +1,12 @@
 import { createRoot, onCleanup } from '@streem/core'
+import {
+  bindTextNode,
+  bindAttr,
+  bindClass,
+  bindClassList,
+  bindStyle,
+  bindEvent,
+} from './bindings.js'
 
 /** Sentinel symbol for JSX Fragment (<> </>) */
 export const Fragment = Symbol('Fragment')
@@ -33,6 +41,10 @@ function appendChildren(parent: Element, children: Children): void {
       parent.appendChild(child)
     } else if (Array.isArray(child)) {
       appendChildren(parent, child as Children)
+    } else if (typeof child === 'function') {
+      // Accessor function — create a reactive text node via bindTextNode.
+      // The text node is appended and kept in sync with the signal.
+      bindTextNode(parent, child as () => unknown)
     } else {
       parent.appendChild(document.createTextNode(String(child)))
     }
@@ -40,25 +52,75 @@ function appendChildren(parent: Element, children: Children): void {
 }
 
 /**
- * applyProps — inspects each prop and routes to appropriate DOM setter or binding.
- * Bindings are imported lazily in bindings.ts (Plan 02-02). For Plan 02-01,
- * implement static prop application only; reactive binding dispatch is added in Plan 02-02.
+ * applyProps — inspects each prop and routes to the appropriate DOM setter
+ * or reactive binding function.
+ *
+ * Dispatch rules (in priority order):
+ *   key === 'children'                            → skip (handled by h())
+ *   key === 'ref' + typeof value === 'function'   → call ref(el)
+ *   key starts with 'on' + typeof value === 'function' → bindEvent
+ *   key === 'class' + typeof value === 'function' → bindClass
+ *   key === 'class' + static string              → el.className = value
+ *   key === 'classList'                           → bindClassList (fn or wrap object)
+ *   key === 'style' + typeof value === 'function' → bindStyle
+ *   key === 'style' + static object              → bindStyle (wrapped in accessor)
+ *   typeof value === 'function'                  → bindAttr (reactive attribute)
+ *   static non-null value                        → setAttribute (existing behavior)
+ *
+ * CRITICAL: typeof value === 'function' MUST be checked before any invocation
+ * of value. Calling value() here would consume a snapshot, breaking reactivity.
  */
 export function applyProps(el: HTMLElement, props: Record<string, unknown>): void {
   for (const [key, value] of Object.entries(props)) {
     if (key === 'children') continue
+
     if (key === 'ref' && typeof value === 'function') {
       ;(value as (el: HTMLElement) => void)(el)
       continue
     }
+
     if (key.startsWith('on') && typeof value === 'function') {
       const eventName = key.slice(2).toLowerCase()
-      el.addEventListener(eventName, value as EventListener)
-      onCleanup(() => el.removeEventListener(eventName, value as EventListener))
+      bindEvent(el, eventName, value as EventListener)
       continue
     }
+
+    if (key === 'class') {
+      if (typeof value === 'function') {
+        bindClass(el, value as () => string)
+      } else if (value != null) {
+        el.className = String(value)
+      }
+      continue
+    }
+
+    if (key === 'classList') {
+      if (typeof value === 'function') {
+        bindClassList(el, value as () => Record<string, boolean>)
+      } else if (value != null && typeof value === 'object') {
+        // Static object: wrap in accessor so bindClassList can use effect()
+        bindClassList(el, () => value as Record<string, boolean>)
+      }
+      continue
+    }
+
+    if (key === 'style') {
+      if (typeof value === 'function') {
+        bindStyle(el, value as () => Partial<CSSStyleDeclaration>)
+      } else if (value != null && typeof value === 'object') {
+        // Static style object: wrap in accessor
+        bindStyle(el, () => value as Partial<CSSStyleDeclaration>)
+      }
+      continue
+    }
+
+    // Generic reactive attribute: accessor function → bindAttr
+    if (typeof value === 'function') {
+      bindAttr(el, key, value as () => unknown)
+      continue
+    }
+
     // Static value: set as attribute
-    // Plan 02-02 will extend this with reactive binding dispatch
     if (value != null && value !== false) {
       if (value === true) {
         el.setAttribute(key, key)

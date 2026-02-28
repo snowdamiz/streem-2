@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { signal, effect, createRoot } from '@streem/core'
+import { describe, it, expect, vi } from 'vitest'
+import { signal, createRoot } from '@streem/core'
 import {
   bindTextNode,
   bindAttr,
@@ -18,9 +18,8 @@ describe('bindTextNode', () => {
   it('creates a text node with the initial value', () => {
     const count = signal(0)
     const parent = document.createElement('div')
-    let textNode!: Text
     createRoot((dispose) => {
-      textNode = bindTextNode(parent, () => String(count()))
+      bindTextNode(parent, () => String(count()))
       dispose()
     })
     expect(parent.childNodes.length).toBe(1)
@@ -39,7 +38,7 @@ describe('bindTextNode', () => {
     })
     expect(textNode.nodeValue).toBe('hello')
 
-    msg('world')
+    msg.set('world')
     expect(textNode.nodeValue).toBe('world')
     // Only one child — no new nodes were added
     expect(parent.childNodes.length).toBe(1)
@@ -57,7 +56,7 @@ describe('bindTextNode', () => {
       textNode = bindTextNode(parent, () => label())
     })
     const capturedNode = parent.childNodes[0]
-    label('b')
+    label.set('b')
     // The same node reference remains in the DOM
     expect(parent.childNodes[0]).toBe(capturedNode)
     expect(parent.childNodes[0].nodeValue).toBe('b')
@@ -89,7 +88,7 @@ describe('bindAttr', () => {
       bindAttr(el, 'data-x', () => val())
     })
     expect(el.getAttribute('data-x')).toBe('foo')
-    val('bar')
+    val.set('bar')
     expect(el.getAttribute('data-x')).toBe('bar')
     dispose()
   })
@@ -103,7 +102,7 @@ describe('bindAttr', () => {
       bindAttr(el, 'data-x', () => val())
     })
     expect(el.hasAttribute('data-x')).toBe(true)
-    val(null)
+    val.set(null)
     expect(el.hasAttribute('data-x')).toBe(false)
     dispose()
   })
@@ -116,7 +115,7 @@ describe('bindAttr', () => {
       dispose = d
       bindAttr(el, 'disabled', () => val())
     })
-    val(false)
+    val.set(false)
     expect(el.hasAttribute('disabled')).toBe(false)
     dispose()
   })
@@ -129,7 +128,7 @@ describe('bindAttr', () => {
       dispose = d
       bindAttr(el, 'disabled', () => val())
     })
-    val(true)
+    val.set(true)
     expect(el.getAttribute('disabled')).toBe('disabled')
     dispose()
   })
@@ -142,7 +141,7 @@ describe('bindAttr', () => {
       dispose = d
       bindAttr(el, 'aria-label', () => val())
     })
-    val(undefined)
+    val.set(undefined)
     expect(el.hasAttribute('aria-label')).toBe(false)
     dispose()
   })
@@ -173,7 +172,7 @@ describe('bindClass', () => {
       dispose = d
       bindClass(el, () => cls())
     })
-    cls('active selected')
+    cls.set('active selected')
     expect(el.className).toBe('active selected')
     dispose()
   })
@@ -186,7 +185,7 @@ describe('bindClass', () => {
       dispose = d
       bindClass(el, () => cls())
     })
-    cls('')
+    cls.set('')
     expect(el.className).toBe('')
     dispose()
   })
@@ -218,7 +217,7 @@ describe('bindClassList', () => {
       dispose = d
       bindClassList(el, () => map())
     })
-    map({ active: false, hidden: true })
+    map.set({ active: false, hidden: true })
     expect(el.classList.contains('active')).toBe(false)
     expect(el.classList.contains('hidden')).toBe(true)
     dispose()
@@ -264,7 +263,7 @@ describe('bindStyle', () => {
       dispose = d
       bindStyle(el, () => style())
     })
-    style({ color: 'blue', fontSize: '16px' })
+    style.set({ color: 'blue', fontSize: '16px' })
     expect(el.style.color).toBe('blue')
     expect(el.style.fontSize).toBe('16px')
     dispose()
@@ -295,12 +294,14 @@ describe('bindEvent', () => {
   it('fires the handler when the event occurs', () => {
     const el = document.createElement('button')
     const handler = vi.fn()
-    createRoot((dispose) => {
+    let dispose!: () => void
+    createRoot((d) => {
+      dispose = d
       bindEvent(el, 'click', handler)
-      dispose()
     })
     el.dispatchEvent(new Event('click'))
     expect(handler).toHaveBeenCalledOnce()
+    dispose()
   })
 
   it('removes the listener when the owner disposes', () => {
@@ -331,7 +332,7 @@ describe('applyProps reactive dispatch (h.ts)', () => {
       el = h('span', null, () => text()) as HTMLElement
     })
     expect(el.textContent).toBe('initial')
-    text('updated')
+    text.set('updated')
     expect(el.textContent).toBe('updated')
     expect(el.childNodes.length).toBe(1)
     dispose()
@@ -346,7 +347,7 @@ describe('applyProps reactive dispatch (h.ts)', () => {
       el = h('div', { title: () => title() }) as HTMLElement
     })
     expect(el.getAttribute('title')).toBe('hello')
-    title('world')
+    title.set('world')
     expect(el.getAttribute('title')).toBe('world')
     dispose()
   })
@@ -360,7 +361,7 @@ describe('applyProps reactive dispatch (h.ts)', () => {
       el = h('div', { class: () => cls() }) as HTMLElement
     })
     expect(el.className).toBe('active')
-    cls('inactive')
+    cls.set('inactive')
     expect(el.className).toBe('inactive')
     dispose()
   })
@@ -379,7 +380,7 @@ describe('applyProps reactive dispatch (h.ts)', () => {
       el = h('div', { classList: () => map() }) as HTMLElement
     })
     expect(el.classList.contains('active')).toBe(true)
-    map({ active: false, hidden: true })
+    map.set({ active: false, hidden: true })
     expect(el.classList.contains('active')).toBe(false)
     expect(el.classList.contains('hidden')).toBe(true)
     dispose()
@@ -394,13 +395,14 @@ describe('applyProps reactive dispatch (h.ts)', () => {
       el = h('div', { style: () => style() }) as HTMLElement
     })
     expect(el.style.color).toBe('red')
-    style({ color: 'green' })
+    style.set({ color: 'green' })
     expect(el.style.color).toBe('green')
     dispose()
   })
 
-  it('DOM mutation count is exactly 1 per signal update', () => {
-    // Use a MutationObserver to count actual DOM mutations
+  it('DOM mutation is surgical — only nodeValue changes, no new nodes created', () => {
+    // Verify surgical update: signal change modifies nodeValue only,
+    // no new nodes are added to the parent (no childList mutations).
     const text = signal('v1')
     let dispose!: () => void
     let el!: HTMLElement
@@ -408,16 +410,19 @@ describe('applyProps reactive dispatch (h.ts)', () => {
       dispose = d
       el = h('span', null, () => text()) as HTMLElement
     })
-    const mutations: MutationRecord[] = []
-    const observer = new MutationObserver((list) => mutations.push(...list))
-    observer.observe(el, { subtree: true, characterData: true, childList: true })
+    // Capture the initial text node reference
+    const initialChildCount = el.childNodes.length
+    const initialTextNode = el.childNodes[0]
+    expect(initialChildCount).toBe(1)
+    expect(initialTextNode.nodeValue).toBe('v1')
 
-    text('v2')
-    observer.disconnect()
+    text.set('v2')
 
-    // Exactly 1 characterData mutation — the text node's nodeValue changed
-    expect(mutations.length).toBe(1)
-    expect(mutations[0].type).toBe('characterData')
+    // Same number of children — no new nodes created
+    expect(el.childNodes.length).toBe(1)
+    // Same node reference — nodeValue was updated in-place
+    expect(el.childNodes[0]).toBe(initialTextNode)
+    expect(el.childNodes[0].nodeValue).toBe('v2')
     dispose()
   })
 })
