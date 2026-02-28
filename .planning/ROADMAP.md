@@ -87,9 +87,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Extend applyProps() in @streem/dom with prop:/attr:/on: namespace prefix routing (additive, no regressions)
-- [ ] 04-02-PLAN.md — @streem/lit package scaffold: bindLitProp, observeLitProp utilities, base custom element TypeScript types
-- [ ] 04-03-PLAN.md — Vitest Browser Mode (Playwright) test suite for all 4 LIT behaviors + CEM type generation tooling
+- [x] 04-01-PLAN.md — Extend applyProps() in @streem/dom with prop:/attr:/on: namespace prefix routing (additive, no regressions)
+- [x] 04-02-PLAN.md — @streem/lit package scaffold: bindLitProp, observeLitProp utilities, base custom element TypeScript types
+- [x] 04-03-PLAN.md — Vitest Browser Mode (Playwright) test suite for all 4 LIT behaviors + CEM type generation tooling
 
 ### Phase 5: Package Assembly, CLI, and AI Skills
 **Goal**: Developers can bootstrap a new Streem project in one command, install AI agent skills into their tools with one script, and consume the entire framework from a single `streem` import with a clean, stable API surface
@@ -100,12 +100,12 @@ Plans:
   2. Developer runs `install-streem-skill.mjs` and the Streem `SKILL.md` and sub-skill files appear in their configured AI tool directories (Claude, Codex, Copilot, Gemini, Windsurf, OpenCode)
   3. Root `SKILL.md` routes to topic sub-skills (`signals.md`, `streaming.md`, `components.md`, `lit-interop.md`) — an AI agent reading the root skill is directed to the correct sub-skill for any Streem topic
   4. Developer imports any Streem primitive from `"streem"` (single package) without needing to know which internal sub-package it comes from
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 05-01: `streem` meta-package — re-exports from `@streem/core`, `@streem/dom`, `@streem/streams`, `@streem/lit`; dual-publish with `vite-plugin-dts`
-- [ ] 05-02: `create-streem` starter template — Vite template with `jsxImportSource`, TypeScript config, example component
-- [ ] 05-03: AI skills content (`SKILL.md` + `signals.md`, `streaming.md`, `components.md`, `lit-interop.md`) and `install-streem-skill.mjs` installer script
+- [ ] 05-01-PLAN.md — `streem` meta-package: flat re-exports from @streem/core, @streem/dom, @streem/streams with jsx-runtime subpath exports
+- [ ] 05-02-PLAN.md — `create-streem` CLI scaffolder: @clack/prompts flow, template files (counter app), tsup build
+- [ ] 05-03-PLAN.md — AI skill files (SKILL.md + 4 sub-skills) and install-streem-skill.mjs installer for 6 AI tools
 
 ### Phase 6: Landing Page (Dogfood)
 **Goal**: Streem's official landing page is live, built entirely with Streem, demonstrating signals, a live high-frequency stream, and a real Lit component from a design system — and every integration pain discovered during this build is treated as a framework bug and fixed before ship
