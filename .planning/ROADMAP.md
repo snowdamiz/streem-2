@@ -103,9 +103,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — `streem` meta-package: flat re-exports from @streem/core, @streem/dom, @streem/streams with jsx-runtime subpath exports
-- [ ] 05-02-PLAN.md — `create-streem` CLI scaffolder: @clack/prompts flow, template files (counter app), tsup build
-- [ ] 05-03-PLAN.md — AI skill files (SKILL.md + 4 sub-skills) and install-streem-skill.mjs installer for 6 AI tools
+- [x] 05-01-PLAN.md — `streem` meta-package: flat re-exports from @streem/core, @streem/dom, @streem/streams with jsx-runtime subpath exports
+- [x] 05-02-PLAN.md — `create-streem` CLI scaffolder: @clack/prompts flow, template files (counter app), tsup build
+- [x] 05-03-PLAN.md — AI skill files (SKILL.md + 4 sub-skills) and install-streem-skill.mjs installer for 6 AI tools
 
 ### Phase 6: Landing Page (Dogfood)
 **Goal**: Streem's official landing page is live, built entirely with Streem, demonstrating signals, a live high-frequency stream, and a real Lit component from a design system — and every integration pain discovered during this build is treated as a framework bug and fixed before ship
@@ -116,12 +116,12 @@ Plans:
   2. The live streaming demo operates at more than 30 messages per second without browser frame drops — backpressure handling (`batch()` / `throttle()`) is validated under realistic load
   3. At least one Lit web component from a real, published design system is embedded on the page, rendering correctly with typed props and functional event handlers in a real browser
   4. A 200 messages/second WebSocket perf trace shows no long tasks (no frames > 16ms blocked) — the `batch()` implementation holds under stress
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 06-01: Landing page scaffold with Streem (`create-streem` template); core sections using signals, `<Show>`, `<For>`, reactive state
-- [ ] 06-02: Live streaming demo — WebSocket or SSE at >30 msg/sec with `<Suspense>` loading state and `<ErrorBoundary>` around the stream section; 200 msg/sec perf trace
-- [ ] 06-03: Lit component integration from real design system; `<ErrorBoundary>` and `<Suspense>` final polish; deployment
+- [ ] 06-01-PLAN.md — `apps/landing` workspace scaffold: package.json, tsconfig, Vite MPA config (2 HTML entries), entry TSX stubs, dark mode CSS with FOUCE prevention
+- [ ] 06-02-PLAN.md — Landing page sections (Hero, TickerDemo, Features, CodeSample) + simulated Observable ticker at 200 msg/sec + /docs API reference page
+- [ ] 06-03-PLAN.md — Shoelace CEM type generation, InstallCta with sl-button + sl-badge, GitHub Actions Pages deployment, visual checkpoint
 
 ## Progress
 
