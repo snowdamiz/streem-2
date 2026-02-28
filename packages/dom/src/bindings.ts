@@ -87,10 +87,15 @@ export function bindClassList(
  */
 export function bindStyle(
   el: HTMLElement,
-  accessor: () => Partial<CSSStyleDeclaration>,
+  accessor: () => Partial<CSSStyleDeclaration> | string,
 ): void {
   effect(() => {
-    Object.assign(el.style, accessor())
+    const value = accessor()
+    if (typeof value === 'string') {
+      el.style.cssText = value
+    } else {
+      Object.assign(el.style, value)
+    }
   })
 }
 

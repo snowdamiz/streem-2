@@ -146,7 +146,9 @@ export function applyProps(el: HTMLElement, props: Record<string, unknown>): voi
 
     if (key === 'style') {
       if (typeof value === 'function') {
-        bindStyle(el, value as () => Partial<CSSStyleDeclaration>)
+        bindStyle(el, value as () => Partial<CSSStyleDeclaration> | string)
+      } else if (typeof value === 'string') {
+        bindStyle(el, () => value)
       } else if (value != null && typeof value === 'object') {
         // Static style object: wrap in accessor
         bindStyle(el, () => value as Partial<CSSStyleDeclaration>)
