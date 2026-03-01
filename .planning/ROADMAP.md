@@ -58,7 +58,10 @@ Full phase details: `.planning/milestones/v1.1-ROADMAP.md`
   2. The chart component is authored in TSX using Streem signals (dogfood — no third-party charting library)
   3. The chart renders correctly in both desktop and mobile viewport widths
   4. Data values in the chart match the numbers in BENCHMARKS.md
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 13-01-PLAN.md — Create BenchmarkChart SVG component + wire into App.tsx
+- [ ] 13-02-PLAN.md — Visual checkpoint: verify chart on desktop and mobile
 
 ### Phase 14: Docs Visual Polish
 **Goal**: Users visiting the docs experience a cohesive, on-brand design that feels like an extension of the landing page — dark, readable, and professional — on both desktop and mobile
@@ -109,7 +112,7 @@ Full phase details: `.planning/milestones/v1.1-ROADMAP.md`
 | 9.1. Optimize Signal Benchmarks | v1.1 | 3/3 | Complete | 2026-03-01 |
 | 11. Improve Styles DX | v1.1 | 3/3 | Complete | 2026-03-01 |
 | 12. Add Tailwind Support | v1.1 | 2/2 | Complete | 2026-03-01 |
-| 13. Landing Page Bar Chart | v1.2 | 0/TBD | Not started | - |
+| 13. Landing Page Bar Chart | v1.2 | 0/2 | Not started | - |
 | 14. Docs Visual Polish | v1.2 | 0/TBD | Not started | - |
 | 15. Docs Content Expansion | v1.2 | 0/TBD | Not started | - |
 | 16. Docs New Reference Sections | v1.2 | 0/TBD | Not started | - |
