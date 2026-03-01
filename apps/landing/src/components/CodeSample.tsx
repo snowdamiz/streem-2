@@ -125,13 +125,13 @@ export function CodeSample(): Node {
           {/* Code panels */}
           <div class="bg-[var(--color-code-bg)]">
             <Show when={() => activeTab.value === 'signals'}>
-              {() => <pre class="m-0 border-0 rounded-none px-8 py-7 text-[13.5px] leading-[1.75] max-h-[420px] overflow-y-auto"><code prop:innerHTML={highlight(CODE.signals)} /></pre> as unknown as Node}
+              {() => <pre class="m-0 border-0 rounded-none px-8 py-7 text-[13.5px] leading-[1.75]"><code prop:innerHTML={highlight(CODE.signals)} /></pre> as unknown as Node}
             </Show>
             <Show when={() => activeTab.value === 'streams'}>
-              {() => <pre class="m-0 border-0 rounded-none px-8 py-7 text-[13.5px] leading-[1.75] max-h-[420px] overflow-y-auto"><code prop:innerHTML={highlight(CODE.streams)} /></pre> as unknown as Node}
+              {() => <pre class="m-0 border-0 rounded-none px-8 py-7 text-[13.5px] leading-[1.75]"><code prop:innerHTML={highlight(CODE.streams)} /></pre> as unknown as Node}
             </Show>
             <Show when={() => activeTab.value === 'jsx'}>
-              {() => <pre class="m-0 border-0 rounded-none px-8 py-7 text-[13.5px] leading-[1.75] max-h-[420px] overflow-y-auto"><code prop:innerHTML={highlight(CODE.jsx)} /></pre> as unknown as Node}
+              {() => <pre class="m-0 border-0 rounded-none px-8 py-7 text-[13.5px] leading-[1.75]"><code prop:innerHTML={highlight(CODE.jsx)} /></pre> as unknown as Node}
             </Show>
           </div>
         </div>
