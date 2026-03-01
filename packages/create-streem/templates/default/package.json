@@ -12,6 +12,8 @@
     "streem": "latest"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "latest",
+    "tailwindcss": "latest",
     "vite": "^7.0.0",
     "typescript": "~5.8.0"
   }
