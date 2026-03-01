@@ -1,0 +1,15 @@
+{
+  "name": "@streem/bench",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "node run.mjs"
+  },
+  "dependencies": {
+    "@streem/core": "workspace:*",
+    "@preact/signals-core": "^1.8.0",
+    "solid-js": "^1.9.0",
+    "tinybench": "^2.9.0"
+  }
+}
