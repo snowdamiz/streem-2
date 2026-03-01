@@ -22,3 +22,23 @@
 
 ---
 
+
+## v1.1 Quality & Polish (Shipped: 2026-03-01)
+
+**Phases completed:** 6 phases (7, 8, 9, 9.1, 11, 12), 16 plans
+
+**Stats:** 96 files changed, 2 days (2026-02-28 → 2026-03-01)
+
+**Key accomplishments:**
+- Fixed TypeScript IntrinsicElements for all sl-* Shoelace elements in @streem/lit dist/ (vite-plugin-dts beforeWriteFile hook pattern)
+- Playwright E2E coverage: `npm create streem@latest` CLI scaffold flow + HMR signal state preservation verified end-to-end
+- Reactive core benchmarked against SolidJS/Preact signals — BENCHMARKS.md committed with methodology and reproduction instructions
+- Performance optimized: O(1) batchedEffects dedup (Set instead of Array), lazy Owner children/cleanups init — ~12% signal throughput improvement
+- React-like ClassValue API (string/array/object/mixed) for class/className props; bindStyle stale-key diffing via removeProperty(); classList removed
+- Tailwind CSS v4 baked into create-streem default template — every new project starts Tailwind-ready; proven coexisting with CSS Modules in landing app
+
+**Known Gaps:**
+- LAND-01: Bar chart dogfood component on landing page not built (Phase 10 skipped; deferred to v1.2)
+
+---
+

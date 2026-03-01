@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Streem is a TypeScript-first, JSX/TSX front-end framework built around reactive signals and real-time data streams. It ships as four packages (`@streem/core`, `@streem/dom`, `@streem/streams`, `@streem/lit`) plus a `streem` meta-package, a `create-streem` CLI scaffolder, and a progressive-disclosure AI skills system. The official landing page (`apps/landing`) is built with the framework itself. It targets developers who want fine-grained reactivity (signals, no VDOM diffing) with first-class support for WebSockets, SSE, fetch streams, and observable-style sources — without the complexity of a custom compiler.
+Streem is a TypeScript-first, JSX/TSX front-end framework built around reactive signals and real-time data streams. It ships as four packages (`@streem/core`, `@streem/dom`, `@streem/streams`, `@streem/lit`) plus a `streem` meta-package, a `create-streem` CLI scaffolder, and a progressive-disclosure AI skills system. The official landing page (`apps/landing`) is built with the framework itself. It targets developers who want fine-grained reactivity (signals, no VDOM diffing) with first-class support for WebSockets, SSE, fetch streams, and observable-style sources — without the complexity of a custom compiler. Styling via CSS Modules and Tailwind CSS v4 is documented and pre-configured in the default template.
 
 ## Core Value
 
@@ -20,26 +20,19 @@ Signals and streams are first-class primitives — not adapters or plugins — s
 - ✓ Framework skills written with progressive disclosure (SKILL.md → sub-skill files) — v1.0
 - ✓ Landing page built with Streem (dogfood proof + official public site) — v1.0
 - ✓ CSR-only (browser rendering, no SSR) — v1.0
-
-## Current Milestone: v1.1 Quality & Polish
-
-**Goal:** Resolve known v1.0 gaps and surface Streem's performance story publicly.
-
-**Target features:**
-- Fix LIT-04: ship JSX IntrinsicElements for sl-* elements in @streem/lit dist/
-- E2E tests: Playwright coverage for create-streem CLI scaffold flow and HMR signal state preservation
-- Performance benchmarks: reactive core vs SolidJS/Preact signals, documented internally
-- Landing page benchmark bar chart: dogfooded Streem component showing perf comparison
-- Additional unit test coverage: @streem/dom and @streem/streams edge cases
+- ✓ TypeScript IntrinsicElements for all sl-* Shoelace elements in @streem/lit dist/ (vite-plugin-dts beforeWriteFile) — v1.1
+- ✓ E2E Playwright test: `npm create streem@latest` CLI scaffold produces a buildable project — v1.1
+- ✓ E2E Playwright test: Vite HMR preserves signal state across hot reload — v1.1
+- ✓ Reactive core benchmarked (ops/sec) against SolidJS and Preact signals; BENCHMARKS.md committed with methodology — v1.1
+- ✓ CSSProperties type exported from @streem/dom and streem meta-package; style prop accepts object — v1.1
+- ✓ CSS Modules documented as recommended styling pattern (docs/STYLING.md) — v1.1
+- ✓ ClassValue API (string/array/object/mixed) for class/className props; bindStyle stale-key diffing via removeProperty() — v1.1
+- ✓ Landing page components migrated from inline style blocks to CSS Modules (dogfood proof) — v1.1
+- ✓ Tailwind CSS v4 pre-configured in create-streem default template; proven coexisting with CSS Modules — v1.1
 
 ### Active
 
-- [ ] LIT-04: JSX IntrinsicElements for sl-* elements in @streem/lit dist/
-- [ ] E2E Playwright tests for create-streem CLI scaffold
-- [ ] E2E Playwright tests for HMR signal state preservation
-- [ ] Reactive core performance benchmarks vs SolidJS/Preact signals
-- [ ] Landing page benchmark bar chart component (Streem dogfood)
-- [ ] Additional unit coverage for @streem/dom and @streem/streams edge cases
+- [ ] LAND-01: Bar chart dogfood component on landing page rendering benchmark comparison data (deferred from v1.1)
 
 ### Out of Scope
 
@@ -47,7 +40,7 @@ Signals and streams are first-class primitives — not adapters or plugins — s
 - Server-side rendering — Fundamentally changes the streaming model; CSR-only is a valid v1 constraint for SPA/dashboard use cases
 - First-party router — Scope creep; TanStack Router covers this well; build only if persistent integration friction is observed
 - Built-in store library — Signals with `createRoot` are already composable state; a store layer adds API surface without new capability
-- CSS-in-JS / scoped styles — Requires either a compiler transform or runtime style injection; document Tailwind and CSS Modules instead
+- CSS-in-JS / scoped styles runtime — Tailwind CSS v4 and CSS Modules are the documented patterns; no runtime style injection needed
 - Directive system (v-if, x-bind style) — JSX operators and `<Show>`/`<For>` components are sufficient
 - Two-way data binding (`bind:` shorthand) — Controlled inputs are explicit and TypeScript-friendly
 - Virtual DOM / VDOM diffing — Defeats the purpose of fine-grained signals
@@ -56,25 +49,23 @@ Signals and streams are first-class primitives — not adapters or plugins — s
 
 ## Context
 
+**v1.1 shipped 2026-03-01.** 6 phases (7, 8, 9, 9.1, 11, 12), 16 plans, 96 files changed over 2 days.
+
 **v1.0 shipped 2026-02-28.** 6 phases, 21 plans, ~17,684 lines TypeScript/TSX, 186 files.
 
-Tech stack: TypeScript, JSX/TSX (jsxImportSource: "streem"), Vite + tsup, Vitest (Node + Browser/Playwright), pnpm workspaces, Shoelace web components, GitHub Actions (Pages deployment).
+Tech stack: TypeScript, JSX/TSX (jsxImportSource: "streem"), Vite + tsup, Vitest (Node + Browser/Playwright), pnpm workspaces, Shoelace web components, GitHub Actions (Pages deployment), Tailwind CSS v4 (@tailwindcss/vite), CSS Modules.
 
 Packages:
-- `@streem/core` — push-pull reactive graph: signal(), computed(), effect(), createRoot(), onCleanup(), dev-mode warnings
-- `@streem/dom` — JSX runtime: h(), render(), reactive DOM bindings, Show/For/ErrorBoundary/Suspense, Vite HMR
+- `@streem/core` — push-pull reactive graph: signal(), computed(), effect(), createRoot(), onCleanup(), dev-mode warnings; O(1) batchedEffects dedup; lazy Owner init
+- `@streem/dom` — JSX runtime: h(), render(), reactive DOM bindings, Show/For/ErrorBoundary/Suspense, Vite HMR; ClassValue API; bindStyle diff; CSSProperties
 - `@streem/streams` — fromWebSocket(), fromSSE(), fromReadable(), fromObservable(), batch(), throttle(), debounce()
-- `@streem/lit` — bindLitProp(), observeLitProp(), CEM type generation tooling
+- `@streem/lit` — bindLitProp(), observeLitProp(), CEM type generation tooling; full sl-* IntrinsicElements in dist/
 - `streem` — meta-package barrel re-exporting all primitives
-- `create-streem` — CLI scaffolder (npm create streem@latest)
-- `apps/landing` — official landing page (deployed via GitHub Actions to GitHub Pages)
+- `create-streem` — CLI scaffolder (npm create streem@latest), now includes Tailwind CSS v4 pre-configured
+- `apps/landing` — official landing page (deployed via GitHub Actions to GitHub Pages); CSS Modules + Tailwind v4
 
-**Key v1 lesson:** Drop the rune/compiler approach entirely — standard TSX via Vite is the right call.
-
-**Known tech debt from v1.0:**
-- LIT-04 type augmentation not in dist/: JSX IntrinsicElements for sl-* elements fall back to catch-all (runtime unaffected)
-- Phase 6 VERIFICATION.md predates final sl-badge/Suspense fixes — documentation staleness only
-- HMR, E2E CLI, and performance profiling require interactive environments — not statically verifiable
+**Known tech debt from v1.1:**
+- LAND-01: Bar chart dogfood component on landing page not built (Phase 10 skipped; deferred to v1.2)
 
 ## Constraints
 
@@ -96,6 +87,13 @@ Packages:
 | CEM analyzer for Lit type generation | Auto-generate IntrinsicElements from source, not manual hand-roll | ✓ Good — full Shoelace component catalog typed |
 | SVG createElement via innerHTML | SVGElement namespace requires document.createElementNS — JSX factory needed special case | ✓ Good — sparkline renders correctly |
 | Reactive signals outside Suspense scope | Streaming signals must be lifted above Suspense boundary to prevent retry-loop on reconnect | ✓ Good — ticker table skeleton bug fixed |
+| vite-plugin-dts beforeWriteFile hook for ambient types | rollupTypes (api-extractor) silently drops declare module augmentation blocks | ✓ Good — @streem/lit dist/ now contains full sl-* IntrinsicElements |
+| ClassValue recursive union type for class props | Matches clsx API signature; string/array/object all accepted without runtime dependency | ✓ Good — className and class both accepted; classList removed cleanly |
+| bindStyle prev-key tracking for removeProperty() | Reactive style updates must remove stale CSS properties or they persist on the element | ✓ Good — stale keys cleaned up correctly in diff |
+| Tailwind CSS v4 plugin-only config | No postcss.config.js or tailwind.config.js needed — fully plugin-driven via @tailwindcss/vite | ✓ Good — zero config files, works with CSS Modules simultaneously |
+| batchedEffects Set for O(1) dedup | Array.includes is O(n) per flush; Set.add deduplicates in O(1) | ✓ Good — ~12% signal throughput improvement in benchmarks |
+| Lazy Owner children/cleanups init (null vs []) | No empty array allocation on createRoot that never registers children | ✓ Good — reduces GC pressure in heavy signal graphs |
+| Phase 10 skipped; bar chart deferred to v1.2 | CSS Modules goal absorbed by Phase 11; bar chart non-blocking for v1.1 quality goals | — Deferred — LAND-01 active requirement for next milestone |
 
 ---
-*Last updated: 2026-02-28 after v1.1 milestone start*
+*Last updated: 2026-03-01 after v1.1 milestone*
