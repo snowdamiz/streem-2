@@ -45,7 +45,7 @@ Full phase details: `.planning/milestones/v1.1-ROADMAP.md`
 - [x] **Phase 13: Landing Page Bar Chart** — Bar chart dogfood component rendering benchmark data on the landing page (completed 2026-03-01)
 - [x] **Phase 14: Docs Visual Polish** — Docs site theme, logo, syntax highlighting, and mobile layout all match the landing page standard (completed 2026-03-01)
 - [x] **Phase 15: Docs Content Expansion** — Existing sections deepened; patterns/recipes section added (completed 2026-03-01)
-- [ ] **Phase 16: Docs New Reference Sections** — Styling, TypeScript, and Performance/best-practices guides added
+- [x] **Phase 16: Docs New Reference Sections** — Styling, TypeScript, and Performance/best-practices guides added (completed 2026-03-01)
 
 ## Phase Details
 
@@ -124,4 +124,4 @@ Plans:
 | 13. Landing Page Bar Chart | v1.2 | 1/2 | In progress | - |
 | 14. Docs Visual Polish | v1.2 | 2/2 | Complete | 2026-03-01 |
 | 15. Docs Content Expansion | 1/1 | Complete    | 2026-03-01 | - |
-| 16. Docs New Reference Sections | 2/3 | In Progress|  | - |
+| 16. Docs New Reference Sections | 3/3 | Complete   | 2026-03-01 | - |

@@ -8,7 +8,7 @@ progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 ## Current Position
 
 Phase: 16 of 16 (Docs New Reference Sections)
-Plan: 2 of 3 (completed)
-Status: Phase 16 plan 02 complete — TypeScript reference section added to docs
-Last activity: 2026-03-01 — 16-02 complete: TypeScriptSection with five subsections + nav wiring + cross-links
+Plan: 3 of 3 (completed)
+Status: Phase 16 complete — Performance reference section added to docs (final plan)
+Last activity: 2026-03-01 — 16-03 complete: PerformanceSection with four subsections + nav wiring + cross-links from Signals and Patterns
 
-Progress: [███░░░░░░░] 18%
+Progress: [████░░░░░░] 22%
 
 ## Performance Metrics
 
@@ -43,7 +43,7 @@ Progress: [███░░░░░░░] 18%
 | 13 (Landing Page Bar Chart) | 1/2 | 4 min | 4 min |
 | 14 (Docs Visual Polish) | 2/2 | 2 min | 1 min |
 | 15 (Docs Content Expansion) | 1/1 | 4 min | 4 min |
-| 16 (Docs New Reference Sections) | 2/3 | 3 min | 1.5 min |
+| 16 (Docs New Reference Sections) | 3/3 | 5 min | 1.7 min |
 
 **Recent Trend:**
 - Last 5 plans: 2 min
@@ -51,6 +51,7 @@ Progress: [███░░░░░░░] 18%
 
 *Updated after each plan completion*
 | Phase 16 P02 | 2 | 2 tasks | 1 files |
+| Phase 16 P03 | 2 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -98,6 +99,12 @@ Decisions from 16-01:
 - [Phase 16]: Curly braces inside JSX text <code> tags must use JSX expression syntax {'{'} not literal characters — fixes TS1109 parse error
 - [Phase 16]: TypeScriptSection wired as 8th NAV_ITEM with cross-links from SignalsSection and ComponentsSection
 
+Decisions from 16-03:
+- PerformanceSection positioned after TypeScriptSection, before DocsApp export — consistent ordering
+- BAD/GOOD comment pattern used for computed vs effect anti-pattern comparison
+- Cross-link in SignalsSection appended after existing TypeScript cross-link as final paragraphs
+- Cross-link in PatternsSection placed after opening intro paragraph for early discoverability
+
 ### Pending Todos
 
 None.
@@ -117,5 +124,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed 16-02-PLAN.md — TypeScript reference section: TypeScriptSection + nav item + Show block + cross-links
+Stopped at: Completed 16-03-PLAN.md — Performance reference section: PerformanceSection + nav item + Show block + cross-links (Phase 16 complete)
 Resume file: None
