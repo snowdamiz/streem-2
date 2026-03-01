@@ -98,6 +98,6 @@ Plans:
 | 5. Package Assembly, CLI, and AI Skills | v1.0 | 3/3 | Complete | 2026-02-28 |
 | 6. Landing Page (Dogfood) | v1.0 | 3/3 | Complete | 2026-02-28 |
 | 7. Package Quality | v1.1 | 4/4 | Complete | 2026-02-28 |
-| 8. E2E Test Coverage | v1.1 | 0/2 | Not started | - |
+| 8. E2E Test Coverage | 1/2 | In Progress|  | - |
 | 9. Performance Benchmarks | v1.1 | 0/TBD | Not started | - |
 | 10. Landing Page Polish | v1.1 | 0/TBD | Not started | - |

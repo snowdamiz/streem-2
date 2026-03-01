@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Quality & Polish
 status: unknown
-last_updated: "2026-02-28T23:57:25.575Z"
+last_updated: "2026-03-01T01:25:24.341Z"
 progress:
-  total_phases: 1
+  total_phases: 2
   completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 6
+  completed_plans: 5
 ---
 
 # Project State
@@ -18,14 +18,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-28)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 7 — Package Quality
+**Current focus:** Phase 8 — E2E Test Coverage
 
 ## Current Position
 
-Phase: 7 of 10 (Package Quality)
-Plan: 02 (completed — all 4 plans done)
-Status: Phase 7 complete
-Last activity: 2026-02-28 — 07-02 complete (CSSProperties type alias + CSS Modules docs)
+Phase: 8 of 10 (E2E Test Coverage)
+Plan: 01 (completed — 1 of 2 plans done)
+Status: Phase 8 in progress
+Last activity: 2026-03-01 — 08-01 complete (apps/e2e Playwright package + TEST-01 CLI scaffold test)
 
 Progress: [███░░░░░░░] 33% (v1.1 — 4 of 12 plans complete)
 
@@ -49,6 +49,7 @@ Progress: [███░░░░░░░] 33% (v1.1 — 4 of 12 plans complete)
 | Phase 07-package-quality P04 | 2 | 2 tasks | 4 files |
 | Phase 07 P02 | 2 | 2 tasks | 5 files |
 | Phase 07-package-quality P01 | 2 | 2 tasks | 2 files |
+| Phase 08-e2e-test-coverage P01 | 65 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -68,6 +69,8 @@ Recent decisions affecting current work:
 - [Phase 07-02]: docs/STYLING.md recommends CSS Modules over CSS-in-JS — zero runtime overhead, Vite-native
 - [Phase 07-01]: vite-plugin-dts rollupTypes silently drops ambient declare module blocks — use beforeWriteFile hook to append them to dist/index.d.ts
 - [Phase 07-01]: LIT-01 fixed: @streem/lit dist/index.d.ts now contains full JSX module augmentation for all sl-* Shoelace elements
+- [Phase 08-01]: Used background expect + filesystem polling for interactive CLI testing: clack/prompts block() keeps node alive 60s in PTY mode, so we spawn expect in background and poll for directory creation
+- [Phase 08-01]: Patch streem: latest to file: path after scaffold — published streem not available in local dev; test must override dependency to local build path
 
 ### Pending Todos
 
@@ -79,6 +82,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-28T23:52:21Z
-Stopped at: Completed 07-02-PLAN.md (CSSProperties type alias + CSS Modules docs)
+Last session: 2026-03-01T01:25:00Z
+Stopped at: Completed 08-01-PLAN.md (apps/e2e Playwright package + TEST-01 CLI scaffold test)
 Resume file: None
