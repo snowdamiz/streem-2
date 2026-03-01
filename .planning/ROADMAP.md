@@ -61,8 +61,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 08-01-PLAN.md — apps/e2e Playwright scaffold + CLI scaffold E2E test (TEST-01)
-- [ ] 08-02-PLAN.md — HMR signal state preservation Playwright browser test (TEST-02)
+- [x] 08-01-PLAN.md — apps/e2e Playwright scaffold + CLI scaffold E2E test (TEST-01)
+- [x] 08-02-PLAN.md — HMR signal state preservation Playwright browser test (TEST-02)
 
 ### Phase 9: Performance Benchmarks
 **Goal**: Benchmark results for @streem/core signals exist in the repository, are reproducible, and show an honest comparison against SolidJS and Preact signals
@@ -72,7 +72,11 @@ Plans:
   1. A benchmark suite exists in the repository that measures signal(), computed(), and effect() throughput (operations/second) for @streem/core, SolidJS signals, and Preact signals under identical conditions
   2. Running the benchmark suite produces numeric results without manual intervention
   3. Committed benchmark results include the methodology: what was measured, the environment (Node version, hardware class), and instructions to reproduce
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 09-01-PLAN.md — apps/bench package scaffold with tinybench + signal/computed/effect benchmark suites (PERF-01)
+- [ ] 09-02-PLAN.md — Run benchmarks, write BENCHMARKS.md with results and methodology, commit (PERF-02)
 
 ### Phase 10: Landing Page Polish
 **Goal**: The public landing page displays a Streem-built bar chart of benchmark results and is fully migrated from inline style strings to CSS Modules and style objects
@@ -98,6 +102,6 @@ Plans:
 | 5. Package Assembly, CLI, and AI Skills | v1.0 | 3/3 | Complete | 2026-02-28 |
 | 6. Landing Page (Dogfood) | v1.0 | 3/3 | Complete | 2026-02-28 |
 | 7. Package Quality | v1.1 | 4/4 | Complete | 2026-02-28 |
-| 8. E2E Test Coverage | 2/2 | Complete   | 2026-03-01 | - |
-| 9. Performance Benchmarks | v1.1 | 0/TBD | Not started | - |
+| 8. E2E Test Coverage | v1.1 | 2/2 | Complete | 2026-03-01 |
+| 9. Performance Benchmarks | v1.1 | 0/2 | Not started | - |
 | 10. Landing Page Polish | v1.1 | 0/TBD | Not started | - |
