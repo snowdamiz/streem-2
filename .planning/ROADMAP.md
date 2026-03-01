@@ -118,3 +118,15 @@ Plans:
 | 9. Performance Benchmarks | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 9.1. Optimize Signal Benchmarks | 3/3 | Complete   | 2026-03-01 | - |
 | 10. Landing Page Polish | v1.1 | 0/TBD | Not started | - |
+
+### Phase 11: Improve styles DX with React-like classes and styles API
+
+**Goal:** Developer experience for styling in Streem JSX is React-like: class/className accept strings, arrays, and objects; classList is removed; bindStyle correctly diffs reactive updates; landing page uses CSS Modules as dogfood proof.
+**Requirements**: STYLES-DX-01, STYLES-DX-02, STYLES-DX-03, STYLES-DX-04, STYLES-DX-05
+**Depends on:** Phase 10
+**Plans:** 3 plans
+
+Plans:
+- [ ] 11-01-PLAN.md — ClassValue type, bindClass overhaul, bindStyle diff fix, applyProps className alias + classList removal
+- [ ] 11-02-PLAN.md — Update @streem/dom test suite for new class API and bindStyle diff behavior
+- [ ] 11-03-PLAN.md — CSS Modules type declarations + migrate all landing components from inline styles
