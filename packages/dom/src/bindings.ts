@@ -1,4 +1,5 @@
 import { effect, onCleanup } from '@streem/core'
+import type { ClassValue } from './types.js'
 
 /**
  * bindTextNode — creates a text node appended to `parent` whose nodeValue
@@ -51,50 +52,74 @@ export function bindAttr(
 }
 
 /**
- * bindClass — sets `el.className` to the string returned by the accessor.
- * Use this for reactive `class=` props that produce a whole class string.
- */
-export function bindClass(el: Element, accessor: () => string): void {
-  effect(() => {
-    el.setAttribute('class', accessor())
-  })
-}
-
-/**
- * bindClassList — toggles individual CSS classes via an accessor that returns
- * a `Record<string, boolean>` class map. Each key is a class name; truthy
- * value means add, falsy means remove.
+ * resolveClassValue — converts a ClassValue into a space-separated class string.
+ * Package-internal helper used by bindClass and applyProps.
  *
- * On each run the full map is applied, so removed classes are properly cleaned
- * up even if they disappear from the map object entirely.
+ * - string: returned as-is
+ * - false | null | undefined: returns ''
+ * - Record<string, boolean>: keys with truthy values joined by ' '
+ * - ClassValue[]: each item resolved recursively, falsy results filtered out
  */
-export function bindClassList(
-  el: Element,
-  accessor: () => Record<string, boolean>,
-): void {
+export function resolveClassValue(value: ClassValue): string {
+  if (!value) return ''
+  if (typeof value === 'string') return value
+  if (Array.isArray(value)) {
+    return value.map(resolveClassValue).filter(Boolean).join(' ')
+  }
+  // Record<string, boolean>
+  return Object.entries(value)
+    .filter(([, active]) => active)
+    .map(([cls]) => cls)
+    .join(' ')
+}
+
+/**
+ * bindClass — sets `el.className` to the string resolved from the ClassValue
+ * returned by the accessor. Accepts any ClassValue shape: strings, arrays,
+ * objects, and mixed arrays (clsx-compatible).
+ *
+ * Use this for reactive `class=` and `className=` props.
+ */
+export function bindClass(el: Element, accessor: () => ClassValue): void {
   effect(() => {
-    const map = accessor()
-    for (const [cls, active] of Object.entries(map)) {
-      el.classList.toggle(cls, Boolean(active))
-    }
+    el.setAttribute('class', resolveClassValue(accessor()))
   })
 }
 
 /**
- * bindStyle — merges the style object returned by the accessor into
- * `el.style` using Object.assign. Runs inside an effect so it re-runs
- * whenever any signal read inside the accessor changes.
+ * bindStyle — keeps el.style in sync with the object (or string) returned by
+ * the accessor. Diffs previous and next style keys so removed properties are
+ * explicitly cleared via el.style.removeProperty().
+ *
+ * This prevents stale inline styles when a reactive style object drops keys
+ * on update — a bug with the previous Object.assign approach.
  */
 export function bindStyle(
   el: HTMLElement | SVGElement,
   accessor: () => Partial<CSSStyleDeclaration> | string,
 ): void {
+  let prevKeys: string[] = []
   effect(() => {
     const value = accessor()
     if (typeof value === 'string') {
       el.style.cssText = value
+      prevKeys = []
     } else {
-      Object.assign(el.style, value)
+      // Clear properties that were in the previous object but absent now
+      const nextKeys = Object.keys(value)
+      for (const key of prevKeys) {
+        if (!(key in value)) {
+          el.style.removeProperty(
+            // Convert camelCase to kebab-case for removeProperty
+            key.replace(/([A-Z])/g, '-$1').toLowerCase()
+          )
+        }
+      }
+      // Apply all properties from the new value
+      for (const [k, v] of Object.entries(value)) {
+        ;(el.style as unknown as Record<string, string>)[k] = v as string
+      }
+      prevKeys = nextKeys
     }
   })
 }
