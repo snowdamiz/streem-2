@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Documentation & DX Polish
-status: ready_to_plan
-last_updated: "2026-03-01T00:00:00.000Z"
+status: in_progress
+last_updated: "2026-03-01T21:51:24Z"
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 2
+  completed_plans: 1
 ---
 
 # Project State
@@ -23,27 +23,27 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 ## Current Position
 
 Phase: 13 of 16 (Landing Page Bar Chart)
-Plan: — of — (not yet planned)
-Status: Ready to plan
-Last activity: 2026-03-01 — v1.2 roadmap created; 4 phases defined (13–16)
+Plan: 1 of 2 (completed)
+Status: In progress — plan 01 complete, plan 02 pending
+Last activity: 2026-03-01 — 13-01 complete: BenchmarkChart SVG component + App.tsx wiring
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 6%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0 (this milestone)
-- Average duration: —
-- Total execution time: —
+- Total plans completed: 1 (this milestone)
+- Average duration: 4 min
+- Total execution time: 4 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 13 (Landing Page Bar Chart) | 1/2 | 4 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: —
+- Last 5 plans: 4 min
 - Trend: —
 
 *Updated after each plan completion*
@@ -67,6 +67,11 @@ Recent decisions affecting v1.2:
 - Docs are dark-only — no light/dark toggle (out of scope in REQUIREMENTS.md)
 - Docs stay as a Streem app — no migration to VitePress/Docusaurus (dogfood value)
 
+Decisions from 13-01:
+- BarGroup sub-component scopes per-bar computed() reactivity cleanly
+- computed() returns () => T (function), called as getOpacity() not .value
+- JSX element arrays typed as (Node | Node[] | null)[] to satisfy TypeScript
+
 ### Pending Todos
 
 None.
@@ -86,5 +91,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Roadmap created for v1.2 (Phases 13–16). Ready to plan Phase 13.
+Stopped at: Completed 13-01-PLAN.md — BenchmarkChart component and App.tsx wiring
 Resume file: None

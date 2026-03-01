@@ -9,7 +9,7 @@ Requirements for the Documentation & DX Polish milestone.
 
 ### Landing Page
 
-- [ ] **LAND-01**: User sees a bar chart on the landing page comparing Streem, SolidJS, and Preact signal benchmark performance (dogfood: built with Streem itself)
+- [x] **LAND-01**: User sees a bar chart on the landing page comparing Streem, SolidJS, and Preact signal benchmark performance (dogfood: built with Streem itself)
 
 ### Docs Polish
 
@@ -49,7 +49,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| LAND-01 | Phase 13 | Pending |
+| LAND-01 | Phase 13 | Complete |
 | DOCS-01 | Phase 14 | Pending |
 | DOCS-02 | Phase 14 | Pending |
 | DOCS-03 | Phase 14 | Pending |
