@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { id: 'patterns', label: 'Patterns' },
   { id: 'styling', label: 'Styling' },
   { id: 'typescript', label: 'TypeScript' },
+  { id: 'performance', label: 'Performance' },
 ]
 
 function getPage(): string {
@@ -62,6 +63,7 @@ function SignalsSection(): Node {
       <Code>{`import { signal, effect, batch } from 'streem'\n\nconst x = signal(0)\nconst y = signal(0)\n\neffect(() => console.log(x(), y()))\n\n// Without batch: effect fires twice\nx.set(1)\ny.set(1)\n\n// With batch: effect fires once\nbatch(() => {\n  x.set(2)\n  y.set(2)\n})`}</Code>
       <p>TypeScript tip: use <code>signal&lt;string | null&gt;(null)</code> for optional values. The computed type is inferred automatically.</p>
       <p>For a full TypeScript reference covering signal types, computed types, and JSX config, see the <a href="#typescript" class="docs-link">TypeScript guide</a>.</p>
+      <p>For performance best practices — when to use computed vs effect, how to prevent leaks, and signal granularity — see the <a href="#performance" class="docs-link">Performance guide</a>.</p>
     </DocSection>
   ) as unknown as Node
 }
@@ -109,6 +111,7 @@ function PatternsSection(): Node {
   return (
     <DocSection id="patterns" title="Patterns">
       <p>Common patterns for building real-world apps with Streem.</p>
+      <p>For performance considerations when applying these patterns at scale, see the <a href="#performance" class="docs-link">Performance guide</a>.</p>
 
       <h3 class="doc-section-subtitle">Form handling</h3>
       <p>Bind each field to a signal and derive a computed for the submit payload:</p>
@@ -284,6 +287,9 @@ export function DocsApp(): Node {
           </Show>
           <Show when={() => currentPage.value === 'typescript'}>
             {() => TypeScriptSection()}
+          </Show>
+          <Show when={() => currentPage.value === 'performance'}>
+            {() => PerformanceSection()}
           </Show>
         </div>
       </main>
