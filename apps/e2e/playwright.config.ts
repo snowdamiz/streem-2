@@ -1,7 +1,8 @@
 import { defineConfig } from '@playwright/test'
-import { join, resolve, fileURLToPath } from 'node:path'
+import { join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const MONOREPO_ROOT = resolve(fileURLToPath(import.meta.url), '../..')
+const MONOREPO_ROOT = resolve(fileURLToPath(import.meta.url), '../../..')
 const DEMO_APP_DIR = join(MONOREPO_ROOT, 'apps/demo')
 
 export default defineConfig({
@@ -12,9 +13,9 @@ export default defineConfig({
     headless: true,
   },
   webServer: {
-    command: 'pnpm dev --port 5173 --strictPort',
+    command: 'pnpm dev --port 5174 --strictPort',
     cwd: DEMO_APP_DIR,
-    url: 'http://localhost:5173',
+    url: 'http://localhost:5174',
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,
   },
@@ -29,7 +30,7 @@ export default defineConfig({
       testMatch: 'hmr-signal.spec.ts',
       use: {
         browserName: 'chromium',
-        baseURL: 'http://localhost:5173',
+        baseURL: 'http://localhost:5174',
       },
     },
   ],
