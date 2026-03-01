@@ -72,7 +72,10 @@ Plans:
   2. The Streem logo (logo.svg) is visible in the docs sidebar nav header
   3. Every code block in the docs displays TypeScript/TSX syntax highlighting (keywords, strings, types are color-differentiated)
   4. Docs layout is readable on a 375px-wide mobile screen — sidebar nav collapses and content reflows without horizontal overflow
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 14-01-PLAN.md — Add Google Fonts to docs HTML, logo in sidebar, syntax highlighting in code blocks
+- [ ] 14-02-PLAN.md — Mobile layout polish + visual verification checkpoint
 
 ### Phase 15: Docs Content Expansion
 **Goal**: Existing docs sections are no longer stubs — they contain enough examples, edge cases, and pattern guidance that a developer can learn Streem from the docs alone
@@ -112,7 +115,7 @@ Plans:
 | 9.1. Optimize Signal Benchmarks | v1.1 | 3/3 | Complete | 2026-03-01 |
 | 11. Improve Styles DX | v1.1 | 3/3 | Complete | 2026-03-01 |
 | 12. Add Tailwind Support | v1.1 | 2/2 | Complete | 2026-03-01 |
-| 13. Landing Page Bar Chart | 1/2 | Complete    | 2026-03-01 | - |
-| 14. Docs Visual Polish | v1.2 | 0/TBD | Not started | - |
+| 13. Landing Page Bar Chart | v1.2 | 1/2 | In progress | - |
+| 14. Docs Visual Polish | v1.2 | 0/2 | Not started | - |
 | 15. Docs Content Expansion | v1.2 | 0/TBD | Not started | - |
 | 16. Docs New Reference Sections | v1.2 | 0/TBD | Not started | - |
