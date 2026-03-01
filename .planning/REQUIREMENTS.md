@@ -49,22 +49,22 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| LAND-01 | Phase TBD | Pending |
-| DOCS-01 | Phase TBD | Pending |
-| DOCS-02 | Phase TBD | Pending |
-| DOCS-03 | Phase TBD | Pending |
-| DOCS-04 | Phase TBD | Pending |
-| DOCS-05 | Phase TBD | Pending |
-| DOCS-06 | Phase TBD | Pending |
-| DOCS-07 | Phase TBD | Pending |
-| DOCS-08 | Phase TBD | Pending |
-| DOCS-09 | Phase TBD | Pending |
+| LAND-01 | Phase 13 | Pending |
+| DOCS-01 | Phase 14 | Pending |
+| DOCS-02 | Phase 14 | Pending |
+| DOCS-03 | Phase 14 | Pending |
+| DOCS-04 | Phase 15 | Pending |
+| DOCS-05 | Phase 15 | Pending |
+| DOCS-06 | Phase 16 | Pending |
+| DOCS-07 | Phase 16 | Pending |
+| DOCS-08 | Phase 16 | Pending |
+| DOCS-09 | Phase 14 | Pending |
 
 **Coverage:**
 - v1.2 requirements: 10 total
-- Mapped to phases: 0
-- Unmapped: 10 ⚠️
+- Mapped to phases: 10
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-01*
-*Last updated: 2026-03-01 after initial definition*
+*Last updated: 2026-03-01 after v1.2 roadmap created*
