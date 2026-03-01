@@ -140,11 +140,37 @@ export function DocsApp(): Node {
         .doc-pre {
           margin: 16px 0 24px;
           font-size: 13px;
+          max-width: 100%;
         }
         @media (max-width: 700px) {
           .docs-layout { grid-template-columns: 1fr; }
-          .docs-nav { position: static; height: auto; }
-          .docs-main { padding: 24px 20px; }
+          .docs-nav {
+            position: static;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 12px 16px;
+            border-right: none;
+            border-bottom: 1px solid var(--color-border);
+          }
+          .docs-nav-brand { flex-shrink: 0; margin-bottom: 0; }
+          .docs-nav-logo { margin-bottom: 0; }
+          .docs-nav-list {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 4px 8px;
+          }
+          .docs-main {
+            padding: 24px 16px;
+            min-width: 0;
+          }
+        }
+        @media (max-width: 500px) {
+          .docs-title { font-size: 1.8rem; }
         }
       `}</style>
     </div>
