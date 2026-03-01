@@ -8,6 +8,7 @@ import {
   bindEvent,
 } from '../src/bindings.js'
 import { h } from '../src/h.js'
+import type { ClassValue } from '../src/types.js'
 
 // ---------------------------------------------------------------------------
 // bindTextNode
@@ -151,40 +152,74 @@ describe('bindAttr', () => {
 // ---------------------------------------------------------------------------
 
 describe('bindClass', () => {
-  it('sets el.className on initial render', () => {
-    const cls = signal('active')
+  it('sets class from a plain string', () => {
+    const cls = signal<ClassValue>('active')
     const el = document.createElement('div')
     let dispose!: () => void
-    createRoot((d) => {
-      dispose = d
-      bindClass(el, () => cls.value)
-    })
+    createRoot((d) => { dispose = d; bindClass(el, () => cls.value) })
     expect(el.className).toBe('active')
     dispose()
   })
 
-  it('updates el.className reactively', () => {
-    const cls = signal('active')
+  it('updates class reactively', () => {
+    const cls = signal<ClassValue>('active')
     const el = document.createElement('div')
     let dispose!: () => void
-    createRoot((d) => {
-      dispose = d
-      bindClass(el, () => cls.value)
-    })
+    createRoot((d) => { dispose = d; bindClass(el, () => cls.value) })
     cls.set('active selected')
     expect(el.className).toBe('active selected')
     dispose()
   })
 
-  it('handles empty string class', () => {
-    const cls = signal('visible')
+  it('resolves array of strings, skipping falsy values', () => {
+    const cls = signal<ClassValue>(['btn', false, null, undefined, '', 'primary'])
     const el = document.createElement('div')
     let dispose!: () => void
-    createRoot((d) => {
-      dispose = d
-      bindClass(el, () => cls.value)
-    })
+    createRoot((d) => { dispose = d; bindClass(el, () => cls.value) })
+    expect(el.className).toBe('btn primary')
+    dispose()
+  })
+
+  it('resolves Record<string, boolean> — truthy keys only', () => {
+    const cls = signal<ClassValue>({ active: true, disabled: false, selected: true })
+    const el = document.createElement('div')
+    let dispose!: () => void
+    createRoot((d) => { dispose = d; bindClass(el, () => cls.value) })
+    expect(el.classList.contains('active')).toBe(true)
+    expect(el.classList.contains('disabled')).toBe(false)
+    expect(el.classList.contains('selected')).toBe(true)
+    dispose()
+  })
+
+  it('resolves mixed array (strings + objects + falsy)', () => {
+    const isPrimary = signal(true)
+    const cls = () => ['btn', { 'btn-primary': isPrimary.value, 'btn-disabled': false }, false] as ClassValue
+    const el = document.createElement('div')
+    let dispose!: () => void
+    createRoot((d) => { dispose = d; bindClass(el, cls) })
+    expect(el.classList.contains('btn')).toBe(true)
+    expect(el.classList.contains('btn-primary')).toBe(true)
+    expect(el.classList.contains('btn-disabled')).toBe(false)
+    isPrimary.set(false)
+    expect(el.classList.contains('btn-primary')).toBe(false)
+    dispose()
+  })
+
+  it('handles empty string class', () => {
+    const cls = signal<ClassValue>('visible')
+    const el = document.createElement('div')
+    let dispose!: () => void
+    createRoot((d) => { dispose = d; bindClass(el, () => cls.value) })
     cls.set('')
+    expect(el.className).toBe('')
+    dispose()
+  })
+
+  it('handles null/undefined/false ClassValue', () => {
+    const cls = signal<ClassValue>(null)
+    const el = document.createElement('div')
+    let dispose!: () => void
+    createRoot((d) => { dispose = d; bindClass(el, () => cls.value) })
     expect(el.className).toBe('')
     dispose()
   })
@@ -236,6 +271,32 @@ describe('bindStyle', () => {
     })
     expect(el.style.display).toBe('flex')
     expect(el.style.alignItems).toBe('center')
+    dispose()
+  })
+
+  it('clears properties removed in a reactive update', () => {
+    const style = signal<Partial<CSSStyleDeclaration>>({ color: 'red', fontSize: '16px' })
+    const el = document.createElement('div')
+    let dispose!: () => void
+    createRoot((d) => { dispose = d; bindStyle(el, () => style.value) })
+    expect(el.style.color).toBe('red')
+    expect(el.style.fontSize).toBe('16px')
+    // Remove fontSize from the style object
+    style.set({ color: 'blue' })
+    expect(el.style.color).toBe('blue')
+    expect(el.style.fontSize).toBe('')  // cleared by removeProperty
+    dispose()
+  })
+
+  it('handles full style object replacement without stale properties', () => {
+    const style = signal<Partial<CSSStyleDeclaration>>({ display: 'flex', gap: '8px', alignItems: 'center' })
+    const el = document.createElement('div')
+    let dispose!: () => void
+    createRoot((d) => { dispose = d; bindStyle(el, () => style.value) })
+    style.set({ display: 'block' })
+    expect(el.style.display).toBe('block')
+    expect(el.style.gap).toBe('')
+    expect(el.style.alignItems).toBe('')
     dispose()
   })
 })
@@ -323,6 +384,36 @@ describe('applyProps reactive dispatch (h.ts)', () => {
   it('class with static string sets className directly', () => {
     const el = h('div', { class: 'static-class' }) as HTMLElement
     expect(el.className).toBe('static-class')
+  })
+
+  it('className prop works identically to class prop', () => {
+    const el = h('div', { className: 'foo bar' }) as HTMLElement
+    expect(el.className).toBe('foo bar')
+  })
+
+  it('class with object value resolves truthy keys', () => {
+    const el = h('div', { class: { active: true, disabled: false } }) as HTMLElement
+    expect(el.classList.contains('active')).toBe(true)
+    expect(el.classList.contains('disabled')).toBe(false)
+  })
+
+  it('class with array resolves to joined string, skipping falsy', () => {
+    const el = h('div', { class: ['btn', false, 'primary'] }) as HTMLElement
+    expect(el.className).toBe('btn primary')
+  })
+
+  it('reactive className with accessor resolves ClassValue', () => {
+    const active = signal(true)
+    let dispose!: () => void
+    let el!: HTMLElement
+    createRoot((d) => {
+      dispose = d
+      el = h('div', { className: () => ({ active: active.value, disabled: false }) as ClassValue }) as HTMLElement
+    })
+    expect(el.classList.contains('active')).toBe(true)
+    active.set(false)
+    expect(el.classList.contains('active')).toBe(false)
+    dispose()
   })
 
   it('style with function accessor routes to bindStyle', () => {
