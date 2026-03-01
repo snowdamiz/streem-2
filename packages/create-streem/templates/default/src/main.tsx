@@ -1,3 +1,4 @@
+import './styles.css'
 import { render } from 'streem'
 import { App } from './App'
 
