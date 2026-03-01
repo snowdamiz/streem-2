@@ -127,6 +127,17 @@ Plans:
 **Plans:** 3/3 plans complete
 
 Plans:
-- [ ] 11-01-PLAN.md — ClassValue type, bindClass overhaul, bindStyle diff fix, applyProps className alias + classList removal
-- [ ] 11-02-PLAN.md — Update @streem/dom test suite for new class API and bindStyle diff behavior
-- [ ] 11-03-PLAN.md — CSS Modules type declarations + migrate all landing components from inline styles
+- [x] 11-01-PLAN.md — ClassValue type, bindClass overhaul, bindStyle diff fix, applyProps className alias + classList removal
+- [x] 11-02-PLAN.md — Update @streem/dom test suite for new class API and bindStyle diff behavior
+- [x] 11-03-PLAN.md — CSS Modules type declarations + migrate all landing components from inline styles
+
+### Phase 12: Add full tailwind support if not already supported
+
+**Goal:** Tailwind CSS v4 is proven working with Streem JSX via the landing page integration (coexisting with CSS Modules), then baked into the create-streem default template so every new project starts Tailwind-ready
+**Requirements**: TBD
+**Depends on:** Phase 11
+**Plans:** 2 plans
+
+Plans:
+- [ ] 12-01-PLAN.md — Add @tailwindcss/vite to landing page, wire plugin, add @import "tailwindcss" to global.css, apply utility classes alongside CSS Modules
+- [ ] 12-02-PLAN.md — Bake Tailwind v4 into create-streem default template (deps, plugin, CSS entry, styled App.tsx, .vscode/extensions.json)
