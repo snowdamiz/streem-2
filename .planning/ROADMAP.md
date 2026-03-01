@@ -45,10 +45,10 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 **Plans**: 4 plans
 
 Plans:
-- [ ] 07-01-PLAN.md — Fix @streem/lit dist to include JSX IntrinsicElements type augmentation for sl-* elements (LIT-01)
+- [x] 07-01-PLAN.md — Fix @streem/lit dist to include JSX IntrinsicElements type augmentation for sl-* elements (LIT-01)
 - [x] 07-02-PLAN.md — Define and export CSSProperties from @streem/dom and streem meta-package; add CSS Modules docs (STYLE-01/02/03)
-- [ ] 07-03-PLAN.md — Implement Suspense onError async propagation and add nested ErrorBoundary + Suspense tests (@streem/dom) (TEST-03)
-- [ ] 07-04-PLAN.md — Add missing edge-case tests for @streem/streams: ReadableStream error path, cancel-during-reconnect, error-after-values (TEST-04)
+- [x] 07-03-PLAN.md — Implement Suspense onError async propagation and add nested ErrorBoundary + Suspense tests (@streem/dom) (TEST-03)
+- [x] 07-04-PLAN.md — Add missing edge-case tests for @streem/streams: ReadableStream error path, cancel-during-reconnect, error-after-values (TEST-04)
 
 ### Phase 8: E2E Test Coverage
 **Goal**: Playwright end-to-end tests verify the create-streem CLI scaffold flow produces a working project and that signal state survives a Vite HMR reload
@@ -58,7 +58,11 @@ Plans:
   1. Running `npm create streem@latest` in a Playwright-driven terminal produces a project that builds successfully (`pnpm build` exits 0) — verified automatically in CI
   2. After a Vite HMR reload triggered by a source file save in a Playwright browser session, signal values set before the reload are still accessible in the updated module
   3. Both Playwright tests run in CI without flakiness across at least two consecutive runs
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 08-01-PLAN.md — apps/e2e Playwright scaffold + CLI scaffold E2E test (TEST-01)
+- [ ] 08-02-PLAN.md — HMR signal state preservation Playwright browser test (TEST-02)
 
 ### Phase 9: Performance Benchmarks
 **Goal**: Benchmark results for @streem/core signals exist in the repository, are reproducible, and show an honest comparison against SolidJS and Preact signals
@@ -93,7 +97,7 @@ Plans:
 | 4. Lit Web Component Interop | v1.0 | 3/3 | Complete | 2026-02-28 |
 | 5. Package Assembly, CLI, and AI Skills | v1.0 | 3/3 | Complete | 2026-02-28 |
 | 6. Landing Page (Dogfood) | v1.0 | 3/3 | Complete | 2026-02-28 |
-| 7. Package Quality | 4/4 | Complete   | 2026-02-28 | - |
-| 8. E2E Test Coverage | v1.1 | 0/TBD | Not started | - |
+| 7. Package Quality | v1.1 | 4/4 | Complete | 2026-02-28 |
+| 8. E2E Test Coverage | v1.1 | 0/2 | Not started | - |
 | 9. Performance Benchmarks | v1.1 | 0/TBD | Not started | - |
 | 10. Landing Page Polish | v1.1 | 0/TBD | Not started | - |
