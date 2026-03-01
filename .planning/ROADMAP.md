@@ -86,7 +86,9 @@ Plans:
   2. Each expanded section includes at least one edge case or TypeScript tip not present in the v1.1 docs
   3. A Patterns/recipes section exists covering forms, data fetching, shared state, and real-time updates
   4. The patterns section shows complete, runnable code examples (not pseudocode)
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 15-01-PLAN.md — Expand existing sections + add Patterns/recipes section with four sub-patterns
 
 ### Phase 16: Docs New Reference Sections
 **Goal**: Three new standalone reference sections exist — Styling, TypeScript, and Performance — giving developers authoritative guidance on the decisions that matter most in production Streem apps
@@ -116,6 +118,6 @@ Plans:
 | 11. Improve Styles DX | v1.1 | 3/3 | Complete | 2026-03-01 |
 | 12. Add Tailwind Support | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 13. Landing Page Bar Chart | v1.2 | 1/2 | In progress | - |
-| 14. Docs Visual Polish | 2/2 | Complete   | 2026-03-01 | - |
-| 15. Docs Content Expansion | v1.2 | 0/TBD | Not started | - |
+| 14. Docs Visual Polish | v1.2 | 2/2 | Complete | 2026-03-01 |
+| 15. Docs Content Expansion | v1.2 | 0/1 | Not started | - |
 | 16. Docs New Reference Sections | v1.2 | 0/TBD | Not started | - |
