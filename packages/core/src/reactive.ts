@@ -49,7 +49,7 @@ export const enum ComputedState {
 
 /** Owner handle — opaque reference; full type lives in owner.ts */
 export interface OwnerRef {
-  cleanups: (() => void)[]
+  cleanups: (() => void)[] | null
 }
 
 export interface ComputedNode<T> extends SourceNode, SubscriberNode {

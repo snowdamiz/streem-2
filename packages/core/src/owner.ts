@@ -17,8 +17,8 @@
 
 export interface Owner {
   parent: Owner | null
-  children: Owner[]
-  cleanups: (() => void)[]
+  children: Owner[] | null    // null until first child is added
+  cleanups: (() => void)[] | null  // null until first cleanup is registered
   disposed: boolean
 }
 
@@ -61,18 +61,22 @@ function disposeOwner(owner: Owner): void {
   owner.disposed = true
 
   // Bottom-up: dispose children first so nested scopes clean up before parents
-  for (const child of owner.children) {
-    disposeOwner(child)
+  if (owner.children !== null) {
+    for (const child of owner.children) {
+      disposeOwner(child)
+    }
   }
 
   // Fire own cleanup callbacks synchronously
-  for (const cleanup of owner.cleanups) {
-    cleanup()
+  if (owner.cleanups !== null) {
+    for (const cleanup of owner.cleanups) {
+      cleanup()
+    }
   }
 
   // Release references
-  owner.children = []
-  owner.cleanups = []
+  owner.children = null
+  owner.cleanups = null
 }
 
 // ---------------------------------------------------------------------------
@@ -100,13 +104,16 @@ function disposeOwner(owner: Owner): void {
 export function createRoot<T>(fn: (dispose: () => void) => T): T {
   const owner: Owner = {
     parent: currentOwner,
-    children: [],
-    cleanups: [],
+    children: null,   // lazy — allocated on first child registration
+    cleanups: null,   // lazy — allocated on first cleanup registration
     disposed: false,
   }
 
   // Register as child of the current owner (if any)
   if (currentOwner !== null) {
+    if (currentOwner.children === null) {
+      currentOwner.children = []
+    }
     currentOwner.children.push(owner)
   }
 
@@ -157,6 +164,9 @@ export function onCleanup(fn: () => void): void {
     currentEffectCleanupTarget.cleanupFns.push(fn)
   } else if (currentOwner !== null) {
     // Inside a createRoot (but not an effect body) — register on owner.
+    if (currentOwner.cleanups === null) {
+      currentOwner.cleanups = []
+    }
     currentOwner.cleanups.push(fn)
   }
   // Note: if called outside any owner or effect, fn is silently dropped.
