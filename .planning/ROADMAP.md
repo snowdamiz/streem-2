@@ -43,7 +43,7 @@ Full phase details: `.planning/milestones/v1.1-ROADMAP.md`
 **Milestone Goal:** Transform the docs from a functional draft into a polished, on-brand experience that makes Streem easy to learn and trust. Ship the deferred landing page bar chart as a Streem dogfood component.
 
 - [x] **Phase 13: Landing Page Bar Chart** — Bar chart dogfood component rendering benchmark data on the landing page (completed 2026-03-01)
-- [ ] **Phase 14: Docs Visual Polish** — Docs site theme, logo, syntax highlighting, and mobile layout all match the landing page standard
+- [x] **Phase 14: Docs Visual Polish** — Docs site theme, logo, syntax highlighting, and mobile layout all match the landing page standard (completed 2026-03-01)
 - [ ] **Phase 15: Docs Content Expansion** — Existing sections deepened; patterns/recipes section added
 - [ ] **Phase 16: Docs New Reference Sections** — Styling, TypeScript, and Performance/best-practices guides added
 
@@ -116,6 +116,6 @@ Plans:
 | 11. Improve Styles DX | v1.1 | 3/3 | Complete | 2026-03-01 |
 | 12. Add Tailwind Support | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 13. Landing Page Bar Chart | v1.2 | 1/2 | In progress | - |
-| 14. Docs Visual Polish | 1/2 | In Progress|  | - |
+| 14. Docs Visual Polish | 2/2 | Complete   | 2026-03-01 | - |
 | 15. Docs Content Expansion | v1.2 | 0/TBD | Not started | - |
 | 16. Docs New Reference Sections | v1.2 | 0/TBD | Not started | - |

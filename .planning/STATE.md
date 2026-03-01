@@ -2,8 +2,8 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Documentation & DX Polish
-status: unknown
-last_updated: "2026-03-01T22:13:47Z"
+status: in_progress
+last_updated: "2026-03-01T22:16:26Z"
 progress:
   total_phases: 1
   completed_phases: 1
@@ -18,34 +18,34 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-01)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 14 — Docs Visual Polish
+**Current focus:** Phase 14 — Docs Visual Polish (complete)
 
 ## Current Position
 
 Phase: 14 of 16 (Docs Visual Polish)
-Plan: 1 of ? (completed)
-Status: In progress — plan 01 complete
-Last activity: 2026-03-01 — 14-01 complete: Google Fonts + logo + syntax highlighting in docs
+Plan: 2 of 2 (completed)
+Status: Phase 14 complete — both plans done
+Last activity: 2026-03-01 — 14-02 complete: mobile layout polish for 375px viewport
 
-Progress: [█░░░░░░░░░] 6%
+Progress: [██░░░░░░░░] 12%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1 (this milestone)
-- Average duration: 4 min
-- Total execution time: 4 min
+- Total plans completed: 2 (this milestone)
+- Average duration: 2 min
+- Total execution time: 5 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 13 (Landing Page Bar Chart) | 1/2 | 4 min | 4 min |
-| 14 (Docs Visual Polish) | 1/? | 1 min | 1 min |
+| 14 (Docs Visual Polish) | 2/2 | 2 min | 1 min |
 
 **Recent Trend:**
-- Last 5 plans: 4 min
-- Trend: —
+- Last 5 plans: 2 min
+- Trend: Fast
 
 *Updated after each plan completion*
 
@@ -77,6 +77,11 @@ Decisions from 14-01:
 - Imperative document.createElement + code.innerHTML = highlight(children) for Code component — Streem JSX has no dangerouslySetInnerHTML
 - Logo SVG constrained to height: 24px; width: auto in sidebar img tag
 
+Decisions from 14-02:
+- Horizontal scrollable nav bar (flex-direction: row + overflow-x: auto) at 700px — avoids vertical nav eating half of mobile viewport height
+- flex-shrink: 0 on docs-nav-brand ensures logo never gets squeezed at narrow widths
+- min-width: 0 on docs-main prevents CSS grid blowout
+
 ### Pending Todos
 
 None.
@@ -96,5 +101,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed 14-01-PLAN.md — Google Fonts, logo SVG, syntax-highlighted code blocks in docs
+Stopped at: Completed 14-02-PLAN.md — mobile layout polish for 375px viewport docs
 Resume file: None
