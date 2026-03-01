@@ -30,7 +30,7 @@ export interface Owner {
  * Structural to avoid importing reactive.ts (circular dep prevention).
  */
 export interface EffectCleanupRef {
-  cleanupFns: (() => void)[]
+  cleanupFns: (() => void)[] | null
 }
 
 // ---------------------------------------------------------------------------
@@ -161,6 +161,9 @@ export function onCleanup(fn: () => void): void {
   if (currentEffectCleanupTarget !== null) {
     // Inside an effect body — register on effect's per-run cleanup store.
     // This fires before each re-run AND is cleared on disposeEffect.
+    if (currentEffectCleanupTarget.cleanupFns === null) {
+      currentEffectCleanupTarget.cleanupFns = []
+    }
     currentEffectCleanupTarget.cleanupFns.push(fn)
   } else if (currentOwner !== null) {
     // Inside a createRoot (but not an effect body) — register on owner.

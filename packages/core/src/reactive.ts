@@ -12,38 +12,80 @@
  * Design note: reactive.ts does NOT import from owner.ts to avoid circular
  * dependencies. The owner association is injected by callers (signal.ts /
  * owner.ts passes the current owner when creating nodes).
+ *
+ * Performance model:
+ *  - Subscriber tracking uses doubly-linked lists instead of Sets.
+ *    This eliminates new Set() per node, Set.add/delete hash overhead,
+ *    and the [...source.subs] spread snapshot on every notify.
+ *  - NodeType uses a const enum (integer) instead of string literals.
+ *    Integer comparisons are faster than string comparisons.
+ *  - notifySubscribers returns immediately when there are no subscribers.
+ *  - cleanupFns on EffectNode is null until first onCleanup() call.
+ *  - notifyVersion prevents double-execution when an effect re-subscribes
+ *    during its own run (a subtlety of linked-list traversal vs Set snapshot).
  */
 
 import { setCurrentEffectCleanupTarget } from './owner.js'
 
 // ---------------------------------------------------------------------------
-// Types
+// Node type discriminants (integer const enum — inlined to 0/1/2 by tsc)
+// ---------------------------------------------------------------------------
+
+export const enum NodeType {
+  Signal   = 0,
+  Computed = 1,
+  Effect   = 2,
+}
+
+// ---------------------------------------------------------------------------
+// Link: one object per dependency edge (sub reads from source)
+//
+// Doubly-linked in two dimensions:
+//   prevSub / nextSub  — this source's subscriber list (all nodes that read source)
+//   prevDep / nextDep  — this subscriber's dependency list (all sources sub reads)
+//
+// Replaces Set<SubscriberNode> on sources and Set<SourceNode> on subscribers.
+// Eliminates: new Set() per node, hash operations, [...spread] snapshots.
+// ---------------------------------------------------------------------------
+
+export interface Link {
+  source: SourceNode
+  sub: SubscriberNode
+  // In source's subscriber list
+  prevSub: Link | null
+  nextSub: Link | null
+  // In subscriber's dependency list
+  prevDep: Link | null
+  nextDep: Link | null
+}
+
+// ---------------------------------------------------------------------------
+// Node interfaces
 // ---------------------------------------------------------------------------
 
 /** A node that can be subscribed to (read from) */
 export interface SourceNode {
-  subs: Set<SubscriberNode>
+  subHead: Link | null   // head of subscriber linked list
+  subTail: Link | null   // tail for O(1) append
   value: unknown
 }
 
 /** A node that can subscribe to sources (reads from them) */
 export interface SubscriberNode {
-  readonly _type: string
-  deps: Set<SourceNode>
-  /** Clean up stale subscriptions and registered onCleanup callbacks */
+  readonly nodeType: NodeType
+  depHead: Link | null   // head of dependency linked list
+  depTail: Link | null   // tail for O(1) append
   cleanup(): void
-  /** Re-run / re-evaluate this subscriber */
   run(): void
 }
 
 export interface SignalNode<T> extends SourceNode {
-  readonly _type: 'signal'
+  readonly nodeType: NodeType.Signal
   value: T
-  subs: Set<SubscriberNode>
 }
 
 export const enum ComputedState {
-  Clean = 0,
+  Clean   = 0,
   Pending = 1,
 }
 
@@ -53,24 +95,33 @@ export interface OwnerRef {
 }
 
 export interface ComputedNode<T> extends SourceNode, SubscriberNode {
-  readonly _type: 'computed'
+  readonly nodeType: NodeType.Computed
   fn: () => T
   value: T
   state: ComputedState
   computing: boolean
-  subs: Set<SubscriberNode>
-  deps: Set<SourceNode>
+  subHead: Link | null
+  subTail: Link | null
+  depHead: Link | null
+  depTail: Link | null
   owner: OwnerRef | null
 }
 
 export interface EffectNode extends SubscriberNode {
-  readonly _type: 'effect'
+  readonly nodeType: NodeType.Effect
   fn: () => void
-  deps: Set<SourceNode>
+  depHead: Link | null
+  depTail: Link | null
   owner: OwnerRef | null
-  /** onCleanup callbacks registered during this effect's last run */
-  cleanupFns: (() => void)[]
+  /** onCleanup callbacks — null until first onCleanup() call (lazy allocation) */
+  cleanupFns: (() => void)[] | null
   disposed: boolean
+  /**
+   * Snapshot of notifyVersion when this effect was last scheduled.
+   * Prevents double-execution when an effect re-subscribes during its own
+   * run and its new link is encountered later in the same propagation walk.
+   */
+  notifyVersion: number
 }
 
 // ---------------------------------------------------------------------------
@@ -87,21 +138,34 @@ let notifying = false
 let pendingNotifications: SourceNode[] = []
 
 // ---------------------------------------------------------------------------
-// Batching stub (Phase 3 batch() extension point)
+// Notification version counter
+//
+// Incremented on each top-level notifySubscribers call.
+// When propagateDirty schedules an effect, it records the current notifyVersion
+// on the effect. If the effect re-subscribes to the same source during its run,
+// its new Link will appear at the tail of the source's subscriber list. Without
+// this guard, the propagation walk would encounter the new link and run the effect
+// a second time. The version check prevents that.
+// ---------------------------------------------------------------------------
+
+let notifyVersion = 0
+
+// ---------------------------------------------------------------------------
+// Batching
 // ---------------------------------------------------------------------------
 
 /** When true, effect runs are deferred to the end of the batch */
 export let isBatching = false
 
-/** Effects queued during batching (Set provides O(1) add and automatic deduplication) */
+/** Effects queued during batching — Set gives O(1) add and automatic deduplication */
 const batchedEffects: Set<EffectNode> = new Set()
 
-/** Enable batching mode — called by future batch() implementation in Phase 3 */
+/** Enable batching mode */
 export function startBatch(): void {
   isBatching = true
 }
 
-/** Flush all queued effects and disable batching — called by future batch() */
+/** Flush all queued effects and disable batching */
 export function endBatch(): void {
   isBatching = false
   const effects = [...batchedEffects]
@@ -114,41 +178,93 @@ export function endBatch(): void {
 }
 
 // ---------------------------------------------------------------------------
-// Public API (used by owner.ts and signal.ts)
+// Public API (used by signal.ts)
 // ---------------------------------------------------------------------------
 
-/**
- * Returns the currently active subscriber (effect or computed being evaluated).
- * Used by the public signal() getter for DX-02 warning check.
- */
 export function getCurrentSubscriber(): SubscriberNode | null {
   return currentSubscriber
 }
 
+// ---------------------------------------------------------------------------
+// Linked list operations
+// ---------------------------------------------------------------------------
+
+/**
+ * Remove all of sub's tracked dependencies from their source subscriber lists,
+ * then clear sub's dep list. Called before re-running an effect or computed
+ * to discard stale subscriptions.
+ *
+ * Only touches the source's subscriber list (prevSub/nextSub pointers).
+ * The dep list is cleared by nulling depHead/depTail at the end.
+ */
+function clearDeps(sub: SubscriberNode): void {
+  let link = sub.depHead
+  while (link !== null) {
+    const prevSub = link.prevSub
+    const nextSub = link.nextSub
+    if (prevSub !== null) {
+      prevSub.nextSub = nextSub
+    } else {
+      link.source.subHead = nextSub
+    }
+    if (nextSub !== null) {
+      nextSub.prevSub = prevSub
+    } else {
+      link.source.subTail = prevSub
+    }
+    link = link.nextDep
+  }
+  sub.depHead = null
+  sub.depTail = null
+}
+
 /**
  * Register the current subscriber as a reader of this source.
- * Called during signal/computed reads.
+ * Creates a Link and appends it to both lists in O(1).
  */
 export function trackRead(source: SourceNode): void {
-  if (currentSubscriber !== null) {
-    source.subs.add(currentSubscriber)
-    currentSubscriber.deps.add(source)
+  if (currentSubscriber === null) return
+
+  const link: Link = {
+    source,
+    sub: currentSubscriber,
+    prevSub: source.subTail,
+    nextSub: null,
+    prevDep: currentSubscriber.depTail,
+    nextDep: null,
   }
+
+  // Append to source's subscriber list
+  if (source.subTail !== null) {
+    source.subTail.nextSub = link
+  } else {
+    source.subHead = link
+  }
+  source.subTail = link
+
+  // Append to subscriber's dep list
+  if (currentSubscriber.depTail !== null) {
+    currentSubscriber.depTail.nextDep = link
+  } else {
+    currentSubscriber.depHead = link
+  }
+  currentSubscriber.depTail = link
 }
 
 /**
  * Push dirty notifications to all subscribers of this source.
- * - Computed subscribers: mark Pending (lazy re-evaluation on next read)
- * - Effect subscribers: re-run synchronously (or queue if batching)
+ * Returns immediately if there are no subscribers (common case for fresh signals).
  */
 export function notifySubscribers(source: SourceNode): void {
-  // Re-entrant guard: if already notifying, queue this source
+  if (source.subHead === null) return  // fast path: no subscribers — zero overhead
+
   if (notifying) {
     pendingNotifications.push(source)
     return
   }
 
   notifying = true
+  notifyVersion++
 
   try {
     propagateDirty(source)
@@ -156,7 +272,7 @@ export function notifySubscribers(source: SourceNode): void {
     notifying = false
   }
 
-  // Flush queued notifications from re-entrant writes
+  // Flush any sources that were written to re-entrantly during notification
   if (pendingNotifications.length > 0) {
     const pending = pendingNotifications.splice(0)
     for (const pendingSource of pending) {
@@ -166,61 +282,67 @@ export function notifySubscribers(source: SourceNode): void {
 }
 
 /**
- * Propagate dirty notifications through the subscriber graph.
- * Must be called with notifying=true to prevent re-entrant notification loops.
+ * Walk the subscriber linked list and propagate dirty state.
+ *
+ * Computed nodes: mark Pending (lazy re-evaluation on next read).
+ * Effect nodes: run immediately (or enqueue if batching).
+ *
+ * We capture link.nextSub before running each effect. Running the effect
+ * calls clearDeps() which removes the effect's current links, then the
+ * effect re-reads its sources adding new links at the tail. The captured
+ * next pointer remains valid because we only removed the current link.
+ *
+ * The notifyVersion guard prevents double-execution: if an effect re-subscribes
+ * to this source during its own run, its new link appears at the tail.
+ * effect.notifyVersion === notifyVersion causes us to skip it.
  */
 function propagateDirty(source: SourceNode): void {
-  // Snapshot subscribers to avoid mutation during iteration.
-  // runEffect() calls source.subs.delete() on stale deps during re-run,
-  // which would mutate source.subs mid-iteration and corrupt V8's Set iterator.
-  const subs = [...source.subs]
+  let link = source.subHead
+  while (link !== null) {
+    const next = link.nextSub   // capture before any mutation
+    const sub = link.sub
 
-  for (const sub of subs) {
-    if (sub._type === 'computed') {
+    if (sub.nodeType === NodeType.Computed) {
       const computed = sub as ComputedNode<unknown>
       if (computed.state === ComputedState.Clean) {
-        // Mark dirty and propagate to computed's own subscribers
         computed.state = ComputedState.Pending
-        if (computed.subs.size > 0) {
+        if (computed.subHead !== null) {
           propagateDirty(computed)
         }
       }
-    } else if (sub._type === 'effect') {
+    } else {
       const effect = sub as EffectNode
-      if (!effect.disposed) {
+      if (!effect.disposed && effect.notifyVersion !== notifyVersion) {
+        effect.notifyVersion = notifyVersion
         if (isBatching) {
-          batchedEffects.add(effect) // Set.add() is idempotent — no .includes() check needed
+          batchedEffects.add(effect)
         } else {
           runEffect(effect)
         }
       }
     }
+
+    link = next
   }
 }
 
 /**
- * Run an effect: fire cleanup callbacks, clear stale deps, re-track deps.
+ * Run an effect: fire cleanup callbacks, clear stale deps, re-run.
  */
 function runEffect(effect: EffectNode): void {
   if (effect.disposed) return
 
-  // 1. Fire onCleanup callbacks registered in the previous run (Pitfall 5)
-  //    These are callbacks registered via onCleanup() inside the effect body.
-  for (const fn of effect.cleanupFns) {
-    fn()
+  // Fire onCleanup callbacks from the previous run
+  if (effect.cleanupFns !== null) {
+    for (const fn of effect.cleanupFns) {
+      fn()
+    }
+    effect.cleanupFns = null
   }
-  effect.cleanupFns = []
 
-  // 2. Clear stale dependency subscriptions (prevent ghost subscriptions, Pitfall 1)
-  for (const source of effect.deps) {
-    source.subs.delete(effect)
-  }
-  effect.deps.clear()
+  // Clear stale subscriptions before re-tracking
+  clearDeps(effect)
 
-  // 3. Run the effect function under this subscriber context.
-  //    Set the effect as the current cleanup target so that onCleanup() calls
-  //    inside the effect body register on effect.cleanupFns (per-run cleanup)
-  //    rather than on the owner's cleanup list (disposal-only cleanup).
   const prevSubscriber = currentSubscriber
   currentSubscriber = effect
   setCurrentEffectCleanupTarget(effect)
@@ -237,44 +359,31 @@ function runEffect(effect: EffectNode): void {
 // Node constructors
 // ---------------------------------------------------------------------------
 
-/**
- * Create an internal signal node with an initial value.
- */
 export function createSignalNode<T>(value: T): SignalNode<T> {
   return {
-    _type: 'signal',
+    nodeType: NodeType.Signal,
     value,
-    subs: new Set(),
+    subHead: null,
+    subTail: null,
   }
 }
 
-/**
- * Create a lazy computed node.
- *
- * @param fn - The function to evaluate when the computed value is needed.
- * @param owner - The owner scope this computed belongs to (for disposal).
- *
- * The fn is NOT called here — the first call to readComputedNode() triggers it.
- */
 export function createComputedNode<T>(fn: () => T, owner: OwnerRef | null = null): ComputedNode<T> {
   const node: ComputedNode<T> = {
-    _type: 'computed',
+    nodeType: NodeType.Computed,
     fn,
-    value: undefined as unknown as T, // will be set on first read
-    state: ComputedState.Pending,     // needs evaluation
+    value: undefined as unknown as T,
+    state: ComputedState.Pending,
     computing: false,
-    subs: new Set(),
-    deps: new Set(),
+    subHead: null,
+    subTail: null,
+    depHead: null,
+    depTail: null,
     owner,
     cleanup() {
-      // Remove from all source subscriptions (called on computed disposal)
-      for (const source of node.deps) {
-        source.subs.delete(node)
-      }
-      node.deps.clear()
+      clearDeps(node)
     },
     run() {
-      // Computed "run" = mark as pending for lazy re-evaluation
       node.state = ComputedState.Pending
     },
   }
@@ -282,34 +391,26 @@ export function createComputedNode<T>(fn: () => T, owner: OwnerRef | null = null
 }
 
 /**
- * Read a computed node's current value, re-evaluating if dirty (Pending).
- * Called by the public computed() getter.
+ * Read a computed node's current value, re-evaluating if dirty.
  */
 export function readComputedNode<T>(node: ComputedNode<T>): T {
   if (node.state === ComputedState.Clean) {
-    // Still up to date — track read and return cached value
     trackRead(node)
     return node.value
   }
 
-  // Circular dependency detection (Pitfall 4)
   if (node.computing) {
     if (import.meta.env.DEV) {
       throw new Error(
         '[Streem] Circular dependency detected: a computed value depends on itself.',
       )
     }
-    // In prod: return last cached value to break the cycle
     return node.value
   }
 
-  // 1. Clear stale subscriptions before re-evaluating
-  for (const source of node.deps) {
-    source.subs.delete(node)
-  }
-  node.deps.clear()
+  // Clear stale subscriptions before re-evaluating
+  clearDeps(node)
 
-  // 2. Evaluate under this computed as the active subscriber
   const prevSubscriber = currentSubscriber
   currentSubscriber = node
   node.computing = true
@@ -322,50 +423,36 @@ export function readComputedNode<T>(node: ComputedNode<T>): T {
     currentSubscriber = prevSubscriber
   }
 
-  // 3. Register this computed as a dependency of the outer subscriber (if any)
+  // Register this computed as a dependency of the outer subscriber (if any)
   trackRead(node)
 
   return node.value
 }
 
-/**
- * Create an eager effect node and run it immediately.
- *
- * @param fn - The effect function to run.
- * @param owner - The owner scope this effect belongs to (for disposal and cleanup registration).
- *
- * The effect re-runs synchronously whenever any tracked dependency changes.
- * The owner is responsible for calling disposeEffect(effect) on scope disposal.
- *
- * Note: The effect does NOT register itself with owner.cleanups here.
- * The public effect() wrapper in signal.ts (Plan 01-02) handles that by calling
- * onCleanup(() => disposeEffect(effect)) after creation.
- */
 export function createEffectNode(fn: () => void, owner: OwnerRef | null = null): EffectNode {
   const effect: EffectNode = {
-    _type: 'effect',
+    nodeType: NodeType.Effect,
     fn,
-    deps: new Set(),
+    depHead: null,
+    depTail: null,
     owner,
-    cleanupFns: [],
+    cleanupFns: null,   // lazy — only allocated when onCleanup() is called
     disposed: false,
+    notifyVersion: 0,
     cleanup() {
-      // Full cleanup: remove subscriptions and fire registered cleanups
-      for (const source of effect.deps) {
-        source.subs.delete(effect)
+      clearDeps(effect)
+      if (effect.cleanupFns !== null) {
+        for (const fn of effect.cleanupFns) {
+          fn()
+        }
+        effect.cleanupFns = null
       }
-      effect.deps.clear()
-      for (const cleanupFn of effect.cleanupFns) {
-        cleanupFn()
-      }
-      effect.cleanupFns = []
     },
     run() {
       runEffect(effect)
     },
   }
 
-  // Run immediately on creation
   runEffect(effect)
 
   return effect
@@ -379,15 +466,12 @@ export function disposeEffect(effect: EffectNode): void {
   if (effect.disposed) return
   effect.disposed = true
 
-  // Fire registered cleanup callbacks one final time
-  for (const fn of effect.cleanupFns) {
-    fn()
+  if (effect.cleanupFns !== null) {
+    for (const fn of effect.cleanupFns) {
+      fn()
+    }
+    effect.cleanupFns = null
   }
-  effect.cleanupFns = []
 
-  // Remove from all source subscriptions
-  for (const source of effect.deps) {
-    source.subs.delete(effect)
-  }
-  effect.deps.clear()
+  clearDeps(effect)
 }
