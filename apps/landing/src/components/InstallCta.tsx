@@ -3,6 +3,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/badge/badge.js'
 // This import makes TypeScript pick up the augmented JSX.IntrinsicElements
 import '@streem/lit'
+import styles from './InstallCta.module.css'
 
 const VERSION = '0.1.0'
 
@@ -18,20 +19,20 @@ export function InstallCta() {
   }
 
   return (
-    <section class="cta-section">
+    <section class={styles.ctaSection}>
       <div class="container">
         {/* sl-badge: version tag with typed prop:variant */}
-        <div class="cta-badge">
+        <div class={styles.ctaBadge}>
           <sl-badge prop:variant="neutral" prop:pill={true}>{VERSION}</sl-badge>
         </div>
 
-        <h2 class="cta-title">Ready to build?</h2>
-        <p class="cta-sub">
+        <h2 class={styles.ctaTitle}>Ready to build?</h2>
+        <p class={styles.ctaSub}>
           Bootstrap a new project or drop Streem into an existing Vite app.
           No build plugin required.
         </p>
 
-        <div class="cta-actions">
+        <div class={styles.ctaActions}>
           {/* sl-button: primary CTA — on:click fires directly (Shadow DOM event retargeting safe) */}
           <sl-button
             prop:variant="primary"
@@ -50,41 +51,10 @@ export function InstallCta() {
           </sl-button>
         </div>
 
-        <p class="cta-footnote">
+        <p class={styles.ctaFootnote}>
           Open source · TypeScript · Zero runtime dependencies beyond <code>alien-signals</code>
         </p>
       </div>
-
-      <style>{`
-        .cta-section {
-          text-align: center;
-          padding: 100px 0;
-          background: linear-gradient(to bottom, var(--color-bg), var(--color-surface));
-        }
-        .cta-badge { margin-bottom: 20px; }
-        .cta-title {
-          font-size: clamp(1.8rem, 4vw, 2.8rem);
-          font-weight: 700;
-          margin-bottom: 16px;
-        }
-        .cta-sub {
-          color: var(--color-muted);
-          font-size: 1.1rem;
-          max-width: 500px;
-          margin: 0 auto 40px;
-        }
-        .cta-actions {
-          display: flex;
-          gap: 16px;
-          justify-content: center;
-          flex-wrap: wrap;
-          margin-bottom: 24px;
-        }
-        .cta-footnote {
-          color: var(--color-muted);
-          font-size: 14px;
-        }
-      `}</style>
     </section>
   )
 }

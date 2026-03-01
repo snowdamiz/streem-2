@@ -2,6 +2,7 @@ import { signal, effect, Suspense, For, ErrorBoundary } from 'streem'
 import { fromObservable, batch, throttle } from 'streem'
 import { createTickerSource, SYMBOLS } from '../lib/ticker'
 import { buildSparklinePath } from '../lib/sparkline'
+import styles from './TickerDemo.module.css'
 
 interface TickerRow {
   symbol: string
@@ -17,7 +18,7 @@ interface TickerRow {
 // Skeleton shown by <Suspense> until the first stream tick arrives.
 function TickerSkeleton(): Node {
   return (
-    <table class="ticker-table ticker-skeleton">
+    <table class={styles.tickerTable + ' ' + styles.tickerSkeleton}>
       <thead>
         <tr>
           <th>Symbol</th>
@@ -28,11 +29,11 @@ function TickerSkeleton(): Node {
       </thead>
       <tbody>
         {SYMBOLS.map(symbol => (
-          <tr class="ticker-row">
-            <td class="ticker-symbol">{symbol}</td>
-            <td><span class="skeleton-cell" /></td>
-            <td><span class="skeleton-cell" /></td>
-            <td><span class="skeleton-cell skeleton-wide" /></td>
+          <tr class={styles.tickerRow}>
+            <td class={styles.tickerSymbol}>{symbol}</td>
+            <td><span class={styles.skeletonCell} /></td>
+            <td><span class={styles.skeletonCell} /></td>
+            <td><span class={[styles.skeletonCell, styles.skeletonWide]} /></td>
           </tr>
         ))}
       </tbody>
@@ -57,17 +58,17 @@ function Sparkline({ history }: { history: () => number[] }): Node {
 
 function TickerRowComponent({ row }: { row: TickerRow }): Node {
   return (
-    <tr class="ticker-row">
-      <td class="ticker-symbol">{row.symbol}</td>
-      <td class="ticker-price">${() => row.price().toFixed(2)}</td>
+    <tr class={styles.tickerRow}>
+      <td class={styles.tickerSymbol}>{row.symbol}</td>
+      <td class={styles.tickerPrice}>${() => row.price.value.toFixed(2)}</td>
       <td
-        class="ticker-change"
-        style={() => `color: ${row.change() >= 0 ? 'var(--color-green)' : 'var(--color-red)'}`}
+        class={styles.tickerChange}
+        style={() => `color: ${row.change.value >= 0 ? 'var(--color-green)' : 'var(--color-red)'}`}
       >
-        {() => (row.change() >= 0 ? '+' : '') + row.change().toFixed(3) + '%'}
+        {() => (row.change.value >= 0 ? '+' : '') + row.change.value.toFixed(3) + '%'}
       </td>
-      <td class="ticker-sparkline">
-        <Sparkline history={row.history} />
+      <td class={styles.tickerSparkline}>
+        <Sparkline history={() => row.history.value} />
       </td>
     </tr>
   ) as unknown as Node
@@ -99,7 +100,7 @@ export function TickerDemo(): Node {
   let initialResolved = false
 
   effect(() => {
-    const ticks = throttledStream()
+    const ticks = throttledStream.value
     if (!ticks) return
     if (!initialResolved) {
       initialResolved = true
@@ -127,7 +128,7 @@ export function TickerDemo(): Node {
   function TickerTable(): Node {
     if (!initialResolved) throw initialPromise
     return (
-      <table class="ticker-table">
+      <table class={styles.tickerTable}>
         <thead>
           <tr>
             <th>Symbol</th>
@@ -146,7 +147,7 @@ export function TickerDemo(): Node {
   }
 
   return (
-    <section class="ticker-section">
+    <section class={styles.tickerSection}>
       <div class="container">
         <div class="section-label">Live streaming demo</div>
         <h2 class="section-title">Real-time data, zero overhead</h2>
@@ -169,68 +170,6 @@ export function TickerDemo(): Node {
           }) as Node}
         </ErrorBoundary>
       </div>
-
-      <style>{`
-        .ticker-section { background: var(--color-surface); }
-        .section-label {
-          font-size: 11px;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          color: var(--color-accent);
-          margin-bottom: 12px;
-        }
-        .section-title {
-          font-size: clamp(1.5rem, 3vw, 2.2rem);
-          font-weight: 700;
-          margin-bottom: 12px;
-        }
-        .section-sub {
-          color: var(--color-muted);
-          margin-bottom: 32px;
-          max-width: 560px;
-        }
-        .ticker-table {
-          width: 100%;
-          border-collapse: collapse;
-          font-family: var(--font-mono);
-          font-size: 14px;
-        }
-        .ticker-table th {
-          text-align: left;
-          padding: 10px 16px;
-          border-bottom: 1px solid var(--color-border);
-          color: var(--color-muted);
-          font-size: 11px;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          font-weight: 500;
-        }
-        .ticker-row td {
-          padding: 12px 16px;
-          border-bottom: 1px solid var(--color-border);
-          vertical-align: middle;
-        }
-        .ticker-symbol { font-weight: 600; color: var(--color-text); }
-        .ticker-price { color: var(--color-text); }
-        .ticker-sparkline { width: 100px; }
-        .ticker-error {
-          padding: 20px;
-          color: var(--color-red);
-          border: 1px solid var(--color-red);
-          border-radius: var(--radius);
-        }
-        /* Skeleton styles */
-        .skeleton-cell {
-          display: inline-block;
-          height: 14px;
-          width: 60px;
-          background: var(--color-border);
-          border-radius: 3px;
-          opacity: 0.5;
-        }
-        .skeleton-wide { width: 80px; }
-        .ticker-skeleton .ticker-row td { opacity: 0.6; }
-      `}</style>
     </section>
   ) as unknown as Node
 }

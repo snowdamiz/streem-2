@@ -79,3 +79,24 @@ pre code {
   padding: 0;
   font-size: inherit;
 }
+
+/* Shared section typography */
+.section-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.section-sub {
+  color: var(--color-muted);
+  margin-bottom: 32px;
+  max-width: 560px;
+}

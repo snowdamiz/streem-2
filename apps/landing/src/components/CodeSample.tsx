@@ -1,4 +1,5 @@
 import { signal } from 'streem'
+import styles from './CodeSample.module.css'
 
 const SAMPLE_CODE = `import { signal, computed, effect } from 'streem'
 import { fromWebSocket, batch } from 'streem'
@@ -36,69 +37,23 @@ export function CodeSample() {
   }
 
   return (
-    <section class="code-section">
+    <section class={styles.codeSection}>
       <div class="container">
         <div class="section-label">Zero config</div>
         <h2 class="section-title">Write signals like variables, not reducers</h2>
         <p class="section-sub">
           One import. No context providers. No dependency arrays. TypeScript out of the box.
         </p>
-        <div class="code-wrapper">
-          <div class="code-header">
-            <span class="code-filename">ticker.tsx</span>
-            <button class="copy-btn" onclick={copyCode}>
-              {() => copied() ? '✓ Copied' : 'Copy'}
+        <div class={styles.codeWrapper}>
+          <div class={styles.codeHeader}>
+            <span class={styles.codeFilename}>ticker.tsx</span>
+            <button class={styles.copyBtn} onclick={copyCode}>
+              {() => copied.value ? '✓ Copied' : 'Copy'}
             </button>
           </div>
-          <pre class="code-block"><code>{SAMPLE_CODE}</code></pre>
+          <pre class={styles.codeBlock}><code>{SAMPLE_CODE}</code></pre>
         </div>
       </div>
-
-      <style>{`
-        .code-section { background: var(--color-surface); }
-        .section-sub {
-          color: var(--color-muted);
-          margin-bottom: 32px;
-          max-width: 560px;
-        }
-        .code-wrapper {
-          border: 1px solid var(--color-border);
-          border-radius: var(--radius);
-          overflow: hidden;
-        }
-        .code-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 10px 16px;
-          background: var(--color-bg);
-          border-bottom: 1px solid var(--color-border);
-        }
-        .code-filename {
-          font-family: var(--font-mono);
-          font-size: 13px;
-          color: var(--color-muted);
-        }
-        .copy-btn {
-          background: none;
-          border: 1px solid var(--color-border);
-          border-radius: 4px;
-          color: var(--color-text);
-          font-size: 12px;
-          padding: 3px 10px;
-          cursor: pointer;
-          font-family: var(--font-mono);
-        }
-        .copy-btn:hover { border-color: var(--color-accent); }
-        .code-block {
-          border: none;
-          border-radius: 0;
-          padding: 24px;
-          font-size: 13px;
-          max-height: 400px;
-          overflow-y: auto;
-        }
-      `}</style>
     </section>
   )
 }

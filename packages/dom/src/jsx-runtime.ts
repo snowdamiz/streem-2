@@ -13,7 +13,7 @@
  * Forwarding key to h()'s ...children rest args would overwrite props.children.
  */
 import { h, Fragment } from './h.js'
-import type { CSSProperties } from './types.js'
+import type { ClassValue, CSSProperties } from './types.js'
 
 export function jsx(
   type: Parameters<typeof h>[0],
@@ -51,8 +51,8 @@ export namespace JSX {
       // e.g. <p>Count: {() => count()}</p> — mixed string + accessor array.
       children?: unknown
       ref?: (el: HTMLElement) => void
-      class?: string | (() => string)
-      classList?: Record<string, boolean> | (() => Record<string, boolean>)
+      class?: ClassValue | (() => ClassValue)
+      className?: ClassValue | (() => ClassValue)
       style?: CSSProperties | (() => CSSProperties)
     }
   }

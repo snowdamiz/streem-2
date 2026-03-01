@@ -1,0 +1,83 @@
+.hero {
+  padding: 100px 0 80px;
+  text-align: center;
+}
+
+.heroBadge {
+  margin-bottom: 16px;
+}
+
+.heroHeadline {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  max-width: 800px;
+  margin: 0 auto 20px;
+}
+
+.heroSub {
+  font-size: 1.2rem;
+  color: var(--color-muted);
+  max-width: 600px;
+  margin: 0 auto 48px;
+}
+
+.heroDemo {
+  display: inline-block;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 24px 32px;
+  margin-bottom: 32px;
+}
+
+.demoLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+  margin-bottom: 16px;
+}
+
+.demoValues {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+
+.demoCell {
+  text-align: center;
+}
+
+.demoValue {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.accent {
+  color: var(--color-accent);
+}
+
+.demoCaption {
+  font-size: 12px;
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+}
+
+.heroInstall {
+  margin-top: 8px;
+}
+
+.installCmd {
+  display: inline-block;
+  padding: 10px 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  cursor: pointer;
+}

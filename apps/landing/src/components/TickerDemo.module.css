@@ -1,0 +1,67 @@
+.tickerSection {
+  background: var(--color-surface);
+}
+
+.tickerTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.tickerTable th {
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+.tickerRow td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.tickerSymbol {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.tickerPrice {
+  color: var(--color-text);
+}
+
+.tickerChange {}
+
+.tickerSparkline {
+  width: 100px;
+}
+
+.tickerError {
+  padding: 20px;
+  color: var(--color-red);
+  border: 1px solid var(--color-red);
+  border-radius: var(--radius);
+}
+
+/* Skeleton styles */
+.skeletonCell {
+  display: inline-block;
+  height: 14px;
+  width: 60px;
+  background: var(--color-border);
+  border-radius: 3px;
+  opacity: 0.5;
+}
+
+.skeletonWide {
+  width: 80px;
+}
+
+.tickerSkeleton .tickerRow td {
+  opacity: 0.6;
+}
