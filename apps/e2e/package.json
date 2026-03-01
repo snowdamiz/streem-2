@@ -1,0 +1,14 @@
+{
+  "name": "@streem/e2e",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:cli": "playwright test cli-scaffold",
+    "test:hmr": "playwright test hmr-signal"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0"
+  }
+}
