@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Documentation & DX Polish
 status: in_progress
-last_updated: "2026-03-01T22:16:26Z"
+last_updated: "2026-03-01T22:29:18Z"
 progress:
   total_phases: 1
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 3
+  completed_plans: 3
 ---
 
 # Project State
@@ -18,23 +18,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-01)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 14 — Docs Visual Polish (complete)
+**Current focus:** Phase 15 — Docs Content Expansion (in progress)
 
 ## Current Position
 
-Phase: 14 of 16 (Docs Visual Polish)
-Plan: 2 of 2 (completed)
-Status: Phase 14 complete — both plans done
-Last activity: 2026-03-01 — 14-02 complete: mobile layout polish for 375px viewport
+Phase: 15 of 16 (Docs Content Expansion)
+Plan: 1 of 1 (completed)
+Status: Phase 15 plan 01 complete — docs sections expanded, Patterns section added
+Last activity: 2026-03-01 — 15-01 complete: expanded five docs sections + Patterns nav item and section
 
-Progress: [██░░░░░░░░] 12%
+Progress: [███░░░░░░░] 18%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2 (this milestone)
-- Average duration: 2 min
-- Total execution time: 5 min
+- Total plans completed: 3 (this milestone)
+- Average duration: 3 min
+- Total execution time: 9 min
 
 **By Phase:**
 
@@ -42,9 +42,10 @@ Progress: [██░░░░░░░░] 12%
 |-------|-------|-------|----------|
 | 13 (Landing Page Bar Chart) | 1/2 | 4 min | 4 min |
 | 14 (Docs Visual Polish) | 2/2 | 2 min | 1 min |
+| 15 (Docs Content Expansion) | 1/1 | 4 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 2 min
+- Last 5 plans: 4 min
 - Trend: Fast
 
 *Updated after each plan completion*
@@ -82,6 +83,11 @@ Decisions from 14-02:
 - flex-shrink: 0 on docs-nav-brand ensures logo never gets squeezed at narrow widths
 - min-width: 0 on docs-main prevents CSS grid blowout
 
+Decisions from 15-01:
+- All code examples in PatternsSection are complete and runnable — no pseudocode stubs or TODO placeholders
+- doc-section-subtitle CSS added to the single inline style block inside DocsApp to keep styles co-located
+- PatternsSection wired via Show when currentPage.value === 'patterns' matching existing section pattern
+
 ### Pending Todos
 
 None.
@@ -101,5 +107,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed 14-02-PLAN.md — mobile layout polish for 375px viewport docs
+Stopped at: Completed 15-01-PLAN.md — docs content expansion: five expanded sections + Patterns nav item and section
 Resume file: None
