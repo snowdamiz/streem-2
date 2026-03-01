@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Documentation & DX Polish
-status: in-progress
-last_updated: "2026-03-01T23:44:33Z"
+status: unknown
+last_updated: "2026-03-01T23:49:37.325Z"
 progress:
-  total_phases: 3
+  total_phases: 4
   completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 8
+  completed_plans: 7
 ---
 
 # Project State
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 ## Current Position
 
 Phase: 16 of 16 (Docs New Reference Sections)
-Plan: 1 of 1 (completed)
-Status: Phase 16 plan 01 complete — Styling reference section added to docs
-Last activity: 2026-03-01 — 16-01 complete: StylingSection with CSS Modules, Tailwind v4, style objects + nav wiring
+Plan: 2 of 3 (completed)
+Status: Phase 16 plan 02 complete — TypeScript reference section added to docs
+Last activity: 2026-03-01 — 16-02 complete: TypeScriptSection with five subsections + nav wiring + cross-links
 
 Progress: [███░░░░░░░] 18%
 
@@ -43,13 +43,14 @@ Progress: [███░░░░░░░] 18%
 | 13 (Landing Page Bar Chart) | 1/2 | 4 min | 4 min |
 | 14 (Docs Visual Polish) | 2/2 | 2 min | 1 min |
 | 15 (Docs Content Expansion) | 1/1 | 4 min | 4 min |
-| 16 (Docs New Reference Sections) | 1/1 | 1 min | 1 min |
+| 16 (Docs New Reference Sections) | 2/3 | 3 min | 1.5 min |
 
 **Recent Trend:**
 - Last 5 plans: 2 min
 - Trend: Fast
 
 *Updated after each plan completion*
+| Phase 16 P02 | 2 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,8 @@ Decisions from 16-01:
 - StylingSection positioned after PatternsSection, before DocsApp export
 - .docs-link CSS added to inline style block alongside existing doc styles
 - Cross-link placed before Counter example in GettingStartedSection for natural read order
+- [Phase 16]: Curly braces inside JSX text <code> tags must use JSX expression syntax {'{'} not literal characters — fixes TS1109 parse error
+- [Phase 16]: TypeScriptSection wired as 8th NAV_ITEM with cross-links from SignalsSection and ComponentsSection
 
 ### Pending Todos
 
@@ -114,5 +117,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed 16-01-PLAN.md — Styling reference section: StylingSection + nav item + Show block + cross-link
+Stopped at: Completed 16-02-PLAN.md — TypeScript reference section: TypeScriptSection + nav item + Show block + cross-links
 Resume file: None
