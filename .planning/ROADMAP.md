@@ -88,7 +88,7 @@ Plans:
 Plans:
 - [ ] 09.1-01-PLAN.md — Eliminate array spread in propagateDirty, O(1) batching deduplication, lazy Owner array init (PERF-OPT-01)
 - [ ] 09.1-02-PLAN.md — Add primitive-only benchmark variants (no createRoot) for apples-to-apples comparison against Preact (PERF-OPT-02)
-- [ ] 09.1-03-PLAN.md — Rebuild @streem/core, re-run benchmarks, update BENCHMARKS.md with Phase 9.1 results (PERF-OPT-01, PERF-OPT-02)
+- [x] 09.1-03-PLAN.md — Rebuild @streem/core, re-run benchmarks, update BENCHMARKS.md with Phase 9.1 results (PERF-OPT-01, PERF-OPT-02) (completed 2026-03-01)
 
 ### Phase 10: Landing Page Polish
 **Goal**: The public landing page displays a Streem-built bar chart of benchmark results and is fully migrated from inline style strings to CSS Modules and style objects
@@ -116,5 +116,5 @@ Plans:
 | 7. Package Quality | v1.1 | 4/4 | Complete | 2026-02-28 |
 | 8. E2E Test Coverage | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 9. Performance Benchmarks | v1.1 | 2/2 | Complete | 2026-03-01 |
-| 9.1. Optimize Signal Benchmarks | 1/3 | In Progress|  | - |
+| 9.1. Optimize Signal Benchmarks | 3/3 | Complete   | 2026-03-01 | - |
 | 10. Landing Page Polish | v1.1 | 0/TBD | Not started | - |

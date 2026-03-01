@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Quality & Polish
 status: unknown
-last_updated: "2026-03-01T04:30:46.270Z"
+last_updated: "2026-03-01T04:34:10Z"
 progress:
   total_phases: 4
   completed_phases: 3
-  total_plans: 11
-  completed_plans: 10
+  total_plans: 12
+  completed_plans: 11
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 9.1 of 10 (Optimize Signal Benchmarks — COMPLETE)
-Plan: 02 (completed — 2 of 2 plans done — Phase 9.1 COMPLETE)
+Plan: 03 (completed — 3 of 3 plans done — Phase 9.1 COMPLETE)
 Status: Phase 9.1 complete — ready for Phase 10
-Last activity: 2026-03-01 — 09.1-02 complete (primitive-only benchmark variants added to all 3 suites for apples-to-apples comparison with Preact)
+Last activity: 2026-02-28 — 09.1-03 complete (BENCHMARKS.md updated with Phase 9.1 results, 4-row tables, Phase 9.1 Optimizations section, baseline comparison)
 
-Progress: [█████░░░░░] 50% (v1.1 — 6 of 12 plans complete)
+Progress: [█████░░░░░] 52% (v1.1 — 7 of 13 plans complete)
 
 ## Performance Metrics
 
@@ -56,6 +56,7 @@ Progress: [█████░░░░░] 50% (v1.1 — 6 of 12 plans complete)
 | Phase 09.1 P01 | 1 | 2 tasks | 5 files |
 | Phase 09.1 P02 | 2 | 2 tasks | 3 files |
 | Phase 09.1-01 P01 | 13 | 2 tasks | 2 files |
+| Phase 09.1 P03 | 2 | 2 tasks | 1 file |
 
 ## Accumulated Context
 
@@ -94,6 +95,7 @@ Recent decisions affecting current work:
 - [Phase 09.1-01]: batchedEffects changed from EffectNode[] to Set<EffectNode> for O(1) dedup — Array.includes O(n) scan eliminated
 - [Phase 09.1-01]: propagateDirty snapshot [...source.subs] retained — direct Set iteration unsafe: runEffect() mutates source.subs via delete() mid-loop causing V8 OOM crash
 - [Phase 09.1-01]: Owner.children and Owner.cleanups lazy-init to null — no empty array allocation for roots that never register children or cleanups
+- [Phase 09.1-03]: BENCHMARKS.md rewritten with Phase 9.1 results — 4-row tables, Phase 9.1 Optimizations section, baseline comparison (signal with-root: +12% vs Phase 9)
 
 ### Pending Todos
 
@@ -105,6 +107,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-01T04:17:42Z
-Stopped at: Completed 09.1-02-PLAN.md (primitive-only benchmark variants added to signal/computed/effect suites — Phase 9.1 COMPLETE)
+Last session: 2026-03-01T04:34:10Z
+Stopped at: Completed 09.1-03-PLAN.md (BENCHMARKS.md updated with Phase 9.1 results — Phase 9.1 COMPLETE)
 Resume file: None
