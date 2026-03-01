@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { id: 'streams', label: 'Streams' },
   { id: 'lit-interop', label: 'Lit interop' },
   { id: 'patterns', label: 'Patterns' },
+  { id: 'styling', label: 'Styling' },
 ]
 
 function getPage(): string {
@@ -43,6 +44,7 @@ function GettingStartedSection(): Node {
       <Code>{`npm create streem@latest`}</Code>
       <p>Or install manually in an existing Vite project:</p>
       <Code>{`npm install streem\n\n# tsconfig.json\n{\n  "compilerOptions": {\n    "jsx": "react-jsx",\n    "jsxImportSource": "streem"\n  }\n}\n\n# vite.config.ts\nimport { defineConfig } from 'vite'\nimport { streemHMR } from 'streem'\n\nexport default defineConfig({\n  plugins: [streemHMR()]\n})`}</Code>
+      <p>For styling setup (CSS Modules or Tailwind v4), see the <a href="#styling" class="docs-link">Styling guide</a>.</p>
       <p>Here is a minimal counter app to verify everything works:</p>
       <Code>{`import { signal } from 'streem'\n\nexport function Counter() {\n  const count = signal(0)\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button on:click={() => count.set(count() + 1)}>+1</button>\n    </div>\n  )\n}`}</Code>
       <p>TypeScript tip: streem infers the type from the initial value. For explicit typing use <code>signal&lt;number&gt;(0)</code>.</p>
@@ -205,6 +207,9 @@ export function DocsApp(): Node {
           </Show>
           <Show when={() => currentPage.value === 'patterns'}>
             {() => PatternsSection()}
+          </Show>
+          <Show when={() => currentPage.value === 'styling'}>
+            {() => StylingSection()}
           </Show>
         </div>
       </main>
