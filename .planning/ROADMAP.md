@@ -119,5 +119,5 @@ Plans:
 | 12. Add Tailwind Support | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 13. Landing Page Bar Chart | v1.2 | 1/2 | In progress | - |
 | 14. Docs Visual Polish | v1.2 | 2/2 | Complete | 2026-03-01 |
-| 15. Docs Content Expansion | 1/1 | Complete   | 2026-03-01 | - |
+| 15. Docs Content Expansion | 1/1 | Complete    | 2026-03-01 | - |
 | 16. Docs New Reference Sections | v1.2 | 0/TBD | Not started | - |
