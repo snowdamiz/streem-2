@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Quality & Polish
 status: unknown
-last_updated: "2026-03-01T04:17:42Z"
+last_updated: "2026-03-01T04:30:46.270Z"
 progress:
-  total_phases: 3
+  total_phases: 4
   completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 11
+  completed_plans: 10
 ---
 
 # Project State
@@ -55,6 +55,7 @@ Progress: [█████░░░░░] 50% (v1.1 — 6 of 12 plans complete)
 | Phase 09 P02 | 3 | 2 tasks | 2 files |
 | Phase 09.1 P01 | 1 | 2 tasks | 5 files |
 | Phase 09.1 P02 | 2 | 2 tasks | 3 files |
+| Phase 09.1-01 P01 | 13 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -90,6 +91,9 @@ Recent decisions affecting current work:
 - [Phase 09.1-02]: Primitive-only variants use public API outside createRoot — prod dist strips DEV warnings so no warning overhead
 - [Phase 09.1-02]: effect() primitive-only uses manual stop() dispose matching Preact's cleanup() return pattern for structurally identical comparison
 - [Phase 09.1-02]: Relabeled existing @streem/core variants to '(with createRoot)' — contrast with '(primitive only)' makes scope explicit
+- [Phase 09.1-01]: batchedEffects changed from EffectNode[] to Set<EffectNode> for O(1) dedup — Array.includes O(n) scan eliminated
+- [Phase 09.1-01]: propagateDirty snapshot [...source.subs] retained — direct Set iteration unsafe: runEffect() mutates source.subs via delete() mid-loop causing V8 OOM crash
+- [Phase 09.1-01]: Owner.children and Owner.cleanups lazy-init to null — no empty array allocation for roots that never register children or cleanups
 
 ### Pending Todos
 
