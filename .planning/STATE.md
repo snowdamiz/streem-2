@@ -60,6 +60,7 @@ Progress: [████████▌ ] 93% (v1.2 — 15 of 16 plans complete)
 | Phase 11 P01 | 2 | 3 tasks | 5 files |
 | Phase 11 P02 | 2 | 1 tasks | 1 files |
 | Phase 11 P03 | 3 | 2 tasks | 14 files |
+| Phase 12 P01 | 3 | 2 tasks | 9 files |
 | Phase 12 P02 | 1 | 2 tasks | 6 files |
 
 ## Accumulated Context
@@ -109,6 +110,9 @@ Recent decisions affecting current work:
 - [Phase Phase 11-02]: Tests follow the API established in Plan 01 exactly; no new decisions needed
 - [Phase 11-03]: Shared presentational classes (.section-label, .section-title, .section-sub) moved to global.css — used across 3 components, duplication avoided
 - [Phase 11-03]: jsx-runtime.ts class prop type changed from string|(() => string) to ClassValue|(()=>ClassValue) — Plan 01 updated types.ts but left jsx-runtime.ts stale
+- [Phase 12-01]: tailwind() plugin placed before streemHMR() in landing vite.config.ts — Tailwind processes CSS before HMR plugin
+- [Phase 12-01]: @import "tailwindcss" must be first line of CSS entry; Tailwind utility classes land in jsx-runtime CSS chunk (not main CSS chunk with CSS Module hashes)
+- [Phase 12-01]: ClassValue static arrays are safe for Tailwind class scanning — no dynamic class construction in landing page, no safelist needed
 - [Phase 12]: tailwind() plugin before streemHMR() in plugins array; no postcss/tailwind config files — Tailwind v4 is plugin-driven
 - [Phase 12]: All Tailwind classes in App.tsx are static string literals — build-time scanning works without dynamic construction
 
@@ -122,6 +126,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-01T07:48:13Z
-Stopped at: Completed 12-02-PLAN.md (Tailwind v4 baked into create-streem default template — plan 2 of 3)
+Last session: 2026-03-01T07:30:23Z
+Stopped at: Completed 12-01-PLAN.md (Tailwind v4 landing page dogfood integration — Tailwind + CSS Modules coexistence proven)
 Resume file: None

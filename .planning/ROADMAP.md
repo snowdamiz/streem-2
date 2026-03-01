@@ -136,7 +136,7 @@ Plans:
 **Goal:** Tailwind CSS v4 is proven working with Streem JSX via the landing page integration (coexisting with CSS Modules), then baked into the create-streem default template so every new project starts Tailwind-ready
 **Requirements**: TBD
 **Depends on:** Phase 11
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 12-01-PLAN.md — Add @tailwindcss/vite to landing page, wire plugin, add @import "tailwindcss" to global.css, apply utility classes alongside CSS Modules
