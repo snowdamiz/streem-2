@@ -1,4 +1,5 @@
 import './styles/global.css'
+import { highlight } from './lib/highlight'
 
 const NAV_ITEMS = [
   { id: 'getting-started', label: 'Getting started' },
@@ -18,7 +19,12 @@ function DocSection({ id, title, children }: { id: string; title: string; childr
 }
 
 function Code({ children }: { children: string }) {
-  return <pre class="doc-pre"><code>{children}</code></pre>
+  const pre = document.createElement('pre')
+  pre.className = 'doc-pre'
+  const code = document.createElement('code')
+  code.innerHTML = highlight(children)
+  pre.appendChild(code)
+  return pre
 }
 
 export function DocsApp(): Node {
@@ -26,7 +32,9 @@ export function DocsApp(): Node {
     <div class="docs-layout">
       <nav class="docs-nav">
         <div class="docs-nav-logo">
-          <a href="../" class="nav-back">← Streem</a>
+          <a href="../" class="docs-nav-brand">
+            <img src="/logo.svg" alt="Streem" style={{ height: '24px', width: 'auto', display: 'block' }} />
+          </a>
         </div>
         <ul class="docs-nav-list">
           {NAV_ITEMS.map(item => (
@@ -83,15 +91,8 @@ export function DocsApp(): Node {
           border-right: 1px solid var(--color-border);
           padding: 24px 20px;
         }
-        .nav-back {
-          display: block;
-          color: var(--color-muted);
-          text-decoration: none;
-          font-size: 14px;
-          margin-bottom: 24px;
-        }
-        .nav-back:hover { color: var(--color-text); }
         .docs-nav-logo { margin-bottom: 8px; }
+        .docs-nav-brand { display: block; margin-bottom: 28px; }
         .docs-nav-list {
           list-style: none;
           display: flex;
