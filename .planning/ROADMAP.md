@@ -60,8 +60,8 @@ Full phase details: `.planning/milestones/v1.1-ROADMAP.md`
   4. Data values in the chart match the numbers in BENCHMARKS.md
 **Plans**: 2 plans
 Plans:
-- [ ] 13-01-PLAN.md — Create BenchmarkChart SVG component + wire into App.tsx
-- [ ] 13-02-PLAN.md — Visual checkpoint: verify chart on desktop and mobile
+- [x] 13-01-PLAN.md — Create BenchmarkChart SVG component + wire into App.tsx
+- [x] 13-02-PLAN.md — Visual checkpoint: verify chart on desktop and mobile
 
 ### Phase 14: Docs Visual Polish
 **Goal**: Users visiting the docs experience a cohesive, on-brand design that feels like an extension of the landing page — dark, readable, and professional — on both desktop and mobile
@@ -74,8 +74,8 @@ Plans:
   4. Docs layout is readable on a 375px-wide mobile screen — sidebar nav collapses and content reflows without horizontal overflow
 **Plans**: 2 plans
 Plans:
-- [ ] 14-01-PLAN.md — Add Google Fonts to docs HTML, logo in sidebar, syntax highlighting in code blocks
-- [ ] 14-02-PLAN.md — Mobile layout polish + visual verification checkpoint
+- [x] 14-01-PLAN.md — Add Google Fonts to docs HTML, logo in sidebar, syntax highlighting in code blocks
+- [x] 14-02-PLAN.md — Mobile layout polish + visual verification checkpoint
 
 ### Phase 15: Docs Content Expansion
 **Goal**: Existing docs sections are no longer stubs — they contain enough examples, edge cases, and pattern guidance that a developer can learn Streem from the docs alone
@@ -88,7 +88,7 @@ Plans:
   4. The patterns section shows complete, runnable code examples (not pseudocode)
 **Plans**: 1 plan
 Plans:
-- [ ] 15-01-PLAN.md — Expand existing sections + add Patterns/recipes section with four sub-patterns
+- [x] 15-01-PLAN.md — Expand existing sections + add Patterns/recipes section with four sub-patterns
 
 ### Phase 16: Docs New Reference Sections
 **Goal**: Three new standalone reference sections exist — Styling, TypeScript, and Performance — giving developers authoritative guidance on the decisions that matter most in production Streem apps
@@ -99,7 +99,11 @@ Plans:
   2. A TypeScript guide section exists covering signal typing, JSX types, CSSProperties, ClassValue, and component prop types
   3. A Performance/best practices section exists covering computed vs effect tradeoffs, reactive leak prevention, cleanup patterns, and signal granularity
   4. All three sections appear in the docs nav and are reachable by link from relevant sections elsewhere in the docs
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 16-01-PLAN.md — Add StylingSection: CSS Modules, Tailwind v4, reactive style objects + nav wiring
+- [ ] 16-02-PLAN.md — Add TypeScriptSection: signal typing, JSX config, CSSProperties, conditional classes, prop types + nav wiring
+- [ ] 16-03-PLAN.md — Add PerformanceSection: computed vs effect, reactive leaks, cleanup patterns, signal granularity + nav wiring
 
 ## Progress
 
@@ -120,4 +124,4 @@ Plans:
 | 13. Landing Page Bar Chart | v1.2 | 1/2 | In progress | - |
 | 14. Docs Visual Polish | v1.2 | 2/2 | Complete | 2026-03-01 |
 | 15. Docs Content Expansion | 1/1 | Complete    | 2026-03-01 | - |
-| 16. Docs New Reference Sections | v1.2 | 0/TBD | Not started | - |
+| 16. Docs New Reference Sections | v1.2 | 0/3 | Not started | - |
