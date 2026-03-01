@@ -10,7 +10,7 @@ export function highlight(raw: string): string {
   // After HTML escaping, < becomes &lt; and > becomes &gt;, so JSX patterns must match those entities.
   // The backtick pattern uses \x60 to avoid TypeScript template-literal syntax conflict.
   s = s.replace(
-    /(\/\/[^\n]*)|(\x60[^\x60]*\x60|'[^'\\]*(?:\\.[^'\\]*)*'|"[^"\\]*(?:\\.[^"\\]*)*")|(&lt;\/?)\s*([a-zA-Z_][a-zA-Z0-9_-]*)|(=&gt;)|(\b(?:const|let|var|import|export|return|function|class|from|of|as|if|else|new|await|async|type|interface|default|null|undefined|true|false|void)\b)|(\b[a-zA-Z_$][a-zA-Z0-9_$]*\b(?=\s*\())|(\b\d+(?:\.\d+)?\b)/g,
+    /(\/\/[^\n]*|#[^\n]*)|(\x60[^\x60]*\x60|'[^'\\]*(?:\\.[^'\\]*)*'|"[^"\\]*(?:\\.[^"\\]*)*")|(&lt;\/?)\s*([a-zA-Z_][a-zA-Z0-9_-]*)|(=&gt;)|(\b(?:const|let|var|import|export|return|function|class|from|of|as|if|else|new|await|async|type|interface|default|null|undefined|true|false|void)\b)|(\b[a-zA-Z_$][a-zA-Z0-9_$]*\b(?=\s*\())|(\b\d+(?:\.\d+)?\b)/g,
     (_match, comment, str, lt, tagName, arrow, kw, fn, num) => {
       if (comment !== undefined) return `<span style="color:var(--color-token-comment)">${comment}</span>`
       if (str !== undefined) return `<span style="color:var(--color-token-string)">${str}</span>`
