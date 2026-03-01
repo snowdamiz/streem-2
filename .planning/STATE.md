@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 Phase: v1.1 complete — all 16 plans shipped
 Status: v1.1 milestone archived. LAND-01 (bar chart on landing page) deferred to v1.2.
-Last activity: 2026-03-01 — v1.1 milestone archived (Phases 7, 8, 9, 9.1, 11, 12 complete)
+Last activity: 2026-03-01 - Completed quick task 2: when the user inits the project they should have the option to inject the agent skills into any tools they want as an option
 
 Progress: [██████████] 100% (v1.1 — 16 of 16 plans complete)
 
