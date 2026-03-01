@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Quality & Polish
 status: unknown
-last_updated: "2026-03-01T01:25:24.341Z"
+last_updated: "2026-03-01T01:41:57.136Z"
 progress:
   total_phases: 2
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 8 of 10 (E2E Test Coverage)
-Plan: 01 (completed — 1 of 2 plans done)
-Status: Phase 8 in progress
-Last activity: 2026-03-01 — 08-01 complete (apps/e2e Playwright package + TEST-01 CLI scaffold test)
+Plan: 02 (completed — 2 of 2 plans done — Phase 8 COMPLETE)
+Status: Phase 8 complete — ready for Phase 9
+Last activity: 2026-02-28 — 08-02 complete (HMR signal state preservation E2E test)
 
-Progress: [███░░░░░░░] 33% (v1.1 — 4 of 12 plans complete)
+Progress: [████░░░░░░] 42% (v1.1 — 5 of 12 plans complete)
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Progress: [███░░░░░░░] 33% (v1.1 — 4 of 12 plans complete)
 | Phase 07 P02 | 2 | 2 tasks | 5 files |
 | Phase 07-package-quality P01 | 2 | 2 tasks | 2 files |
 | Phase 08-e2e-test-coverage P01 | 65 | 2 tasks | 4 files |
+| Phase 08 P02 | 12 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,9 @@ Recent decisions affecting current work:
 - [Phase 07-01]: LIT-01 fixed: @streem/lit dist/index.d.ts now contains full JSX module augmentation for all sl-* Shoelace elements
 - [Phase 08-01]: Used background expect + filesystem polling for interactive CLI testing: clack/prompts block() keeps node alive 60s in PTY mode, so we spawn expect in background and poll for directory creation
 - [Phase 08-01]: Patch streem: latest to file: path after scaffold — published streem not available in local dev; test must override dependency to local build path
+- [Phase 08]: Use port 5174 for demo Vite dev server in E2E tests — port 5173 used by landing page Vite server locally
+- [Phase 08]: MONOREPO_ROOT path from playwright.config.ts needs 3 levels up (../../..) not 2
+- [Phase 08]: fileURLToPath must be imported from node:url, not node:path
 
 ### Pending Todos
 
@@ -82,6 +86,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-01T01:25:00Z
-Stopped at: Completed 08-01-PLAN.md (apps/e2e Playwright package + TEST-01 CLI scaffold test)
+Last session: 2026-02-28T20:32:00Z
+Stopped at: Completed 08-02-PLAN.md (HMR signal state preservation E2E test — Phase 8 complete)
 Resume file: None
