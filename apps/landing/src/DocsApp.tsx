@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { id: 'lit-interop', label: 'Lit interop' },
   { id: 'patterns', label: 'Patterns' },
   { id: 'styling', label: 'Styling' },
+  { id: 'typescript', label: 'TypeScript' },
 ]
 
 function getPage(): string {
@@ -60,6 +61,7 @@ function SignalsSection(): Node {
       <p>Batch multiple signal writes so downstream effects run only once:</p>
       <Code>{`import { signal, effect, batch } from 'streem'\n\nconst x = signal(0)\nconst y = signal(0)\n\neffect(() => console.log(x(), y()))\n\n// Without batch: effect fires twice\nx.set(1)\ny.set(1)\n\n// With batch: effect fires once\nbatch(() => {\n  x.set(2)\n  y.set(2)\n})`}</Code>
       <p>TypeScript tip: use <code>signal&lt;string | null&gt;(null)</code> for optional values. The computed type is inferred automatically.</p>
+      <p>For a full TypeScript reference covering signal types, computed types, and JSX config, see the <a href="#typescript" class="docs-link">TypeScript guide</a>.</p>
     </DocSection>
   ) as unknown as Node
 }
@@ -73,6 +75,7 @@ function ComponentsSection(): Node {
       <Code>{`import { onMount } from 'streem'\n\nfunction ResizeWatcher() {\n  onMount(() => {\n    const handler = () => console.log(window.innerWidth)\n    window.addEventListener('resize', handler)\n    return () => window.removeEventListener('resize', handler)\n  })\n  return <div>Watching...</div>\n}`}</Code>
       <p>Combine Show and For for conditional lists:</p>
       <Code>{`import { signal, Show, For } from 'streem'\n\nconst items = signal([{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }])\nconst loading = signal(false)\n\nfunction ItemList() {\n  return (\n    <div>\n      <Show when={() => loading()} fallback={<span />}>\n        {() => <p>Loading...</p>}\n      </Show>\n      <Show when={() => !loading()}>\n        {() => (\n          <For each={items} by={item => item.id}>\n            {(item) => <li>{() => item().name}</li>}\n          </For>\n        )}\n      </Show>\n    </div>\n  )\n}`}</Code>
+      <p>For component prop typing patterns and how to type children correctly, see the <a href="#typescript" class="docs-link">TypeScript guide</a>.</p>
     </DocSection>
   ) as unknown as Node
 }
@@ -244,6 +247,9 @@ export function DocsApp(): Node {
           </Show>
           <Show when={() => currentPage.value === 'styling'}>
             {() => StylingSection()}
+          </Show>
+          <Show when={() => currentPage.value === 'typescript'}>
+            {() => TypeScriptSection()}
           </Show>
         </div>
       </main>
