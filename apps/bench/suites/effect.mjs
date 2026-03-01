@@ -8,7 +8,8 @@ export const suiteName = 'effect re-run'
 export async function run() {
   const bench = new Bench({ warmupIterations: 1000, iterations: 5000 })
 
-  bench.add('@streem/core effect', () => {
+  // @streem/core — with owner scope (real-world usage)
+  bench.add('@streem/core effect (with createRoot)', () => {
     createRoot((dispose) => {
       const s = signal(0)
       let runs = 0
@@ -17,6 +18,18 @@ export async function run() {
       dispose()
       return runs
     })
+  })
+
+  // @streem/core — primitive only (no owner scope)
+  // effect() returns a manual dispose function — use it to clean up each iteration.
+  // This matches Preact's pattern where effect() returns cleanup().
+  bench.add('@streem/core effect (primitive only)', () => {
+    const s = signal(0)
+    let runs = 0
+    const stop = effect(() => { s(); runs++ })
+    s.set(1)
+    stop()
+    return runs
   })
 
   bench.add('@preact/signals-core effect', () => {
