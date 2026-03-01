@@ -27,7 +27,7 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 
 - [x] **Phase 7: Package Quality** - Fix LIT-04 type gap, add unit tests for @streem/dom and @streem/streams edge cases, and ship style object support + CSSProperties export (completed 2026-02-28)
 - [x] **Phase 8: E2E Test Coverage** - Playwright tests for the create-streem CLI scaffold flow and HMR signal-state preservation (completed 2026-03-01)
-- [ ] **Phase 9: Performance Benchmarks** - Measure signal/computed/effect throughput against SolidJS and Preact signals and commit results with documented methodology
+- [x] **Phase 9: Performance Benchmarks** - Measure signal/computed/effect throughput against SolidJS and Preact signals and commit results with documented methodology (completed 2026-03-01)
 - [ ] **Phase 10: Landing Page Polish** - Bar chart dogfood component displaying benchmark results, plus CSS Modules migration for landing page components
 
 ## Phase Details
@@ -103,5 +103,5 @@ Plans:
 | 6. Landing Page (Dogfood) | v1.0 | 3/3 | Complete | 2026-02-28 |
 | 7. Package Quality | v1.1 | 4/4 | Complete | 2026-02-28 |
 | 8. E2E Test Coverage | v1.1 | 2/2 | Complete | 2026-03-01 |
-| 9. Performance Benchmarks | 1/2 | In Progress|  | - |
+| 9. Performance Benchmarks | 2/2 | Complete   | 2026-03-01 | - |
 | 10. Landing Page Polish | v1.1 | 0/TBD | Not started | - |

@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Quality & Polish
 status: in-progress
-last_updated: "2026-03-01T03:50:10.000Z"
+last_updated: "2026-03-01T03:55:10.000Z"
 progress:
   total_phases: 2
   completed_phases: 2
@@ -18,14 +18,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-28)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 9 — Performance Benchmarks
+**Current focus:** Phase 10 — Landing Page Polish
 
 ## Current Position
 
-Phase: 9 of 10 (Performance Benchmarks)
-Plan: 01 (completed — 1 of 1 plans done — Phase 9 COMPLETE)
+Phase: 9 of 10 (Performance Benchmarks — COMPLETE)
+Plan: 02 (completed — 2 of 2 plans done — Phase 9 COMPLETE)
 Status: Phase 9 complete — ready for Phase 10
-Last activity: 2026-03-01 — 09-01 complete (tinybench benchmark suite for signal/computed/effect)
+Last activity: 2026-03-01 — 09-02 complete (BENCHMARKS.md committed with ops/sec results, pnpm bench script added)
 
 Progress: [█████░░░░░] 50% (v1.1 — 6 of 12 plans complete)
 
@@ -52,6 +52,7 @@ Progress: [█████░░░░░] 50% (v1.1 — 6 of 12 plans complete)
 | Phase 08-e2e-test-coverage P01 | 65 | 2 tasks | 4 files |
 | Phase 08 P02 | 12 | 2 tasks | 2 files |
 | Phase 09 P01 | 3 | 2 tasks | 5 files |
+| Phase 09 P02 | 3 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -78,6 +79,8 @@ Recent decisions affecting current work:
 - [Phase 08]: fileURLToPath must be imported from node:url, not node:path
 - [Phase 09-01]: tinybench Bench instance does not expose the name constructor option — suites return { bench, name } object so runner can label tables correctly
 - [Phase 09-01]: createRoot() wrapper used per iteration in @streem/core benchmarks to suppress DX-02/DX-03 owner warnings, providing production-like isolation
+- [Phase 09-02]: BENCHMARKS.md committed to repo root — benchmark results are readable without running code (PERF-02 requirement)
+- [Phase 09-02]: pnpm bench script added to root package.json for easy discovery and reproduction
 
 ### Pending Todos
 
@@ -89,6 +92,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-01T03:50:10Z
-Stopped at: Completed 09-01-PLAN.md (tinybench benchmark suite for signal/computed/effect — Phase 9 complete)
+Last session: 2026-03-01T03:55:10Z
+Stopped at: Completed 09-02-PLAN.md (BENCHMARKS.md committed with ops/sec results for all 9 benchmark cases — Phase 9 COMPLETE)
 Resume file: None
