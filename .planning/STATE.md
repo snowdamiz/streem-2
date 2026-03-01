@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Documentation & DX Polish
-status: unknown
-last_updated: "2026-03-01T22:53:30.007Z"
+status: in-progress
+last_updated: "2026-03-01T23:44:33Z"
 progress:
   total_phases: 3
   completed_phases: 3
-  total_plans: 5
-  completed_plans: 5
+  total_plans: 6
+  completed_plans: 6
 ---
 
 # Project State
@@ -18,23 +18,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-01)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 15 — Docs Content Expansion (in progress)
+**Current focus:** Phase 16 — Docs New Reference Sections (in progress)
 
 ## Current Position
 
-Phase: 15 of 16 (Docs Content Expansion)
+Phase: 16 of 16 (Docs New Reference Sections)
 Plan: 1 of 1 (completed)
-Status: Phase 15 plan 01 complete — docs sections expanded, Patterns section added
-Last activity: 2026-03-01 — 15-01 complete: expanded five docs sections + Patterns nav item and section
+Status: Phase 16 plan 01 complete — Styling reference section added to docs
+Last activity: 2026-03-01 — 16-01 complete: StylingSection with CSS Modules, Tailwind v4, style objects + nav wiring
 
 Progress: [███░░░░░░░] 18%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3 (this milestone)
-- Average duration: 3 min
-- Total execution time: 9 min
+- Total plans completed: 4 (this milestone)
+- Average duration: 2 min
+- Total execution time: 10 min
 
 **By Phase:**
 
@@ -43,9 +43,10 @@ Progress: [███░░░░░░░] 18%
 | 13 (Landing Page Bar Chart) | 1/2 | 4 min | 4 min |
 | 14 (Docs Visual Polish) | 2/2 | 2 min | 1 min |
 | 15 (Docs Content Expansion) | 1/1 | 4 min | 4 min |
+| 16 (Docs New Reference Sections) | 1/1 | 1 min | 1 min |
 
 **Recent Trend:**
-- Last 5 plans: 4 min
+- Last 5 plans: 2 min
 - Trend: Fast
 
 *Updated after each plan completion*
@@ -88,6 +89,12 @@ Decisions from 15-01:
 - doc-section-subtitle CSS added to the single inline style block inside DocsApp to keep styles co-located
 - PatternsSection wired via Show when currentPage.value === 'patterns' matching existing section pattern
 
+Decisions from 16-01:
+- Tailwind v4 subsection added fresh (not in STYLING.md) using @tailwindcss/vite plugin approach — no tailwind.config.js needed
+- StylingSection positioned after PatternsSection, before DocsApp export
+- .docs-link CSS added to inline style block alongside existing doc styles
+- Cross-link placed before Counter example in GettingStartedSection for natural read order
+
 ### Pending Todos
 
 None.
@@ -107,5 +114,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed 15-01-PLAN.md — docs content expansion: five expanded sections + Patterns nav item and section
+Stopped at: Completed 16-01-PLAN.md — Styling reference section: StylingSection + nav item + Show block + cross-link
 Resume file: None

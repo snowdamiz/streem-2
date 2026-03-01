@@ -21,7 +21,7 @@ Requirements for the Documentation & DX Polish milestone.
 
 - [x] **DOCS-04**: Existing doc sections (Getting Started, Signals, Components, Streams, Lit interop) are expanded with additional examples, edge cases, and TypeScript tips
 - [x] **DOCS-05**: Patterns/recipes section added — covers common patterns (forms, data fetching, shared state, real-time updates)
-- [ ] **DOCS-06**: Styling guide section added — covers CSS Modules and Tailwind v4 setup (folds in docs/STYLING.md content)
+- [x] **DOCS-06**: Styling guide section added — covers CSS Modules and Tailwind v4 setup (folds in docs/STYLING.md content)
 - [ ] **DOCS-07**: TypeScript guide section added — covers signal typing, JSX types, CSSProperties, ClassValue, component prop types
 - [ ] **DOCS-08**: Performance/best practices section added — covers computed vs effect, reactive leaks, cleanup patterns, signal granularity
 - [x] **DOCS-09**: Docs layout is responsive and readable on mobile (sidebar nav collapses, content reflows)
@@ -55,7 +55,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DOCS-03 | Phase 14 | Complete |
 | DOCS-04 | Phase 15 | Complete |
 | DOCS-05 | Phase 15 | Complete |
-| DOCS-06 | Phase 16 | Pending |
+| DOCS-06 | Phase 16 | Complete |
 | DOCS-07 | Phase 16 | Pending |
 | DOCS-08 | Phase 16 | Pending |
 | DOCS-09 | Phase 14 | Complete |
