@@ -63,6 +63,7 @@ Progress: [█████░░░░░] 52% (v1.1 — 7 of 13 plans complete)
 ### Roadmap Evolution
 
 - Phase 9.1 inserted after Phase 9: Optimize signal benchmarks for speed (URGENT)
+- Phase 11 added: Improve styles DX with React-like classes and styles API
 
 ### Decisions
 
