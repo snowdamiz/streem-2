@@ -39,11 +39,11 @@ export function Features(): Node {
   const expandedIdx = signal<number | null>(null)
 
   return (
-    <section class={styles.featuresSection}>
+    <section class={[styles.featuresSection, "py-20"]}>
       <div class="container">
         <div class="section-label">Why Streem</div>
         <h2 class="section-title">Everything you need, nothing you don't</h2>
-        <div class={styles.featuresGrid}>
+        <div class={[styles.featuresGrid, "grid gap-6 sm:grid-cols-2"]}>
           {FEATURES.map((f, i) => (
             <div
               class={styles.featureCard}

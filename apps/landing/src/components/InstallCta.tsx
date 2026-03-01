@@ -19,7 +19,7 @@ export function InstallCta() {
   }
 
   return (
-    <section class={styles.ctaSection}>
+    <section class={[styles.ctaSection, "py-20 text-center"]}>
       <div class="container">
         {/* sl-badge: version tag with typed prop:variant */}
         <div class={styles.ctaBadge}>
@@ -32,7 +32,7 @@ export function InstallCta() {
           No build plugin required.
         </p>
 
-        <div class={styles.ctaActions}>
+        <div class={[styles.ctaActions, "mt-3 flex gap-4 justify-center flex-wrap"]}>
           {/* sl-button: primary CTA — on:click fires directly (Shadow DOM event retargeting safe) */}
           <sl-button
             prop:variant="primary"

@@ -1,4 +1,6 @@
-/* Design tokens */
+/* Tailwind CSS v4 — must be first import */
+@import "tailwindcss";
+/* Design tokens below coexist with Tailwind — CSS custom properties work alongside Tailwind utilities */
 :root {
   --color-bg: #0d0d0d;
   --color-surface: #161616;

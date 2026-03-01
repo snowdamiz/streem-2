@@ -15,15 +15,15 @@ export function Hero(): Node {
   })
 
   return (
-    <header class={styles.hero}>
+    <header class={[styles.hero, "py-24 text-center"]}>
       <div class="container">
-        <div class={styles.heroBadge}>
+        <div class={[styles.heroBadge, "mb-4"]}>
           <sl-badge prop:variant="neutral" prop:pill={true}>v0.1.0</sl-badge>
         </div>
-        <h1 class={styles.heroHeadline}>
+        <h1 class={[styles.heroHeadline, "mb-5"]}>
           Build reactive UIs that update in microseconds
         </h1>
-        <p class={styles.heroSub}>
+        <p class={[styles.heroSub, "mb-12"]}>
           Streem brings fine-grained signals and real-time streams to the browser —
           no virtual DOM, no dependency arrays, no magic. Just TypeScript.
         </p>

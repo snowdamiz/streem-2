@@ -37,9 +37,9 @@ export function CodeSample() {
   }
 
   return (
-    <section class={styles.codeSection}>
+    <section class={[styles.codeSection, "py-20"]}>
       <div class="container">
-        <div class="section-label">Zero config</div>
+        <div class={["section-label", "mb-3"]}>Zero config</div>
         <h2 class="section-title">Write signals like variables, not reducers</h2>
         <p class="section-sub">
           One import. No context providers. No dependency arrays. TypeScript out of the box.

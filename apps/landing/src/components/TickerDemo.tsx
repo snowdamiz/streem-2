@@ -147,7 +147,7 @@ export function TickerDemo(): Node {
   }
 
   return (
-    <section class={styles.tickerSection}>
+    <section class={[styles.tickerSection, "py-20"]}>
       <div class="container">
         <div class="section-label">Live streaming demo</div>
         <h2 class="section-title">Real-time data, zero overhead</h2>
