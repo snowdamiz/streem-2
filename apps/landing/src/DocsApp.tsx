@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { id: 'components', label: 'Components' },
   { id: 'streams', label: 'Streams' },
   { id: 'lit-interop', label: 'Lit interop' },
+  { id: 'patterns', label: 'Patterns' },
 ]
 
 function getPage(): string {
@@ -99,6 +100,30 @@ function LitInteropSection(): Node {
   ) as unknown as Node
 }
 
+function PatternsSection(): Node {
+  return (
+    <DocSection id="patterns" title="Patterns">
+      <p>Common patterns for building real-world apps with Streem.</p>
+
+      <h3 class="doc-section-subtitle">Form handling</h3>
+      <p>Bind each field to a signal and derive a computed for the submit payload:</p>
+      <Code>{`import { signal, computed } from 'streem'\n\nfunction LoginForm() {\n  const email = signal('')\n  const password = signal('')\n  const isValid = computed(() => email().includes('@') && password().length >= 8)\n\n  function handleSubmit(e: Event) {\n    e.preventDefault()\n    if (!isValid()) return\n    fetch('/api/login', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ email: email(), password: password() }),\n    })\n  }\n\n  return (\n    <form on:submit={handleSubmit}>\n      <input\n        type="email"\n        on:input={(e) => email.set((e.target as HTMLInputElement).value)}\n        placeholder="Email"\n      />\n      <input\n        type="password"\n        on:input={(e) => password.set((e.target as HTMLInputElement).value)}\n        placeholder="Password"\n      />\n      <button type="submit" disabled={() => !isValid()}>Log in</button>\n    </form>\n  )\n}`}</Code>
+
+      <h3 class="doc-section-subtitle">Data fetching</h3>
+      <p>Use a signal for the data and a status signal for loading/error states:</p>
+      <Code>{`import { signal, onMount } from 'streem'\n\ninterface User { id: number; name: string }\n\nfunction UserProfile({ userId }: { userId: number }) {\n  const user = signal<User | null>(null)\n  const status = signal<'loading' | 'done' | 'error'>('loading')\n\n  onMount(async () => {\n    try {\n      const res = await fetch(\`/api/users/\${userId}\`)\n      user.set(await res.json())\n      status.set('done')\n    } catch {\n      status.set('error')\n    }\n  })\n\n  return (\n    <div>\n      <Show when={() => status() === 'loading'}>\n        {() => <p>Loading...</p>}\n      </Show>\n      <Show when={() => status() === 'done' && user() !== null}>\n        {() => <p>Hello, {() => user()!.name}</p>}\n      </Show>\n      <Show when={() => status() === 'error'}>\n        {() => <p>Failed to load user.</p>}\n      </Show>\n    </div>\n  )\n}`}</Code>
+
+      <h3 class="doc-section-subtitle">Shared state</h3>
+      <p>Export signals from a module — any component that imports them shares the same reactive state:</p>
+      <Code>{`// store/auth.ts\nimport { signal, computed } from 'streem'\n\nexport const currentUser = signal<{ name: string; role: string } | null>(null)\nexport const isLoggedIn = computed(() => currentUser() !== null)\nexport const isAdmin = computed(() => currentUser()?.role === 'admin')\n\nexport function login(user: { name: string; role: string }) {\n  currentUser.set(user)\n}\n\nexport function logout() {\n  currentUser.set(null)\n}\n\n// components/Header.tsx\nimport { currentUser, isLoggedIn, logout } from '../store/auth'\n\nfunction Header() {\n  return (\n    <header>\n      <Show when={isLoggedIn}>\n        {() => (\n          <div>\n            <span>Hello, {() => currentUser()!.name}</span>\n            <button on:click={logout}>Log out</button>\n          </div>\n        )}\n      </Show>\n    </header>\n  )\n}`}</Code>
+
+      <h3 class="doc-section-subtitle">Real-time updates</h3>
+      <p>Combine a WebSocket stream with a signal accumulator to maintain a running list of events:</p>
+      <Code>{`import { signal, effect, fromWebSocket, throttle } from 'streem'\n\ninterface TradeEvent { symbol: string; price: number; volume: number }\n\nfunction LiveTradesFeed() {\n  const [rawTrade] = fromWebSocket<TradeEvent>('wss://trades.example.com')\n  const displayTrade = throttle(rawTrade, 100) // max 10 updates/sec\n\n  const trades = signal<TradeEvent[]>([])\n\n  effect(() => {\n    const t = displayTrade()\n    if (t == null) return\n    trades.set([t, ...trades().slice(0, 49)]) // keep last 50\n  })\n\n  return (\n    <ul>\n      <For each={trades} by={(t, i) => i}>\n        {(trade) => (\n          <li>{() => \`\${trade().symbol} @ \${trade().price}\`}</li>\n        )}\n      </For>\n    </ul>\n  )\n}`}</Code>
+    </DocSection>
+  ) as unknown as Node
+}
+
 export function DocsApp(): Node {
   const handleHashChange = () => {
     currentPage.set(getPage())
@@ -143,6 +168,9 @@ export function DocsApp(): Node {
           </Show>
           <Show when={() => currentPage.value === 'lit-interop'}>
             {() => LitInteropSection()}
+          </Show>
+          <Show when={() => currentPage.value === 'patterns'}>
+            {() => PatternsSection()}
           </Show>
         </div>
       </main>
@@ -204,6 +232,13 @@ export function DocsApp(): Node {
           font-weight: 600;
           margin-bottom: 16px;
           color: var(--color-text);
+        }
+        .doc-section-subtitle {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: var(--color-text);
+          margin-top: 32px;
+          margin-bottom: 8px;
         }
         .doc-section p {
           color: var(--color-muted);
