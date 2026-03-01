@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import tailwind from '@tailwindcss/vite'
 import { streemHMR } from 'streem'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { resolve } from 'path'
@@ -9,6 +10,7 @@ const BASE_URL = process.env.VITE_BASE_URL ?? '/streem-2/'
 export default defineConfig({
   base: BASE_URL,
   plugins: [
+    tailwind(),
     streemHMR(),
     viteStaticCopy({
       targets: [{

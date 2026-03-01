@@ -14,6 +14,8 @@
     "@shoelace-style/shoelace": "^2.20.1"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "latest",
+    "tailwindcss": "latest",
     "vite": "^7.0.0",
     "vite-plugin-static-copy": "latest",
     "typescript": "~5.8.0"
