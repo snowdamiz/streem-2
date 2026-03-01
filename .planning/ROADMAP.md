@@ -83,7 +83,7 @@ Plans:
 **Goal:** Close the performance gap between @streem/core signals and competitors (Preact signals, SolidJS) by identifying and fixing benchmark hotspots in the reactive core implementation, and make benchmarks fairer with apples-to-apples primitive-only comparison variants
 **Requirements**: PERF-OPT-01, PERF-OPT-02
 **Depends on:** Phase 9
-**Plans:** 3 plans
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] 09.1-01-PLAN.md — Eliminate array spread in propagateDirty, O(1) batching deduplication, lazy Owner array init (PERF-OPT-01)
