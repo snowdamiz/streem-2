@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Documentation & DX Polish
 status: unknown
-last_updated: "2026-03-01T21:59:51.604Z"
+last_updated: "2026-03-01T22:13:47Z"
 progress:
   total_phases: 1
   completed_phases: 1
@@ -18,14 +18,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-01)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 13 — Landing Page Bar Chart
+**Current focus:** Phase 14 — Docs Visual Polish
 
 ## Current Position
 
-Phase: 13 of 16 (Landing Page Bar Chart)
-Plan: 1 of 2 (completed)
-Status: In progress — plan 01 complete, plan 02 pending
-Last activity: 2026-03-01 — 13-01 complete: BenchmarkChart SVG component + App.tsx wiring
+Phase: 14 of 16 (Docs Visual Polish)
+Plan: 1 of ? (completed)
+Status: In progress — plan 01 complete
+Last activity: 2026-03-01 — 14-01 complete: Google Fonts + logo + syntax highlighting in docs
 
 Progress: [█░░░░░░░░░] 6%
 
@@ -41,6 +41,7 @@ Progress: [█░░░░░░░░░] 6%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 13 (Landing Page Bar Chart) | 1/2 | 4 min | 4 min |
+| 14 (Docs Visual Polish) | 1/? | 1 min | 1 min |
 
 **Recent Trend:**
 - Last 5 plans: 4 min
@@ -72,6 +73,10 @@ Decisions from 13-01:
 - computed() returns () => T (function), called as getOpacity() not .value
 - JSX element arrays typed as (Node | Node[] | null)[] to satisfy TypeScript
 
+Decisions from 14-01:
+- Imperative document.createElement + code.innerHTML = highlight(children) for Code component — Streem JSX has no dangerouslySetInnerHTML
+- Logo SVG constrained to height: 24px; width: auto in sidebar img tag
+
 ### Pending Todos
 
 None.
@@ -91,5 +96,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed 13-01-PLAN.md — BenchmarkChart component and App.tsx wiring
+Stopped at: Completed 14-01-PLAN.md — Google Fonts, logo SVG, syntax-highlighted code blocks in docs
 Resume file: None

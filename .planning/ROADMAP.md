@@ -116,6 +116,6 @@ Plans:
 | 11. Improve Styles DX | v1.1 | 3/3 | Complete | 2026-03-01 |
 | 12. Add Tailwind Support | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 13. Landing Page Bar Chart | v1.2 | 1/2 | In progress | - |
-| 14. Docs Visual Polish | v1.2 | 0/2 | Not started | - |
+| 14. Docs Visual Polish | 1/2 | In Progress|  | - |
 | 15. Docs Content Expansion | v1.2 | 0/TBD | Not started | - |
 | 16. Docs New Reference Sections | v1.2 | 0/TBD | Not started | - |

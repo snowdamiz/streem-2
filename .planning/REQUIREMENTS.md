@@ -13,9 +13,9 @@ Requirements for the Documentation & DX Polish milestone.
 
 ### Docs Polish
 
-- [ ] **DOCS-01**: Docs site visual design is consistent with the landing page (dark background, shared typography, color tokens, border styles)
-- [ ] **DOCS-02**: Logo (logo.svg from public/) is displayed in the docs sidebar nav header
-- [ ] **DOCS-03**: All code blocks in the docs display syntax-highlighted output (TypeScript/TSX)
+- [x] **DOCS-01**: Docs site visual design is consistent with the landing page (dark background, shared typography, color tokens, border styles)
+- [x] **DOCS-02**: Logo (logo.svg from public/) is displayed in the docs sidebar nav header
+- [x] **DOCS-03**: All code blocks in the docs display syntax-highlighted output (TypeScript/TSX)
 
 ### Docs Content
 
@@ -50,9 +50,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | LAND-01 | Phase 13 | Complete |
-| DOCS-01 | Phase 14 | Pending |
-| DOCS-02 | Phase 14 | Pending |
-| DOCS-03 | Phase 14 | Pending |
+| DOCS-01 | Phase 14 | Complete |
+| DOCS-02 | Phase 14 | Complete |
+| DOCS-03 | Phase 14 | Complete |
 | DOCS-04 | Phase 15 | Pending |
 | DOCS-05 | Phase 15 | Pending |
 | DOCS-06 | Phase 16 | Pending |
