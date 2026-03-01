@@ -21,7 +21,7 @@ Requirements for the Quality & Polish milestone. Each maps to a roadmap phase.
 
 ### Performance
 
-- [ ] **PERF-01**: Benchmark suite measures signal(), computed(), and effect() throughput against SolidJS signals and Preact signals
+- [x] **PERF-01**: Benchmark suite measures signal(), computed(), and effect() throughput against SolidJS signals and Preact signals
 - [ ] **PERF-02**: Benchmark results are committed to the repository with methodology documented (what was measured, how to reproduce)
 
 ### Landing Page
@@ -62,7 +62,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STYLE-03 | Phase 7 | Complete |
 | TEST-01 | Phase 8 | Complete |
 | TEST-02 | Phase 8 | Complete |
-| PERF-01 | Phase 9 | Pending |
+| PERF-01 | Phase 9 | Complete |
 | PERF-02 | Phase 9 | Pending |
 | LAND-01 | Phase 10 | Pending |
 | STYLE-04 | Phase 10 | Pending |

@@ -2,8 +2,8 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Quality & Polish
-status: unknown
-last_updated: "2026-03-01T01:46:10.335Z"
+status: in-progress
+last_updated: "2026-03-01T03:50:10.000Z"
 progress:
   total_phases: 2
   completed_phases: 2
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-28)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 8 — E2E Test Coverage
+**Current focus:** Phase 9 — Performance Benchmarks
 
 ## Current Position
 
-Phase: 8 of 10 (E2E Test Coverage)
-Plan: 02 (completed — 2 of 2 plans done — Phase 8 COMPLETE)
-Status: Phase 8 complete — ready for Phase 9
-Last activity: 2026-02-28 — 08-02 complete (HMR signal state preservation E2E test)
+Phase: 9 of 10 (Performance Benchmarks)
+Plan: 01 (completed — 1 of 1 plans done — Phase 9 COMPLETE)
+Status: Phase 9 complete — ready for Phase 10
+Last activity: 2026-03-01 — 09-01 complete (tinybench benchmark suite for signal/computed/effect)
 
-Progress: [████░░░░░░] 42% (v1.1 — 5 of 12 plans complete)
+Progress: [█████░░░░░] 50% (v1.1 — 6 of 12 plans complete)
 
 ## Performance Metrics
 
@@ -51,6 +51,7 @@ Progress: [████░░░░░░] 42% (v1.1 — 5 of 12 plans complete)
 | Phase 07-package-quality P01 | 2 | 2 tasks | 2 files |
 | Phase 08-e2e-test-coverage P01 | 65 | 2 tasks | 4 files |
 | Phase 08 P02 | 12 | 2 tasks | 2 files |
+| Phase 09 P01 | 3 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,8 @@ Recent decisions affecting current work:
 - [Phase 08]: Use port 5174 for demo Vite dev server in E2E tests — port 5173 used by landing page Vite server locally
 - [Phase 08]: MONOREPO_ROOT path from playwright.config.ts needs 3 levels up (../../..) not 2
 - [Phase 08]: fileURLToPath must be imported from node:url, not node:path
+- [Phase 09-01]: tinybench Bench instance does not expose the name constructor option — suites return { bench, name } object so runner can label tables correctly
+- [Phase 09-01]: createRoot() wrapper used per iteration in @streem/core benchmarks to suppress DX-02/DX-03 owner warnings, providing production-like isolation
 
 ### Pending Todos
 
@@ -86,6 +89,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-28T20:32:00Z
-Stopped at: Completed 08-02-PLAN.md (HMR signal state preservation E2E test — Phase 8 complete)
+Last session: 2026-03-01T03:50:10Z
+Stopped at: Completed 09-01-PLAN.md (tinybench benchmark suite for signal/computed/effect — Phase 9 complete)
 Resume file: None
