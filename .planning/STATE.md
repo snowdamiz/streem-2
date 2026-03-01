@@ -67,6 +67,7 @@ Progress: [██████████] 100% (v1.1 — 14 of 14 plans complet
 
 - Phase 9.1 inserted after Phase 9: Optimize signal benchmarks for speed (URGENT)
 - Phase 11 added: Improve styles DX with React-like classes and styles API
+- Phase 12 added: Add full tailwind support if not already supported
 
 ### Decisions
 
