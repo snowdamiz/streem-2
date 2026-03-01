@@ -66,9 +66,10 @@ None.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 1 | implement agent skills for this framework with progressive disclosure | 2026-03-01 | 5a3ab2e | [1-implement-agent-skills-for-this-framewor](./quick/1-implement-agent-skills-for-this-framewor/) |
+| 2 | when the user inits the project they should have the option to inject the agent skills into any tools they want as an option | 2026-03-01 | 95d753e | [2-when-the-user-inits-the-project-they-sho](./quick/2-when-the-user-inits-the-project-they-sho/) |
 
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed quick task 1: implement agent skills for this framework with progressive disclosure
+Stopped at: Completed quick task 2: when the user inits the project they should have the option to inject the agent skills into any tools they want as an option
 Resume file: None
