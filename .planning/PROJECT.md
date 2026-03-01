@@ -30,9 +30,31 @@ Signals and streams are first-class primitives — not adapters or plugins — s
 - ✓ Landing page components migrated from inline style blocks to CSS Modules (dogfood proof) — v1.1
 - ✓ Tailwind CSS v4 pre-configured in create-streem default template; proven coexisting with CSS Modules — v1.1
 
+## Current Milestone: v1.2 Documentation & DX Polish
+
+**Goal:** Transform the docs from a functional draft into a polished, on-brand experience that makes Streem easy to learn and trust.
+
+**Target features:**
+- Docs site visual overhaul — match landing page theme (dark, consistent, cohesive)
+- Logo wired into docs nav (logo.svg already in public/)
+- Syntax highlighting on all code blocks in docs
+- LAND-01: Benchmark bar chart dogfood component on landing page (deferred from v1.1)
+- Expand existing doc sections (more examples, edge cases, TypeScript tips)
+- New doc sections: Patterns/recipes, Styling guide, TypeScript guide, Performance/best practices
+- Mobile responsiveness for docs layout
+
 ### Active
 
 - [ ] LAND-01: Bar chart dogfood component on landing page rendering benchmark comparison data (deferred from v1.1)
+- [ ] DOCS-01: Docs site visual design matches landing page theme (dark, consistent, on-brand)
+- [ ] DOCS-02: Logo.svg displayed in docs nav header
+- [ ] DOCS-03: Syntax highlighting applied to all code blocks in docs
+- [ ] DOCS-04: Existing doc sections expanded (more examples, edge cases, TypeScript tips)
+- [ ] DOCS-05: Patterns/recipes section added to docs
+- [ ] DOCS-06: Styling guide section added to docs (folds in docs/STYLING.md content)
+- [ ] DOCS-07: TypeScript guide section added to docs
+- [ ] DOCS-08: Performance/best practices section added to docs
+- [ ] DOCS-09: Docs layout is responsive and readable on mobile
 
 ### Out of Scope
 
@@ -96,4 +118,4 @@ Packages:
 | Phase 10 skipped; bar chart deferred to v1.2 | CSS Modules goal absorbed by Phase 11; bar chart non-blocking for v1.1 quality goals | — Deferred — LAND-01 active requirement for next milestone |
 
 ---
-*Last updated: 2026-03-01 after v1.1 milestone*
+*Last updated: 2026-03-01 after v1.2 milestone started*
