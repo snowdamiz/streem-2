@@ -93,8 +93,8 @@ let pendingNotifications: SourceNode[] = []
 /** When true, effect runs are deferred to the end of the batch */
 export let isBatching = false
 
-/** Effects queued during batching */
-const batchedEffects: EffectNode[] = []
+/** Effects queued during batching (Set provides O(1) add and automatic deduplication) */
+const batchedEffects: Set<EffectNode> = new Set()
 
 /** Enable batching mode — called by future batch() implementation in Phase 3 */
 export function startBatch(): void {
@@ -104,7 +104,8 @@ export function startBatch(): void {
 /** Flush all queued effects and disable batching — called by future batch() */
 export function endBatch(): void {
   isBatching = false
-  const effects = batchedEffects.splice(0)
+  const effects = [...batchedEffects]
+  batchedEffects.clear()
   for (const effect of effects) {
     if (!effect.disposed) {
       runEffect(effect)
@@ -169,7 +170,9 @@ export function notifySubscribers(source: SourceNode): void {
  * Must be called with notifying=true to prevent re-entrant notification loops.
  */
 function propagateDirty(source: SourceNode): void {
-  // Snapshot subscribers to avoid mutation during iteration
+  // Snapshot subscribers to avoid mutation during iteration.
+  // runEffect() calls source.subs.delete() on stale deps during re-run,
+  // which would mutate source.subs mid-iteration and corrupt V8's Set iterator.
   const subs = [...source.subs]
 
   for (const sub of subs) {
@@ -186,9 +189,7 @@ function propagateDirty(source: SourceNode): void {
       const effect = sub as EffectNode
       if (!effect.disposed) {
         if (isBatching) {
-          if (!batchedEffects.includes(effect)) {
-            batchedEffects.push(effect)
-          }
+          batchedEffects.add(effect) // Set.add() is idempotent — no .includes() check needed
         } else {
           runEffect(effect)
         }
