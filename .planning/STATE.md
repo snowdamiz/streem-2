@@ -1,14 +1,14 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
+milestone: v1.1
 milestone_name: Quality & Polish
-status: unknown
-last_updated: "2026-03-01T07:03:50.643Z"
+status: complete
+last_updated: "2026-03-01T07:08:00.000Z"
 progress:
   total_phases: 5
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 14
-  completed_plans: 13
+  completed_plans: 14
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-28)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 10 — Landing Page Polish
+**Current focus:** Phase 11 COMPLETE — Improve Styles DX with React-like classes and styles API
 
 ## Current Position
 
-Phase: 11 of 11+ (Improve Styles DX — IN PROGRESS)
-Plan: 02 (completed — 2 of 3 plans done)
-Status: Phase 11 Plan 02 complete — ready for Plan 03 (CSS Modules)
-Last activity: 2026-03-01 — 11-02 complete (ClassValue tests, bindStyle diff tests, className alias tests — 95 → 105 tests)
+Phase: 11 of 11 (Improve Styles DX — COMPLETE)
+Plan: 03 (completed — 3 of 3 plans done)
+Status: Phase 11 complete — all 3 plans done
+Last activity: 2026-03-01 — 11-03 complete (CSS Modules migration, jsx-runtime ClassValue fix, landing app build passes)
 
-Progress: [█████░░░░░] 52% (v1.1 — 7 of 13 plans complete)
+Progress: [██████████] 100% (v1.1 — 14 of 14 plans complete)
 
 ## Performance Metrics
 
@@ -59,6 +59,7 @@ Progress: [█████░░░░░] 52% (v1.1 — 7 of 13 plans complete)
 | Phase 09.1 P03 | 2 | 2 tasks | 1 file |
 | Phase 11 P01 | 2 | 3 tasks | 5 files |
 | Phase 11 P02 | 2 | 1 tasks | 1 files |
+| Phase 11 P03 | 3 | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -104,6 +105,8 @@ Recent decisions affecting current work:
 - [Phase 11-01]: bindStyle prevKeys tracks camelCase keys; removeProperty converts to kebab-case via replace(/([A-Z])/g, '-$1').toLowerCase()
 - [Phase 11-01]: className and class handled identically in applyProps — both accepted, no preference expressed
 - [Phase Phase 11-02]: Tests follow the API established in Plan 01 exactly; no new decisions needed
+- [Phase 11-03]: Shared presentational classes (.section-label, .section-title, .section-sub) moved to global.css — used across 3 components, duplication avoided
+- [Phase 11-03]: jsx-runtime.ts class prop type changed from string|(() => string) to ClassValue|(()=>ClassValue) — Plan 01 updated types.ts but left jsx-runtime.ts stale
 
 ### Pending Todos
 
@@ -115,6 +118,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-01T07:04:30Z
-Stopped at: Completed 11-02-PLAN.md (ClassValue tests, bindStyle diff tests, className alias tests — Phase 11 Plan 02 COMPLETE)
+Last session: 2026-03-01T07:08:00Z
+Stopped at: Completed 11-03-PLAN.md (CSS Modules migration for landing components — Phase 11 COMPLETE)
 Resume file: None
