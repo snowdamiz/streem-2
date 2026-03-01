@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Quality & Polish
 status: unknown
-last_updated: "2026-03-01T03:58:24.587Z"
+last_updated: "2026-03-01T04:17:42Z"
 progress:
   total_phases: 3
   completed_phases: 3
@@ -22,10 +22,10 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 9 of 10 (Performance Benchmarks — COMPLETE)
-Plan: 02 (completed — 2 of 2 plans done — Phase 9 COMPLETE)
-Status: Phase 9 complete — ready for Phase 10
-Last activity: 2026-03-01 — 09-02 complete (BENCHMARKS.md committed with ops/sec results, pnpm bench script added)
+Phase: 9.1 of 10 (Optimize Signal Benchmarks — COMPLETE)
+Plan: 02 (completed — 2 of 2 plans done — Phase 9.1 COMPLETE)
+Status: Phase 9.1 complete — ready for Phase 10
+Last activity: 2026-03-01 — 09.1-02 complete (primitive-only benchmark variants added to all 3 suites for apples-to-apples comparison with Preact)
 
 Progress: [█████░░░░░] 50% (v1.1 — 6 of 12 plans complete)
 
@@ -53,8 +53,14 @@ Progress: [█████░░░░░] 50% (v1.1 — 6 of 12 plans complete)
 | Phase 08 P02 | 12 | 2 tasks | 2 files |
 | Phase 09 P01 | 3 | 2 tasks | 5 files |
 | Phase 09 P02 | 3 | 2 tasks | 2 files |
+| Phase 09.1 P01 | 1 | 2 tasks | 5 files |
+| Phase 09.1 P02 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
+
+### Roadmap Evolution
+
+- Phase 9.1 inserted after Phase 9: Optimize signal benchmarks for speed (URGENT)
 
 ### Decisions
 
@@ -81,6 +87,9 @@ Recent decisions affecting current work:
 - [Phase 09-01]: createRoot() wrapper used per iteration in @streem/core benchmarks to suppress DX-02/DX-03 owner warnings, providing production-like isolation
 - [Phase 09-02]: BENCHMARKS.md committed to repo root — benchmark results are readable without running code (PERF-02 requirement)
 - [Phase 09-02]: pnpm bench script added to root package.json for easy discovery and reproduction
+- [Phase 09.1-02]: Primitive-only variants use public API outside createRoot — prod dist strips DEV warnings so no warning overhead
+- [Phase 09.1-02]: effect() primitive-only uses manual stop() dispose matching Preact's cleanup() return pattern for structurally identical comparison
+- [Phase 09.1-02]: Relabeled existing @streem/core variants to '(with createRoot)' — contrast with '(primitive only)' makes scope explicit
 
 ### Pending Todos
 
@@ -92,6 +101,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-01T03:55:10Z
-Stopped at: Completed 09-02-PLAN.md (BENCHMARKS.md committed with ops/sec results for all 9 benchmark cases — Phase 9 COMPLETE)
+Last session: 2026-03-01T04:17:42Z
+Stopped at: Completed 09.1-02-PLAN.md (primitive-only benchmark variants added to signal/computed/effect suites — Phase 9.1 COMPLETE)
 Resume file: None
