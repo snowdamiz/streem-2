@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Quality & Polish
 status: unknown
-last_updated: "2026-03-01T04:39:25.743Z"
+last_updated: "2026-03-01T07:01:09.373Z"
 progress:
-  total_phases: 4
+  total_phases: 5
   completed_phases: 4
-  total_plans: 11
-  completed_plans: 11
+  total_plans: 14
+  completed_plans: 12
 ---
 
 # Project State
@@ -22,10 +22,10 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 9.1 of 10 (Optimize Signal Benchmarks — COMPLETE)
-Plan: 03 (completed — 3 of 3 plans done — Phase 9.1 COMPLETE)
-Status: Phase 9.1 complete — ready for Phase 10
-Last activity: 2026-02-28 — 09.1-03 complete (BENCHMARKS.md updated with Phase 9.1 results, 4-row tables, Phase 9.1 Optimizations section, baseline comparison)
+Phase: 11 of 11+ (Improve Styles DX — IN PROGRESS)
+Plan: 01 (completed — 1 of 3 plans done)
+Status: Phase 11 Plan 01 complete — ready for Plan 02 (ClassValue tests)
+Last activity: 2026-03-01 — 11-01 complete (ClassValue type, bindClass/bindStyle updates, applyProps className alias)
 
 Progress: [█████░░░░░] 52% (v1.1 — 7 of 13 plans complete)
 
@@ -57,6 +57,7 @@ Progress: [█████░░░░░] 52% (v1.1 — 7 of 13 plans complete)
 | Phase 09.1 P02 | 2 | 2 tasks | 3 files |
 | Phase 09.1-01 P01 | 13 | 2 tasks | 2 files |
 | Phase 09.1 P03 | 2 | 2 tasks | 1 file |
+| Phase 11 P01 | 2 | 3 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -97,6 +98,10 @@ Recent decisions affecting current work:
 - [Phase 09.1-01]: propagateDirty snapshot [...source.subs] retained — direct Set iteration unsafe: runEffect() mutates source.subs via delete() mid-loop causing V8 OOM crash
 - [Phase 09.1-01]: Owner.children and Owner.cleanups lazy-init to null — no empty array allocation for roots that never register children or cleanups
 - [Phase 09.1-03]: BENCHMARKS.md rewritten with Phase 9.1 results — 4-row tables, Phase 9.1 Optimizations section, baseline comparison (signal with-root: +12% vs Phase 9)
+- [Phase 11-01]: resolveClassValue exported from bindings.ts so applyProps in h.ts can use it for static ClassValue resolution without duplicating logic
+- [Phase 11-01]: bindClassList removed entirely — clean break, no deprecation; classList prop removed from JSX types (per phase 11 context decision)
+- [Phase 11-01]: bindStyle prevKeys tracks camelCase keys; removeProperty converts to kebab-case via replace(/([A-Z])/g, '-$1').toLowerCase()
+- [Phase 11-01]: className and class handled identically in applyProps — both accepted, no preference expressed
 
 ### Pending Todos
 
@@ -108,6 +113,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-01T04:34:10Z
-Stopped at: Completed 09.1-03-PLAN.md (BENCHMARKS.md updated with Phase 9.1 results — Phase 9.1 COMPLETE)
+Last session: 2026-03-01T06:59:38Z
+Stopped at: Completed 11-01-PLAN.md (ClassValue type, bindClass/bindStyle updates, applyProps className alias — Phase 11 Plan 01 COMPLETE)
 Resume file: None
