@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Quality & Polish
 status: unknown
-last_updated: "2026-03-01T07:14:11.126Z"
+last_updated: "2026-03-01T07:49:09.394Z"
 progress:
-  total_phases: 5
+  total_phases: 6
   completed_phases: 5
-  total_plans: 14
-  completed_plans: 14
+  total_plans: 16
+  completed_plans: 15
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-28)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 11 COMPLETE — Improve Styles DX with React-like classes and styles API
+**Current focus:** Phase 12 IN PROGRESS — Add full Tailwind CSS v4 support to create-streem template
 
 ## Current Position
 
-Phase: 11 of 11 (Improve Styles DX — COMPLETE)
-Plan: 03 (completed — 3 of 3 plans done)
-Status: Phase 11 complete — all 3 plans done
-Last activity: 2026-03-01 — 11-03 complete (CSS Modules migration, jsx-runtime ClassValue fix, landing app build passes)
+Phase: 12 of 12 (Add Tailwind Support — In Progress)
+Plan: 02 (completed — 2 of 3 plans done)
+Status: Phase 12 plan 02 complete — create-streem default template updated with Tailwind v4
+Last activity: 2026-03-01 — 12-02 complete (Tailwind v4 baked into create-streem default template, styled App.tsx demo)
 
-Progress: [██████████] 100% (v1.1 — 14 of 14 plans complete)
+Progress: [████████▌ ] 93% (v1.2 — 15 of 16 plans complete)
 
 ## Performance Metrics
 
@@ -60,6 +60,7 @@ Progress: [██████████] 100% (v1.1 — 14 of 14 plans complet
 | Phase 11 P01 | 2 | 3 tasks | 5 files |
 | Phase 11 P02 | 2 | 1 tasks | 1 files |
 | Phase 11 P03 | 3 | 2 tasks | 14 files |
+| Phase 12 P02 | 1 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -108,6 +109,8 @@ Recent decisions affecting current work:
 - [Phase Phase 11-02]: Tests follow the API established in Plan 01 exactly; no new decisions needed
 - [Phase 11-03]: Shared presentational classes (.section-label, .section-title, .section-sub) moved to global.css — used across 3 components, duplication avoided
 - [Phase 11-03]: jsx-runtime.ts class prop type changed from string|(() => string) to ClassValue|(()=>ClassValue) — Plan 01 updated types.ts but left jsx-runtime.ts stale
+- [Phase 12]: tailwind() plugin before streemHMR() in plugins array; no postcss/tailwind config files — Tailwind v4 is plugin-driven
+- [Phase 12]: All Tailwind classes in App.tsx are static string literals — build-time scanning works without dynamic construction
 
 ### Pending Todos
 
@@ -119,6 +122,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-01T07:08:00Z
-Stopped at: Completed 11-03-PLAN.md (CSS Modules migration for landing components — Phase 11 COMPLETE)
+Last session: 2026-03-01T07:48:13Z
+Stopped at: Completed 12-02-PLAN.md (Tailwind v4 baked into create-streem default template — plan 2 of 3)
 Resume file: None
