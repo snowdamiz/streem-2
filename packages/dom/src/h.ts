@@ -1,12 +1,14 @@
-import { createRoot, effect, onCleanup } from '@streem/core'
+import { createRoot, effect, onCleanup, isSignal } from '@streem/core'
+import type { Signal } from '@streem/core'
 import {
   bindTextNode,
   bindAttr,
   bindClass,
-  bindClassList,
+  resolveClassValue,
   bindStyle,
   bindEvent,
 } from './bindings.js'
+import type { ClassValue } from './types.js'
 
 /** Sentinel symbol for JSX Fragment (<> </>) */
 export const Fragment = Symbol('Fragment')
@@ -64,6 +66,9 @@ function appendChildren(parent: Element, children: Children): void {
       // Accessor function — create a reactive text node via bindTextNode.
       // The text node is appended and kept in sync with the signal.
       bindTextNode(parent, child as () => unknown)
+    } else if (isSignal(child)) {
+      // Signal instance — wrap in accessor so bindTextNode can track it.
+      bindTextNode(parent, () => (child as Signal<unknown>).value)
     } else {
       parent.appendChild(document.createTextNode(String(child)))
     }
@@ -83,9 +88,9 @@ function appendChildren(parent: Element, children: Children): void {
  *   key starts with 'attr:' + static value               → setAttribute
  *   key starts with 'on:'                                 → bindEvent with name preserved exactly
  *   key starts with 'on' + typeof value === 'function' → bindEvent (lowercased, JSX convention)
- *   key === 'class' + typeof value === 'function' → bindClass
- *   key === 'class' + static string              → el.className = value
- *   key === 'classList'                           → bindClassList (fn or wrap object)
+ *   key === 'class' | 'className' + typeof value === 'function' → bindClass
+ *   key === 'class' | 'className' + isSignal     → bindClass (wrapped accessor)
+ *   key === 'class' | 'className' + static       → setAttribute (resolveClassValue)
  *   key === 'style' + typeof value === 'function' → bindStyle
  *   key === 'style' + static object              → bindStyle (wrapped in accessor)
  *   typeof value === 'function'                  → bindAttr (reactive attribute)
@@ -111,6 +116,10 @@ export function applyProps(el: Element, props: Record<string, unknown>): void {
         effect(() => {
           ;(el as unknown as Record<string, unknown>)[propName] = (value as () => unknown)()
         })
+      } else if (isSignal(value)) {
+        effect(() => {
+          ;(el as unknown as Record<string, unknown>)[propName] = (value as Signal<unknown>).value
+        })
       } else if (value !== undefined) {
         ;(el as unknown as Record<string, unknown>)[propName] = value
       }
@@ -122,6 +131,8 @@ export function applyProps(el: Element, props: Record<string, unknown>): void {
       const attrName = key.slice(5)  // 'attr:disabled' → 'disabled'
       if (typeof value === 'function') {
         bindAttr(el, attrName, value as () => unknown)
+      } else if (isSignal(value)) {
+        bindAttr(el, attrName, () => (value as Signal<unknown>).value)
       } else if (value != null && value !== false) {
         el.setAttribute(attrName, value === true ? attrName : String(value))
       }
@@ -144,29 +155,25 @@ export function applyProps(el: Element, props: Record<string, unknown>): void {
       continue
     }
 
-    if (key === 'class') {
+    if (key === 'class' || key === 'className') {
       if (typeof value === 'function') {
-        bindClass(el, value as () => string)
-      } else if (value != null) {
-        el.setAttribute('class', String(value))
+        bindClass(el, value as () => ClassValue)
+      } else if (isSignal(value)) {
+        bindClass(el, () => (value as Signal<ClassValue>).value)
+      } else if (value != null && value !== false) {
+        // Static ClassValue — resolve immediately and set as attribute
+        el.setAttribute('class', resolveClassValue(value as ClassValue))
       }
       continue
     }
-
-    if (key === 'classList') {
-      if (typeof value === 'function') {
-        bindClassList(el, value as () => Record<string, boolean>)
-      } else if (value != null && typeof value === 'object') {
-        // Static object: wrap in accessor so bindClassList can use effect()
-        bindClassList(el, () => value as Record<string, boolean>)
-      }
-      continue
-    }
+    // Note: 'classList' is intentionally NOT handled — removed per phase 11 decision
 
     if (key === 'style') {
       const styledEl = el as HTMLElement | SVGElement
       if (typeof value === 'function') {
         bindStyle(styledEl, value as () => Partial<CSSStyleDeclaration> | string)
+      } else if (isSignal(value)) {
+        bindStyle(styledEl, () => (value as Signal<Partial<CSSStyleDeclaration> | string>).value)
       } else if (typeof value === 'string') {
         bindStyle(styledEl, () => value)
       } else if (value != null && typeof value === 'object') {
@@ -179,6 +186,12 @@ export function applyProps(el: Element, props: Record<string, unknown>): void {
     // Generic reactive attribute: accessor function → bindAttr
     if (typeof value === 'function') {
       bindAttr(el, key, value as () => unknown)
+      continue
+    }
+
+    // Generic reactive attribute: signal → bindAttr
+    if (isSignal(value)) {
+      bindAttr(el, key, () => (value as Signal<unknown>).value)
       continue
     }
 

@@ -21,4 +21,4 @@ export { registerForHMR, getRestoredValue, saveToHotData, canRestoreState, saveS
 // Vite plugin
 export { streemHMR } from './hmr-plugin.js'
 // Types
-export type { CSSProperties } from './types.js'
+export type { CSSProperties, ClassValue } from './types.js'

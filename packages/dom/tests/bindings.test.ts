@@ -4,7 +4,6 @@ import {
   bindTextNode,
   bindAttr,
   bindClass,
-  bindClassList,
   bindStyle,
   bindEvent,
 } from '../src/bindings.js'
@@ -19,7 +18,7 @@ describe('bindTextNode', () => {
     const count = signal(0)
     const parent = document.createElement('div')
     createRoot((dispose) => {
-      bindTextNode(parent, () => String(count()))
+      bindTextNode(parent, () => String(count.value))
       dispose()
     })
     expect(parent.childNodes.length).toBe(1)
@@ -34,7 +33,7 @@ describe('bindTextNode', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      textNode = bindTextNode(parent, () => msg())
+      textNode = bindTextNode(parent, () => msg.value)
     })
     expect(textNode.nodeValue).toBe('hello')
 
@@ -53,7 +52,7 @@ describe('bindTextNode', () => {
     let textNode!: Text
     createRoot((d) => {
       dispose = d
-      textNode = bindTextNode(parent, () => label())
+      textNode = bindTextNode(parent, () => label.value)
     })
     const capturedNode = parent.childNodes[0]
     label.set('b')
@@ -73,7 +72,7 @@ describe('bindAttr', () => {
     const title = signal('hello')
     const el = document.createElement('div')
     createRoot((dispose) => {
-      bindAttr(el, 'title', () => title())
+      bindAttr(el, 'title', () => title.value)
       dispose()
     })
     expect(el.getAttribute('title')).toBe('hello')
@@ -85,7 +84,7 @@ describe('bindAttr', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      bindAttr(el, 'data-x', () => val())
+      bindAttr(el, 'data-x', () => val.value)
     })
     expect(el.getAttribute('data-x')).toBe('foo')
     val.set('bar')
@@ -99,7 +98,7 @@ describe('bindAttr', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      bindAttr(el, 'data-x', () => val())
+      bindAttr(el, 'data-x', () => val.value)
     })
     expect(el.hasAttribute('data-x')).toBe(true)
     val.set(null)
@@ -113,7 +112,7 @@ describe('bindAttr', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      bindAttr(el, 'disabled', () => val())
+      bindAttr(el, 'disabled', () => val.value)
     })
     val.set(false)
     expect(el.hasAttribute('disabled')).toBe(false)
@@ -126,7 +125,7 @@ describe('bindAttr', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      bindAttr(el, 'disabled', () => val())
+      bindAttr(el, 'disabled', () => val.value)
     })
     val.set(true)
     expect(el.getAttribute('disabled')).toBe('disabled')
@@ -139,7 +138,7 @@ describe('bindAttr', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      bindAttr(el, 'aria-label', () => val())
+      bindAttr(el, 'aria-label', () => val.value)
     })
     val.set(undefined)
     expect(el.hasAttribute('aria-label')).toBe(false)
@@ -158,7 +157,7 @@ describe('bindClass', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      bindClass(el, () => cls())
+      bindClass(el, () => cls.value)
     })
     expect(el.className).toBe('active')
     dispose()
@@ -170,7 +169,7 @@ describe('bindClass', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      bindClass(el, () => cls())
+      bindClass(el, () => cls.value)
     })
     cls.set('active selected')
     expect(el.className).toBe('active selected')
@@ -183,7 +182,7 @@ describe('bindClass', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      bindClass(el, () => cls())
+      bindClass(el, () => cls.value)
     })
     cls.set('')
     expect(el.className).toBe('')
@@ -191,52 +190,7 @@ describe('bindClass', () => {
   })
 })
 
-// ---------------------------------------------------------------------------
-// bindClassList
-// ---------------------------------------------------------------------------
-
-describe('bindClassList', () => {
-  it('adds classes that are true, skips false ones', () => {
-    const map = signal<Record<string, boolean>>({ active: true, hidden: false })
-    const el = document.createElement('div')
-    let dispose!: () => void
-    createRoot((d) => {
-      dispose = d
-      bindClassList(el, () => map())
-    })
-    expect(el.classList.contains('active')).toBe(true)
-    expect(el.classList.contains('hidden')).toBe(false)
-    dispose()
-  })
-
-  it('toggles classes when the map updates', () => {
-    const map = signal<Record<string, boolean>>({ active: true, hidden: false })
-    const el = document.createElement('div')
-    let dispose!: () => void
-    createRoot((d) => {
-      dispose = d
-      bindClassList(el, () => map())
-    })
-    map.set({ active: false, hidden: true })
-    expect(el.classList.contains('active')).toBe(false)
-    expect(el.classList.contains('hidden')).toBe(true)
-    dispose()
-  })
-
-  it('applies multiple true classes', () => {
-    const map = signal<Record<string, boolean>>({ a: true, b: true, c: false })
-    const el = document.createElement('div')
-    let dispose!: () => void
-    createRoot((d) => {
-      dispose = d
-      bindClassList(el, () => map())
-    })
-    expect(el.classList.contains('a')).toBe(true)
-    expect(el.classList.contains('b')).toBe(true)
-    expect(el.classList.contains('c')).toBe(false)
-    dispose()
-  })
-})
+// bindClassList removed — classList prop removed in Phase 11 (use class with object syntax)
 
 // ---------------------------------------------------------------------------
 // bindStyle
@@ -249,7 +203,7 @@ describe('bindStyle', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      bindStyle(el, () => style())
+      bindStyle(el, () => style.value)
     })
     expect(el.style.color).toBe('red')
     dispose()
@@ -261,7 +215,7 @@ describe('bindStyle', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      bindStyle(el, () => style())
+      bindStyle(el, () => style.value)
     })
     style.set({ color: 'blue', fontSize: '16px' })
     expect(el.style.color).toBe('blue')
@@ -278,7 +232,7 @@ describe('bindStyle', () => {
     let dispose!: () => void
     createRoot((d) => {
       dispose = d
-      bindStyle(el, () => style())
+      bindStyle(el, () => style.value)
     })
     expect(el.style.display).toBe('flex')
     expect(el.style.alignItems).toBe('center')
@@ -329,7 +283,7 @@ describe('applyProps reactive dispatch (h.ts)', () => {
     let el!: HTMLElement
     createRoot((d) => {
       dispose = d
-      el = h('span', null, () => text()) as HTMLElement
+      el = h('span', null, () => text.value) as HTMLElement
     })
     expect(el.textContent).toBe('initial')
     text.set('updated')
@@ -344,7 +298,7 @@ describe('applyProps reactive dispatch (h.ts)', () => {
     let el!: HTMLElement
     createRoot((d) => {
       dispose = d
-      el = h('div', { title: () => title() }) as HTMLElement
+      el = h('div', { title: () => title.value }) as HTMLElement
     })
     expect(el.getAttribute('title')).toBe('hello')
     title.set('world')
@@ -358,7 +312,7 @@ describe('applyProps reactive dispatch (h.ts)', () => {
     let el!: HTMLElement
     createRoot((d) => {
       dispose = d
-      el = h('div', { class: () => cls() }) as HTMLElement
+      el = h('div', { class: () => cls.value }) as HTMLElement
     })
     expect(el.className).toBe('active')
     cls.set('inactive')
@@ -371,28 +325,13 @@ describe('applyProps reactive dispatch (h.ts)', () => {
     expect(el.className).toBe('static-class')
   })
 
-  it('classList accessor routes to bindClassList', () => {
-    const map = signal<Record<string, boolean>>({ active: true })
-    let dispose!: () => void
-    let el!: HTMLElement
-    createRoot((d) => {
-      dispose = d
-      el = h('div', { classList: () => map() }) as HTMLElement
-    })
-    expect(el.classList.contains('active')).toBe(true)
-    map.set({ active: false, hidden: true })
-    expect(el.classList.contains('active')).toBe(false)
-    expect(el.classList.contains('hidden')).toBe(true)
-    dispose()
-  })
-
   it('style with function accessor routes to bindStyle', () => {
     const style = signal<Partial<CSSStyleDeclaration>>({ color: 'red' })
     let dispose!: () => void
     let el!: HTMLElement
     createRoot((d) => {
       dispose = d
-      el = h('div', { style: () => style() }) as HTMLElement
+      el = h('div', { style: () => style.value }) as HTMLElement
     })
     expect(el.style.color).toBe('red')
     style.set({ color: 'green' })
@@ -408,7 +347,7 @@ describe('applyProps reactive dispatch (h.ts)', () => {
     let el!: HTMLElement
     createRoot((d) => {
       dispose = d
-      el = h('span', null, () => text()) as HTMLElement
+      el = h('span', null, () => text.value) as HTMLElement
     })
     // Capture the initial text node reference
     const initialChildCount = el.childNodes.length
