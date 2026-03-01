@@ -61,8 +61,14 @@ None.
 
 - LAND-01: Bar chart dogfood component on landing page not built (deferred to v1.2)
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 1 | implement agent skills for this framework with progressive disclosure | 2026-03-01 | 5a3ab2e | [1-implement-agent-skills-for-this-framewor](./quick/1-implement-agent-skills-for-this-framewor/) |
+
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed quick-1 plan — agent skills for streem framework (7 SKILL.md files)
+Stopped at: Completed quick task 1: implement agent skills for this framework with progressive disclosure
 Resume file: None
