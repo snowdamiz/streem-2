@@ -142,11 +142,11 @@ importers:
   packages/lit:
     dependencies:
       '@streeem/core':
-        specifier: workspace:*
-        version: link:../core
+        specifier: '>=0.1.0'
+        version: 0.1.0
       '@streeem/dom':
-        specifier: workspace:*
-        version: link:../dom
+        specifier: '>=0.1.0'
+        version: 0.1.0
     devDependencies:
       '@custom-elements-manifest/analyzer':
         specifier: ^0.10.5
@@ -737,6 +737,12 @@ packages:
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
+  '@streeem/core@0.1.0':
+    resolution: {integrity: sha512-MI0uM6ghoBfvPRkfqOkefQIZ7nejGPudfRPVFbthh+R8zmG2iUv1jOOxhvli8Oi14mrkwYHaS74dfvxUEYZOow==}
+
+  '@streeem/dom@0.1.0':
+    resolution: {integrity: sha512-KGnTLVIpkbtUaZNFB1m7Fmzb9m0+GB3BW08v6xL1xZJWCwtuQ26AB7wm9EPFKs8JZ71Pkt0WyMi7sGegskNHLQ==}
 
   '@tailwindcss/node@4.2.1':
     resolution: {integrity: sha512-jlx6sLk4EOwO6hHe1oCGm1Q4AN/s0rSrTTPBGPM0/RQ6Uylwq17FuU8IeJJKEjtc6K6O07zsvP+gDO6MMWo7pg==}
@@ -2466,6 +2472,12 @@ snapshots:
       - '@types/react'
 
   '@standard-schema/spec@1.1.0': {}
+
+  '@streeem/core@0.1.0': {}
+
+  '@streeem/dom@0.1.0':
+    dependencies:
+      '@streeem/core': 0.1.0
 
   '@tailwindcss/node@4.2.1':
     dependencies:
