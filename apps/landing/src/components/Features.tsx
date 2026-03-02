@@ -77,7 +77,7 @@ export function Features(): Node {
 
         <div class="flex flex-col">
           {FEATURES.map(f => (
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-[60px] items-center py-14 border-t border-border last:border-b last:border-border">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-[60px] items-center py-14 border-t border-border">
               <div class="md:pr-5">
                 <div class="text-[3rem] font-black font-mono tracking-[-0.05em] leading-none mb-4 opacity-90" style={`color: ${f.accent}`}>{f.num}</div>
                 <h3 class="text-[1.35rem] font-bold tracking-[-0.02em] mb-3 text-text">{f.title}</h3>
