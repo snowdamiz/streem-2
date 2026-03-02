@@ -89,9 +89,9 @@ describe('fromSSE', () => {
       ;[data, status, error] = fromSSE('/stream')
       return d
     })
-    expect(data()).toBeUndefined()
-    expect(status()).toBe('connecting')
-    expect(error()).toBeUndefined()
+    expect(data.value).toBeUndefined()
+    expect(status.value).toBe('connecting')
+    expect(error.value).toBeUndefined()
     dispose()
   })
 
@@ -103,7 +103,7 @@ describe('fromSSE', () => {
     })
     const es = MockEventSource._last!
     es._message(JSON.stringify({ price: 99 }))
-    expect(data()).toEqual({ price: 99 })
+    expect(data.value).toEqual({ price: 99 })
     dispose()
   })
 
@@ -115,7 +115,7 @@ describe('fromSSE', () => {
     })
     const es = MockEventSource._last!
     es._message('plain text message')
-    expect(data()).toBe('plain text message')
+    expect(data.value).toBe('plain text message')
     dispose()
   })
 
@@ -129,7 +129,7 @@ describe('fromSSE', () => {
     })
     const es = MockEventSource._last!
     es._message(JSON.stringify({ price: 55 }))
-    expect(data()).toBe(55)
+    expect(data.value).toBe(55)
     dispose()
   })
 
@@ -141,7 +141,7 @@ describe('fromSSE', () => {
     })
     const es = MockEventSource._last!
     es._message(JSON.stringify({ ok: true }))
-    expect(status()).toBe('connected')
+    expect(status.value).toBe('connected')
     dispose()
   })
 
@@ -153,7 +153,7 @@ describe('fromSSE', () => {
     })
     const es = MockEventSource._last!
     es._open()
-    expect(status()).toBe('connected')
+    expect(status.value).toBe('connected')
     dispose()
   })
 
@@ -165,9 +165,9 @@ describe('fromSSE', () => {
     })
     const es = MockEventSource._last!
     es._message('hello')
-    expect(data()).toBeDefined()
+    expect(data.value).toBeDefined()
     dispose()
-    expect(status()).toBe('closed')
+    expect(status.value).toBe('closed')
     // Verify es.close() was called (readyState should be CLOSED from our mock's close())
     expect(es.readyState).toBe(MockEventSource.CLOSED)
   })
@@ -181,8 +181,8 @@ describe('fromSSE', () => {
     const es = MockEventSource._last!
     // Simulate temporary disconnect — browser will reconnect (readyState=CONNECTING)
     es._errorReconnecting()
-    expect(status()).toBe('reconnecting')
-    expect(error()).toBeUndefined()
+    expect(status.value).toBe('reconnecting')
+    expect(error.value).toBeUndefined()
     dispose()
   })
 
@@ -195,8 +195,8 @@ describe('fromSSE', () => {
     const es = MockEventSource._last!
     // Simulate permanent failure — readyState=CLOSED
     es._errorClosed()
-    expect(status()).toBe('closed')
-    expect(error()).toBeInstanceOf(Error)
+    expect(status.value).toBe('closed')
+    expect(error.value).toBeInstanceOf(Error)
     dispose()
   })
 
@@ -208,7 +208,7 @@ describe('fromSSE', () => {
     })
     const es = MockEventSource._last!
     es._event('price', JSON.stringify({ price: 77 }))
-    expect(data()).toEqual({ price: 77 })
+    expect(data.value).toEqual({ price: 77 })
     dispose()
   })
 

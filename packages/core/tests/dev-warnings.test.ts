@@ -41,7 +41,7 @@ describe('DX-02: signal read outside reactive context', () => {
     const count = signal(0, { name: 'count' })
 
     // Read outside any reactive context
-    count()
+    count.value
 
     expect(warnSpy).toHaveBeenCalledOnce()
     expect(warnSpy).toHaveBeenCalledWith(
@@ -52,7 +52,7 @@ describe('DX-02: signal read outside reactive context', () => {
   it('warns when anonymous signal is read outside reactive context', () => {
     const count = signal(0)
 
-    count()
+    count.value
 
     expect(warnSpy).toHaveBeenCalledOnce()
     expect(warnSpy).toHaveBeenCalledWith(
@@ -65,7 +65,7 @@ describe('DX-02: signal read outside reactive context', () => {
       const count = signal(0)
 
       effect(() => {
-        count() // inside effect — tracked subscriber, no warning
+        count.value // inside effect — tracked subscriber, no warning
       })
 
       expect(warnSpy).not.toHaveBeenCalled()
@@ -75,7 +75,7 @@ describe('DX-02: signal read outside reactive context', () => {
   it('does NOT warn when signal is read inside computed', () => {
     createRoot(() => {
       const count = signal(0)
-      const doubled = computed(() => count() * 2) // inside computed — no warning
+      const doubled = computed(() => count.value * 2) // inside computed — no warning
 
       doubled() // trigger evaluation
 
@@ -86,7 +86,7 @@ describe('DX-02: signal read outside reactive context', () => {
   it('does NOT warn when signal is read inside createRoot (active owner)', () => {
     createRoot(() => {
       const count = signal(0)
-      count() // reading inside createRoot — owner is active, no warning
+      count.value // reading inside createRoot — owner is active, no warning
     })
 
     expect(warnSpy).not.toHaveBeenCalled()
@@ -96,8 +96,8 @@ describe('DX-02: signal read outside reactive context', () => {
     const a = signal(0, { name: 'a' })
     const b = signal(0, { name: 'b' })
 
-    a()
-    b()
+    a.value
+    b.value
 
     expect(warnSpy).toHaveBeenCalledTimes(2)
   })

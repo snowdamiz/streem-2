@@ -19,7 +19,7 @@ describe('SIGNAL-04: createRoot()', () => {
 
     createRoot((dispose) => {
       const count = signal(0)
-      effect(() => { log.push(count()) })
+      effect(() => { log.push(count.value) })
       dispose()
     })
 
@@ -33,7 +33,7 @@ describe('SIGNAL-04: createRoot()', () => {
     const dispose = createRoot((dispose) => {
       const count = signal(0)
       outerCount = count
-      effect(() => { log.push(count()) })
+      effect(() => { log.push(count.value) })
       return dispose
     })
 
@@ -64,12 +64,12 @@ describe('SIGNAL-04: createRoot()', () => {
     const outerDispose = createRoot((outerDispose) => {
       const count = signal(0)
       outerCount = count
-      effect(() => { outerLog.push(count()) })
+      effect(() => { outerLog.push(count.value) })
 
       createRoot(() => {
         const innerC = signal(10)
         innerCount = innerC
-        effect(() => { innerLog.push(innerC()) })
+        effect(() => { innerLog.push(innerC.value) })
       })
 
       return outerDispose
@@ -101,12 +101,12 @@ describe('SIGNAL-04: createRoot()', () => {
     createRoot((dispose) => {
       dispose1 = dispose
       count1 = signal(0)
-      effect(() => { log1.push(count1()) })
+      effect(() => { log1.push(count1.value) })
     })
 
     createRoot(() => {
       count2 = signal(100)
-      effect(() => { log2.push(count2()) })
+      effect(() => { log2.push(count2.value) })
     })
 
     expect(log1).toEqual([0])
@@ -128,7 +128,7 @@ describe('SIGNAL-04: createRoot()', () => {
     const dispose = createRoot((dispose) => {
       const count = signal(0)
       outerCount = count
-      effect(() => { log.push(count()) })
+      effect(() => { log.push(count.value) })
       return dispose
     })
 
@@ -153,7 +153,7 @@ describe('SIGNAL-05: onCleanup()', () => {
       const count = signal(0)
 
       effect(() => {
-        const current = count()
+        const current = count.value
         sequence.push(`run:${current}`)
         onCleanup(() => {
           sequence.push(`cleanup:${current}`)
@@ -198,7 +198,7 @@ describe('SIGNAL-05: onCleanup()', () => {
       const count = signal(0)
 
       effect(() => {
-        count() // track dependency
+        count.value // track dependency
         onCleanup(() => { log.push('cleanup-A') })
         onCleanup(() => { log.push('cleanup-B') })
         onCleanup(() => { log.push('cleanup-C') })
@@ -221,7 +221,7 @@ describe('SIGNAL-05: onCleanup()', () => {
       const count = signal(0)
 
       effect(() => {
-        const val = count()
+        const val = count.value
         onCleanup(() => {
           log.push(`cleanup-before-run-${val + 1}`)
         })
@@ -248,7 +248,7 @@ describe('SIGNAL-05: onCleanup()', () => {
         const derived = computed(() => {
           // onCleanup inside computed: current owner is the computed's owner (enclosing root)
           // This registers on the enclosing owner, not the computed node itself
-          return count() * 2
+          return count.value * 2
         })
         derived()
         dispose()

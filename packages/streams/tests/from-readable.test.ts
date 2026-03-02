@@ -23,7 +23,7 @@ describe('fromReadable', () => {
       return d
     })
     // Immediately after creation — pump() hasn't yielded yet
-    expect(data()).toBeUndefined()
+    expect(data.value).toBeUndefined()
     dispose()
   })
 
@@ -36,8 +36,8 @@ describe('fromReadable', () => {
     })
     // Wait for pump to consume all chunks
     await new Promise(r => setTimeout(r, 20))
-    expect(data()).toBe('world')
-    expect(status()).toBe('closed')
+    expect(data.value).toBe('world')
+    expect(status.value).toBe('closed')
     dispose()
   })
 
@@ -51,7 +51,7 @@ describe('fromReadable', () => {
       return d
     })
     await new Promise(r => setTimeout(r, 20))
-    expect(data()).toBe(10)
+    expect(data.value).toBe(10)
     dispose()
   })
 
@@ -63,7 +63,7 @@ describe('fromReadable', () => {
       return d
     })
     await new Promise(r => setTimeout(r, 20))
-    expect(status()).toBe('closed')
+    expect(status.value).toBe('closed')
     dispose()
   })
 
@@ -82,7 +82,7 @@ describe('fromReadable', () => {
     })
     await new Promise(r => setTimeout(r, 10))
     dispose()
-    expect(status()).toBe('closed')
+    expect(status.value).toBe('closed')
   })
 
   it('sets status=error and error signal when ReadableStream controller.error() is called', async () => {
@@ -103,16 +103,16 @@ describe('fromReadable', () => {
 
     // Wait for first chunk to be consumed
     await new Promise(r => setTimeout(r, 20))
-    expect(data()).toBe('first value')
+    expect(data.value).toBe('first value')
 
     // Error the stream — pump() catch block should fire
     const streamError = new Error('stream corrupted')
     controller.error(streamError)
 
     await new Promise(r => setTimeout(r, 20))
-    expect(status()).toBe('error')
-    expect(error()).toBeInstanceOf(Error)
-    expect(error().message).toBe('stream corrupted')
+    expect(status.value).toBe('error')
+    expect(error.value).toBeInstanceOf(Error)
+    expect(error.value.message).toBe('stream corrupted')
     dispose()
   })
 })

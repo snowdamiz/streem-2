@@ -41,11 +41,11 @@ export function batch(fn: () => void): void {
  * @param intervalMs - Minimum milliseconds between updates
  */
 export function throttle<T>(source: Signal<T>, intervalMs: number): Signal<T> {
-  const out = signal<T>(source())
+  const out = signal<T>(source.value)
   let lastEmit = 0
 
   effect(() => {
-    const value = source() // reactive tracking
+    const value = source.value // reactive tracking
     const now = Date.now()
     if (now - lastEmit >= intervalMs) {
       lastEmit = now
@@ -70,11 +70,11 @@ export function throttle<T>(source: Signal<T>, intervalMs: number): Signal<T> {
  * @param delayMs - Silence period in milliseconds before emitting
  */
 export function debounce<T>(source: Signal<T>, delayMs: number): Signal<T> {
-  const out = signal<T>(source())
+  const out = signal<T>(source.value)
   let timer: ReturnType<typeof setTimeout> | null = null
 
   effect(() => {
-    const value = source() // reactive tracking
+    const value = source.value // reactive tracking
     if (timer !== null) clearTimeout(timer)
     timer = setTimeout(() => {
       out.set(value)

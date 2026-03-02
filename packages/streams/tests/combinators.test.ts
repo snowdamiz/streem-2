@@ -9,7 +9,7 @@ describe('batch()', () => {
 
     const dispose = createRoot((d) => {
       effect(() => {
-        s() // track
+        s.value // track
         runCount++
       })
       return d
@@ -40,7 +40,7 @@ describe('batch()', () => {
     // createRoot just to read safely
     let val: number | undefined
     const dispose = createRoot((d) => {
-      effect(() => { val = s() })
+      effect(() => { val = s.value })
       return d
     })
     expect(val).toBe(200)
@@ -54,7 +54,7 @@ describe('batch()', () => {
 
     const dispose = createRoot((d) => {
       effect(() => {
-        a(); b()
+        a.value; b.value
         runCount++
       })
       return d
@@ -93,7 +93,7 @@ describe('throttle()', () => {
 
     const dispose = createRoot((d) => {
       const throttled = throttle(s, 100)
-      effect(() => { out = throttled() })
+      effect(() => { out = throttled.value })
       return d
     })
 
@@ -107,7 +107,7 @@ describe('throttle()', () => {
 
     const dispose = createRoot((d) => {
       const throttled = throttle(s, 100)
-      effect(() => { emitted.push(throttled()) })
+      effect(() => { emitted.push(throttled.value) })
       return d
     })
 
@@ -127,7 +127,7 @@ describe('throttle()', () => {
 
     const dispose = createRoot((d) => {
       const throttled = throttle(s, 100)
-      effect(() => { out = throttled() })
+      effect(() => { out = throttled.value })
       return d
     })
 
@@ -150,7 +150,7 @@ describe('debounce()', () => {
 
     const dispose = createRoot((d) => {
       const debounced = debounce(s, 100)
-      effect(() => { out = debounced() })
+      effect(() => { out = debounced.value })
       return d
     })
 
@@ -177,7 +177,7 @@ describe('debounce()', () => {
 
     const dispose = createRoot((d) => {
       const debounced = debounce(s, 100)
-      effect(() => { out = debounced() })
+      effect(() => { out = debounced.value })
       return d
     })
 

@@ -44,9 +44,9 @@ describe('@streem/dom scaffold', () => {
   it('h() with automatic-runtime style: props.children preserved for function components', () => {
     const items = signal([{ id: 1, name: 'Alpha' }, { id: 2, name: 'Beta' }])
     const container = document.createElement('ul')
-    // Simulate: jsx(For, { each: () => items(), by: item => item.id, children: item => jsx('li', { children: item.name }) })
+    // Simulate: jsx(For, { each: () => items.value, by: item => item.id, children: item => jsx('li', { children: item.name }) })
     const frag = h(For as unknown as (props: Record<string, unknown>) => Node, {
-      each: () => items(),
+      each: () => items.value,
       by: (item: { id: number; name: string }) => item.id,
       children: (item: { id: number; name: string }) =>
         h('li', { children: item.name }),

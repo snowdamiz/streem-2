@@ -56,7 +56,7 @@ describe('onMount', () => {
     let capturedValue = -1
     createRoot((dispose) => {
       onMount(() => {
-        capturedValue = count()
+        capturedValue = count.value
       })
       count.set(99)
       // onMount runs once — capturedValue should not update to 99
@@ -78,7 +78,7 @@ describe('COMP-02: component runs once', () => {
     function TestComponent(_props: Record<string, unknown>) {
       callCount++
       // Direct signal read in body = snapshot, does not subscribe
-      const _snapshot = count()
+      const _snapshot = count.value
       return document.createTextNode('')
     }
 
@@ -98,7 +98,7 @@ describe('COMP-02: component runs once', () => {
     let capturedName = ''
 
     function NameComponent(_props: Record<string, unknown>) {
-      capturedName = name() // snapshot — not reactive
+      capturedName = name.value // snapshot — not reactive
       return document.createTextNode(capturedName)
     }
 

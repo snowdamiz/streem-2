@@ -16,8 +16,9 @@ import {
   createEffectNode,
   readComputedNode,
   disposeEffect,
+  addLink,
   trackRead,
-  getCurrentSubscriber,
+  currentSubscriber,   // live ES module binding — no function call overhead
   notifySubscribers,
 } from './reactive.js'
 
@@ -32,20 +33,61 @@ import {
 // ---------------------------------------------------------------------------
 
 /**
- * A signal is a callable getter function with a `.set()` method.
- * Reading the signal (calling it as a function) tracks it as a dependency
- * in the current reactive context.
+ * A signal exposes reactive state via a `.value` property getter/setter
+ * and a `.set()` method. Reading `.value` inside a reactive context
+ * (effect, computed) tracks it as a dependency.
  *
  * @example
  * ```ts
  * const count = signal(0)
- * count()        // read — returns 0
- * count.set(1)   // write — notifies subscribers
+ * count.value        // read — returns 0
+ * count.set(1)       // write — notifies subscribers
+ * count.value = 1   // equivalent write via setter
  * ```
  */
 export interface Signal<T> {
-  (): T
+  get value(): T
+  set value(v: T)
   set(value: T): void
+}
+
+// ---------------------------------------------------------------------------
+// SignalImpl — class-based implementation for V8 hidden-class optimization
+// ---------------------------------------------------------------------------
+
+class SignalImpl<T> implements Signal<T> {
+  readonly #node: ReturnType<typeof createSignalNode<T>>
+  readonly #name?: string
+
+  constructor(node: ReturnType<typeof createSignalNode<T>>, name?: string) {
+    this.#node = node
+    if (import.meta.env.DEV) this.#name = name
+  }
+
+  get value(): T {
+    if (import.meta.env.DEV) {
+      if (currentSubscriber === null && getOwner() === null) {
+        const label = this.#name ? ` "${this.#name}"` : ''
+        console.warn(
+          `[Streem] Signal${label} read outside reactive context. This is likely a snapshot.`,
+        )
+      }
+    }
+    // Inline fast path: skip the null check in trackRead by checking here
+    if (currentSubscriber !== null) addLink(this.#node)
+    return this.#node.value
+  }
+
+  set value(v: T) {
+    if (!Object.is(this.#node.value, v)) {
+      this.#node.value = v
+      notifySubscribers(this.#node)
+    }
+  }
+
+  set(v: T): void {
+    this.value = v
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -55,8 +97,8 @@ export interface Signal<T> {
 /**
  * Create a reactive signal with an initial value.
  *
- * The returned getter is tracked when called inside a reactive context
- * (effect, computed, or any function running under an owner).
+ * The returned object's `.value` property is tracked when read inside a
+ * reactive context (effect, computed, or any function running under an owner).
  *
  * @param initialValue - The initial value of the signal.
  * @param options.name - Optional name for dev-mode warnings.
@@ -64,35 +106,22 @@ export interface Signal<T> {
  * @example
  * ```ts
  * const count = signal(0)
- * const doubled = computed(() => count() * 2)
+ * const doubled = computed(() => count.value * 2)
  * effect(() => console.log(doubled())) // logs 0, then 2 on count.set(1)
  * count.set(1)
  * ```
  */
 export function signal<T>(initialValue: T, options?: { name?: string }): Signal<T> {
-  const node = createSignalNode(initialValue)
+  return new SignalImpl(createSignalNode(initialValue), options?.name)
+}
 
-  const getter = function (): T {
-    if (import.meta.env.DEV) {
-      if (getCurrentSubscriber() === null && getOwner() === null) {
-        const label = options?.name ? ` "${options.name}"` : ''
-        console.warn(
-          `[Streem] Signal${label} read outside reactive context. This is likely a snapshot.`,
-        )
-      }
-    }
-    trackRead(node)
-    return node.value
-  } as Signal<T>
-
-  getter.set = function (value: T): void {
-    if (!Object.is(node.value, value)) {
-      node.value = value
-      notifySubscribers(node)
-    }
-  }
-
-  return getter
+/**
+ * Type guard — returns true if the value is a Signal created by signal().
+ * Used by the DOM package to detect signal children in JSX without relying
+ * on typeof === 'function' (which no longer applies after the class-based change).
+ */
+export function isSignal<T = unknown>(value: unknown): value is Signal<T> {
+  return value instanceof SignalImpl
 }
 
 // ---------------------------------------------------------------------------
@@ -115,7 +144,7 @@ export function signal<T>(initialValue: T, options?: { name?: string }): Signal<
  * ```ts
  * createRoot((dispose) => {
  *   const count = signal(0)
- *   const doubled = computed(() => count() * 2)
+ *   const doubled = computed(() => count.value * 2)
  *   console.log(doubled()) // 0
  *   count.set(3)
  *   console.log(doubled()) // 6
@@ -176,7 +205,7 @@ export function computed<T>(fn: () => T): () => T {
  * createRoot((dispose) => {
  *   const count = signal(0)
  *   const stop = effect(() => {
- *     console.log('count:', count())
+ *     console.log('count:', count.value)
  *     onCleanup(() => console.log('cleanup'))
  *   })
  *   count.set(1) // logs: cleanup, count: 1

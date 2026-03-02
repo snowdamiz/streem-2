@@ -23,9 +23,9 @@ describe('fromWebSocket', () => {
       return d
     })
     // Before connection opens
-    expect(data()).toBeUndefined()
-    expect(status()).toBe('connecting')
-    expect(error()).toBeUndefined()
+    expect(data.value).toBeUndefined()
+    expect(status.value).toBe('connecting')
+    expect(error.value).toBeUndefined()
     dispose()
   })
 
@@ -36,7 +36,7 @@ describe('fromWebSocket', () => {
       return d
     })
     await server.connected
-    expect(status()).toBe('connected')
+    expect(status.value).toBe('connected')
     dispose()
   })
 
@@ -48,7 +48,7 @@ describe('fromWebSocket', () => {
     })
     await server.connected
     server.send(JSON.stringify({ price: 100 }))
-    expect(data()).toEqual({ price: 100 })
+    expect(data.value).toEqual({ price: 100 })
     dispose()
   })
 
@@ -60,7 +60,7 @@ describe('fromWebSocket', () => {
     })
     await server.connected
     server.send('not valid json{')
-    expect(data()).toBe('not valid json{')
+    expect(data.value).toBe('not valid json{')
     dispose()
   })
 
@@ -74,7 +74,7 @@ describe('fromWebSocket', () => {
     })
     await server.connected
     server.send(JSON.stringify({ price: 42 }))
-    expect(data()).toBe(42)
+    expect(data.value).toBe(42)
     dispose()
   })
 
@@ -86,7 +86,7 @@ describe('fromWebSocket', () => {
     })
     await server.connected
     dispose()
-    expect(status()).toBe('closed')
+    expect(status.value).toBe('closed')
   })
 
   it('sets reconnect: false => status=closed on disconnect (STREAM-01)', async () => {
@@ -99,7 +99,7 @@ describe('fromWebSocket', () => {
     server.close()
     // Give event loop a tick
     await new Promise(r => setTimeout(r, 10))
-    expect(status()).toBe('closed')
+    expect(status.value).toBe('closed')
     dispose()
   })
 
@@ -114,7 +114,7 @@ describe('fromWebSocket', () => {
     await server.connected
     server.close()
     await new Promise(r => setTimeout(r, 5))
-    expect(status()).toBe('reconnecting')
+    expect(status.value).toBe('reconnecting')
     dispose()
   })
 
@@ -133,8 +133,8 @@ describe('fromWebSocket', () => {
     // Give event loop a tick for the close event to fire
     await new Promise(r => setTimeout(r, 10))
     // attempt(0) >= maxRetries(0) → sets status=error and error=MaxRetriesExceededError
-    expect(status()).toBe('error')
-    expect(error()).toBeInstanceOf(MaxRetriesExceededError)
+    expect(status.value).toBe('error')
+    expect(error.value).toBeInstanceOf(MaxRetriesExceededError)
     dispose()
   })
 
@@ -156,12 +156,12 @@ describe('fromWebSocket', () => {
     await new Promise(r => setTimeout(r, 10))
 
     // At this point status should be 'reconnecting' (timer pending)
-    expect(status()).toBe('reconnecting')
+    expect(status.value).toBe('reconnecting')
 
     // Dispose the owner — should cancel the timer and set status=closed immediately
     dispose()
 
     // No need to wait for the timer (it was cancelled)
-    expect(status()).toBe('closed')
+    expect(status.value).toBe('closed')
   })
 })

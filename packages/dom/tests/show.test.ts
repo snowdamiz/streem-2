@@ -55,7 +55,7 @@ describe('Show — reactive condition toggling', () => {
     createRoot((d) => {
       dispose = d
       const frag = Show({
-        when: () => visible(),
+        when: () => visible.value,
         fallback: document.createTextNode('fallback'),
         children: document.createTextNode('main'),
       })
@@ -77,7 +77,7 @@ describe('Show — reactive condition toggling', () => {
     createRoot((d) => {
       dispose = d
       const frag = Show({
-        when: () => visible(),
+        when: () => visible.value,
         fallback: document.createTextNode('fallback'),
         children: document.createTextNode('main'),
       })
@@ -98,7 +98,7 @@ describe('Show — reactive condition toggling', () => {
     createRoot((d) => {
       dispose = d
       const frag = Show({
-        when: () => visible(),
+        when: () => visible.value,
         fallback: document.createTextNode('fb'),
         children: document.createTextNode('ch'),
       })
@@ -119,7 +119,7 @@ describe('Show — reactive condition toggling', () => {
     createRoot((d) => {
       dispose = d
       const frag = Show({
-        when: () => visible(),
+        when: () => visible.value,
         fallback: document.createTextNode('FALLBACK'),
         children: document.createTextNode('MAIN'),
       })
@@ -152,11 +152,11 @@ describe('Show — child scope disposal', () => {
       dispose = d
       // Pass children as a FUNCTION — Show creates it inside its own createRoot scope
       const frag = Show({
-        when: () => visible(),
+        when: () => visible.value,
         children: () => {
           // effect() created inside children render function — lives in Show's scope
           effect(() => {
-            counter()
+            counter.value
             effectRunCount()
           })
           return document.createTextNode('child')
@@ -191,7 +191,7 @@ describe('Show — child scope disposal', () => {
     createRoot((d) => {
       dispose = d
       const frag = Show({
-        when: () => visible(),
+        when: () => visible.value,
         children: () => {
           mountCount++
           return document.createTextNode(`mount ${mountCount}`)

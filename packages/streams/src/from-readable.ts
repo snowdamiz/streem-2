@@ -37,7 +37,7 @@ export function fromReadable<T>(
         error.set(err instanceof Error ? err : new Error(String(err)))
       } else {
         // Cancellation errors — set status=closed if not already closed by onCleanup
-        if (status() !== 'closed') {
+        if (status.value !== 'closed') {
           status.set('closed')
         }
       }

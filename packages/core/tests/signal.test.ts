@@ -17,24 +17,24 @@ import { signal, computed, effect, createRoot, onCleanup } from '../src/index.js
 describe('SIGNAL-01: signal()', () => {
   it('returns the initial value when called', () => {
     const count = createRoot(() => signal(0))
-    expect(count()).toBe(0)
+    expect(count.value).toBe(0)
   })
 
   it('returns updated value after set()', () => {
     const count = createRoot(() => signal(0))
     count.set(5)
-    expect(count()).toBe(5)
+    expect(count.value).toBe(5)
   })
 
   it('holds any initial value type', () => {
     const name = createRoot(() => signal('hello'))
-    expect(name()).toBe('hello')
+    expect(name.value).toBe('hello')
 
     const flag = createRoot(() => signal(true))
-    expect(flag()).toBe(true)
+    expect(flag.value).toBe(true)
 
     const obj = createRoot(() => signal({ x: 1 }))
-    expect(obj()).toEqual({ x: 1 })
+    expect(obj.value).toEqual({ x: 1 })
   })
 
   it('successive set() calls update the value', () => {
@@ -42,7 +42,7 @@ describe('SIGNAL-01: signal()', () => {
     count.set(1)
     count.set(2)
     count.set(3)
-    expect(count()).toBe(3)
+    expect(count.value).toBe(3)
   })
 })
 
@@ -54,7 +54,7 @@ describe('SIGNAL-02: computed()', () => {
   it('returns derived value based on signal', () => {
     createRoot(() => {
       const count = signal(0)
-      const doubled = computed(() => count() * 2)
+      const doubled = computed(() => count.value * 2)
       expect(doubled()).toBe(0)
     })
   })
@@ -62,7 +62,7 @@ describe('SIGNAL-02: computed()', () => {
   it('returns updated value after dependency changes', () => {
     createRoot(() => {
       const count = signal(0)
-      const doubled = computed(() => count() * 2)
+      const doubled = computed(() => count.value * 2)
       count.set(5)
       expect(doubled()).toBe(10)
     })
@@ -74,7 +74,7 @@ describe('SIGNAL-02: computed()', () => {
       const count = signal(0)
       const derived = computed(() => {
         callCount++
-        return count() * 2
+        return count.value * 2
       })
 
       // Not called until first read
@@ -96,7 +96,7 @@ describe('SIGNAL-02: computed()', () => {
       const count = signal(0)
       const derived = computed(() => {
         callCount++
-        return count() * 2
+        return count.value * 2
       })
 
       derived() // first read
@@ -110,8 +110,8 @@ describe('SIGNAL-02: computed()', () => {
   it('handles diamond dependency: A -> B, A -> C, B+C -> D evaluates D once per A change', () => {
     createRoot(() => {
       const a = signal(1)
-      const b = computed(() => a() * 2)
-      const c = computed(() => a() * 3)
+      const b = computed(() => a.value * 2)
+      const c = computed(() => a.value * 3)
 
       let evalCount = 0
       const d = computed(() => {
@@ -134,7 +134,7 @@ describe('SIGNAL-02: computed()', () => {
   it('composes multiple computed values', () => {
     createRoot(() => {
       const x = signal(2)
-      const doubled = computed(() => x() * 2)
+      const doubled = computed(() => x.value * 2)
       const quadrupled = computed(() => doubled() * 2)
 
       expect(quadrupled()).toBe(8)
@@ -155,7 +155,7 @@ describe('SIGNAL-03: effect()', () => {
       const log: number[] = []
 
       effect(() => {
-        log.push(count())
+        log.push(count.value)
       })
 
       expect(log).toEqual([0])
@@ -168,7 +168,7 @@ describe('SIGNAL-03: effect()', () => {
       const log: number[] = []
 
       effect(() => {
-        log.push(count())
+        log.push(count.value)
       })
 
       count.set(1)
@@ -182,7 +182,7 @@ describe('SIGNAL-03: effect()', () => {
       const log: number[] = []
 
       effect(() => {
-        log.push(count())
+        log.push(count.value)
       })
 
       expect(log).toEqual([0])
@@ -203,8 +203,8 @@ describe('SIGNAL-03: effect()', () => {
       const log: string[] = []
 
       effect(() => {
-        if (count() > 0) {
-          log.push(`count:${count()} name:${name()}`)
+        if (count.value > 0) {
+          log.push(`count:${count.value} name:${name.value}`)
         } else {
           log.push(`count:0`)
         }
@@ -241,7 +241,7 @@ describe('SIGNAL-03: effect()', () => {
       const log: number[] = []
 
       const dispose = effect(() => {
-        log.push(count())
+        log.push(count.value)
       })
 
       expect(log).toEqual([0])
@@ -265,8 +265,8 @@ describe('SIGNAL-03: effect()', () => {
       const logA: number[] = []
       const logB: number[] = []
 
-      effect(() => { logA.push(a()) })
-      effect(() => { logB.push(b()) })
+      effect(() => { logA.push(a.value) })
+      effect(() => { logB.push(b.value) })
 
       expect(logA).toEqual([1])
       expect(logB).toEqual([10])

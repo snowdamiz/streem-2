@@ -6,10 +6,12 @@
  * can be automatically disposed when the scope is disposed.
  *
  * Relationship to reactive.ts:
- *  - owner.ts does NOT import from reactive.ts to avoid circular dependencies
- *  - The OwnerRef interface in reactive.ts is a structural subtype of Owner
- *  - signal.ts (Plan 01-02) imports from both and wires them together
+ *  - owner.ts imports currentEffectCleanupTarget from reactive.ts (one-way)
+ *  - reactive.ts does NOT import from owner.ts (no circular dependency)
+ *  - signal.ts imports from both and wires them together
  */
+
+import { currentEffectCleanupTarget } from './reactive.js'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -22,31 +24,12 @@ export interface Owner {
   disposed: boolean
 }
 
-/**
- * Structural interface for an effect node's per-run cleanup store.
- * Used by onCleanup() to register cleanup callbacks that fire before
- * each effect re-run (not just on owner disposal).
- *
- * Structural to avoid importing reactive.ts (circular dep prevention).
- */
-export interface EffectCleanupRef {
-  cleanupFns: (() => void)[] | null
-}
-
 // ---------------------------------------------------------------------------
 // Global owner state
 // ---------------------------------------------------------------------------
 
 /** The currently active owner scope */
 let currentOwner: Owner | null = null
-
-/**
- * The currently executing effect's cleanup store, if any.
- * Set by reactive.ts's runEffect() before invoking the effect fn.
- * onCleanup() registers here when inside an effect body so that
- * the callbacks fire before each effect re-run, not just on owner disposal.
- */
-let currentEffectCleanupTarget: EffectCleanupRef | null = null
 
 // ---------------------------------------------------------------------------
 // Internal helpers
@@ -140,8 +123,9 @@ export function createRoot<T>(fn: (dispose: () => void) => T): T {
  *     effect manually disposed)
  *
  * Priority: if called during an effect's execution (currentEffectCleanupTarget
- * is set by runEffect), the callback registers on the effect's cleanupFns so
- * it fires before each re-run. Otherwise falls back to the owner's cleanups.
+ * is set by runEffect in reactive.ts), the callback registers on the effect's
+ * cleanupFns so it fires before each re-run. Otherwise falls back to the
+ * owner's cleanups.
  *
  * If called outside any owner scope and outside an effect, the callback is
  * silently dropped (it will never be called). This is intentional per design.
@@ -174,25 +158,6 @@ export function onCleanup(fn: () => void): void {
   }
   // Note: if called outside any owner or effect, fn is silently dropped.
   // This is intentional — not a bug. See CONTEXT.md.
-}
-
-/**
- * Set the currently executing effect's cleanup store.
- * Called by reactive.ts's runEffect() before/after the effect fn runs.
- * This is the bridge that lets onCleanup() register per-run cleanups
- * without owner.ts needing to import from reactive.ts.
- *
- * @param target - The effect node's cleanup store, or null when not in an effect.
- */
-export function setCurrentEffectCleanupTarget(target: EffectCleanupRef | null): void {
-  currentEffectCleanupTarget = target
-}
-
-/**
- * Returns the currently active effect cleanup target (for reactive.ts use).
- */
-export function getCurrentEffectCleanupTarget(): EffectCleanupRef | null {
-  return currentEffectCleanupTarget
 }
 
 /**

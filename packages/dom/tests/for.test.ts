@@ -24,7 +24,7 @@ describe('For — initial render', () => {
     createRoot((d) => {
       dispose = d
       const frag = For({
-        each: () => items(),
+        each: () => items.value,
         by: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
@@ -41,7 +41,7 @@ describe('For — initial render', () => {
     createRoot((d) => {
       dispose = d
       const frag = For({
-        each: () => items(),
+        each: () => items.value,
         by: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
@@ -76,7 +76,7 @@ describe('For — adding items', () => {
     createRoot((d) => {
       dispose = d
       const frag = For({
-        each: () => items(),
+        each: () => items.value,
         by: (item) => item.id,
         children: (item, _index) => {
           renderCounts.set(item.id, (renderCounts.get(item.id) ?? 0) + 1)
@@ -115,7 +115,7 @@ describe('For — removing items', () => {
     createRoot((d) => {
       dispose = d
       const frag = For({
-        each: () => items(),
+        each: () => items.value,
         by: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
@@ -140,12 +140,12 @@ describe('For — removing items', () => {
     createRoot((d) => {
       dispose = d
       const frag = For({
-        each: () => items(),
+        each: () => items.value,
         by: (item) => item.id,
         children: (item, _index) => {
           if (item.id === 2) {
             effect(() => {
-              counter()
+              counter.value
               effectCallsForItem2()
             })
           }
@@ -187,7 +187,7 @@ describe('For — reordering items', () => {
     createRoot((d) => {
       dispose = d
       const frag = For({
-        each: () => items(),
+        each: () => items.value,
         by: (item) => item.id,
         children: (item, _index) => {
           renderCounts.set(item.id, (renderCounts.get(item.id) ?? 0) + 1)
@@ -229,7 +229,7 @@ describe('For — reordering items', () => {
     createRoot((d) => {
       dispose = d
       const frag = For({
-        each: () => items(),
+        each: () => items.value,
         by: (item) => item.id,
         children: (item, index) => {
           indexGetters.set(item.id, index)
@@ -268,7 +268,7 @@ describe('For — edge cases', () => {
     createRoot((d) => {
       dispose = d
       const frag = For({
-        each: () => items(),
+        each: () => items.value,
         by: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })
@@ -293,7 +293,7 @@ describe('For — edge cases', () => {
     createRoot((d) => {
       dispose = d
       const frag = For({
-        each: () => items(),
+        each: () => items.value,
         by: (item) => item.id,
         children: (item, _index) => document.createTextNode(item.name),
       })

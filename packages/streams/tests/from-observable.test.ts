@@ -55,8 +55,8 @@ describe('fromObservable', () => {
       ;[data, status] = fromObservable(obs)
       return d
     })
-    expect(data()).toBeUndefined()
-    expect(status()).toBe('connecting')
+    expect(data.value).toBeUndefined()
+    expect(status.value).toBe('connecting')
     dispose()
   })
 
@@ -68,8 +68,8 @@ describe('fromObservable', () => {
       return d
     })
     // Synchronous observable: all values emitted during .subscribe()
-    expect(data()).toBe(30)
-    expect(status()).toBe('closed')
+    expect(data.value).toBe(30)
+    expect(status.value).toBe('closed')
     dispose()
   })
 
@@ -81,7 +81,7 @@ describe('fromObservable', () => {
       return d
     })
     await new Promise(r => setTimeout(r, 50))
-    expect(data()).toBe('b')
+    expect(data.value).toBe('b')
     dispose()
   })
 
@@ -94,7 +94,7 @@ describe('fromObservable', () => {
       })
       return d
     })
-    expect(data()).toBe(7)
+    expect(data.value).toBe(7)
     dispose()
   })
 
@@ -105,9 +105,9 @@ describe('fromObservable', () => {
       ;[, status, error] = fromObservable(obs)
       return d
     })
-    expect(status()).toBe('error')
-    expect(error()).toBeInstanceOf(Error)
-    expect(error().message).toBe('stream failed')
+    expect(status.value).toBe('error')
+    expect(error.value).toBeInstanceOf(Error)
+    expect(error.value.message).toBe('stream failed')
     dispose()
   })
 
@@ -135,7 +135,7 @@ describe('fromObservable', () => {
       return d
     })
     dispose()
-    expect(status()).toBe('closed')
+    expect(status.value).toBe('closed')
   })
 
   it('sets status=error after emitting values — error() fires after next() calls (STREAM-04)', () => {
@@ -159,9 +159,9 @@ describe('fromObservable', () => {
     })
 
     // Synchronous observable: all calls happen during .subscribe()
-    expect(data()).toBe(3) // last emitted value preserved
-    expect(status()).toBe('error')
-    expect(error()).toBe(testError)
+    expect(data.value).toBe(3) // last emitted value preserved
+    expect(status.value).toBe('error')
+    expect(error.value).toBe(testError)
     dispose()
   })
 })

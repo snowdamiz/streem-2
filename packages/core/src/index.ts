@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-export { signal } from './signal.js'
+export { signal, isSignal } from './signal.js'
 export { computed } from './signal.js'
 export { effect } from './signal.js'
 export { createRoot } from './owner.js'
