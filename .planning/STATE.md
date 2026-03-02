@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Documentation & DX Polish
 status: unknown
-last_updated: "2026-03-01T23:56:19.014Z"
+last_updated: "2026-03-02T00:42:22.954Z"
 progress:
-  total_phases: 4
+  total_phases: 5
   completed_phases: 4
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 11
+  completed_plans: 10
 ---
 
 # Project State
@@ -52,6 +52,7 @@ Progress: [████░░░░░░] 22%
 *Updated after each plan completion*
 | Phase 16 P02 | 2 | 2 tasks | 1 files |
 | Phase 16 P03 | 2 | 2 tasks | 1 files |
+| Phase 17 P02 | 1 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -62,6 +63,7 @@ Progress: [████░░░░░░] 22%
 - Phase 9.1 was inserted after Phase 9 for urgent benchmark optimization
 - Phase 11 and 12 added; Phase 10 (bar chart) skipped and deferred
 - v1.2: 4 phases (13–16); bar chart finally ships as Phase 13
+- Phase 17 added: Make the landing/docs page produciton ready (favicon, SEO, etc) Then push changes to release to deploy changes
 
 ### Decisions
 
@@ -104,6 +106,8 @@ Decisions from 16-03:
 - BAD/GOOD comment pattern used for computed vs effect anti-pattern comparison
 - Cross-link in SignalsSection appended after existing TypeScript cross-link as final paragraphs
 - Cross-link in PatternsSection placed after opening intro paragraph for early discoverability
+- [Phase 17]: Owner username nicholasgasior sourced from 17-01-PLAN.md (no git remote configured)
+- [Phase 17]: og:image for docs points to /logo.svg same as landing page
 
 ### Pending Todos
 
