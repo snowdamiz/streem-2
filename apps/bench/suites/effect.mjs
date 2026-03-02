@@ -1,5 +1,5 @@
 import { Bench } from 'tinybench'
-import { signal, effect, createRoot } from '@streem/core'
+import { signal, effect, createRoot } from '@streeem/core'
 import { signal as preactSignal, effect as preactEffect } from '@preact/signals-core'
 import { createSignal, createEffect, createRoot as solidRoot } from 'solid-js'
 
@@ -8,8 +8,8 @@ export const suiteName = 'effect re-run'
 export async function run() {
   const bench = new Bench({ warmupIterations: 1000, iterations: 5000 })
 
-  // @streem/core — with owner scope (real-world usage)
-  bench.add('@streem/core effect (with createRoot)', () => {
+  // @streeem/core — with owner scope (real-world usage)
+  bench.add('@streeem/core effect (with createRoot)', () => {
     createRoot((dispose) => {
       const s = signal(0)
       let runs = 0
@@ -20,10 +20,10 @@ export async function run() {
     })
   })
 
-  // @streem/core — primitive only (no owner scope)
+  // @streeem/core — primitive only (no owner scope)
   // effect() returns a manual dispose function — use it to clean up each iteration.
   // This matches Preact's pattern where effect() returns cleanup().
-  bench.add('@streem/core effect (primitive only)', () => {
+  bench.add('@streeem/core effect (primitive only)', () => {
     const s = signal(0)
     let runs = 0
     const stop = effect(() => { s(); runs++ })

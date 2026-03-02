@@ -35,7 +35,7 @@ TypeScript-typed Lit web component bindings for TSX — `prop:` / `attr:` / `on:
 - Playwright tests run as a **separate `test:browser` script**, not part of the standard `pnpm test` (Vitest/Node) suite; CI runs both
 
 **Lit dependency & scope:**
-- `@streem/lit` has no runtime dependency on the Lit npm package — works with any custom element / `HTMLElement` subclass
+- `/lit` has no runtime dependency on the Lit npm package — works with any custom element / `HTMLElement` subclass
 - Base JSX type for all custom elements includes standard Shadow DOM attributes: `part`, `slot`, `exportparts`, and equivalent spec attributes
 - Phase 4 includes **both push (write to element) and pull (observe element property changes back into a Streem signal)**
 - Pull/observe mechanism: event-driven — listen for Lit's property-change events (e.g., `my-prop-changed`) via `addEventListener`; update a signal when the event fires
@@ -55,23 +55,23 @@ TypeScript-typed Lit web component bindings for TSX — `prop:` / `attr:` / `on:
 
 | ID | Description | Research Support |
 |----|-------------|-----------------|
-| LIT-01 | Developer can import and render Lit web components in TSX files with TypeScript-typed props — no runtime wrapper library required | TypeScript module augmentation of `@streem/dom/jsx-runtime` namespace; `declare module "@streem/dom/jsx-runtime"` pattern; template literal index signatures for `prop:`/`attr:`/`on:` namespaces |
+| LIT-01 | Developer can import and render Lit web components in TSX files with TypeScript-typed props — no runtime wrapper library required | TypeScript module augmentation of `/dom/jsx-runtime` namespace; `declare module "/dom/jsx-runtime"` pattern; template literal index signatures for `prop:`/`attr:`/`on:` namespaces |
 | LIT-02 | Lit component property bindings use a `prop:` namespace prefix in JSX to route values to element properties rather than HTML attributes | `applyProps()` in `h.ts` must detect keys starting with `prop:`, strip prefix, and assign `el[propName] = value` instead of `setAttribute`; reactive accessor handled with `effect(() => { el[propName] = accessor() })` |
 | LIT-03 | Lit component event listeners attach directly to the element ref (not via JSX event delegation) to prevent Shadow DOM event retargeting failures | `on:` prefix in `applyProps()` routes to direct `addEventListener` on the element host; existing `bindEvent()` already uses direct `addEventListener` — just needs dispatch from `applyProps()` |
-| LIT-04 | Developer can auto-generate JSX `IntrinsicElements` type declarations for Lit components by running the Custom Elements Manifest analyzer against the component source | `@custom-elements-manifest/analyzer` 0.10.5 + `@wc-toolkit/jsx-types` generate `lit-elements.d.ts` augmenting `declare module "@streem/dom/jsx-runtime"`; npm script `gen:lit-types` orchestrates the pipeline |
+| LIT-04 | Developer can auto-generate JSX `IntrinsicElements` type declarations for Lit components by running the Custom Elements Manifest analyzer against the component source | `@custom-elements-manifest/analyzer` 0.10.5 + `@wc-toolkit/jsx-types` generate `lit-elements.d.ts` augmenting `declare module "/dom/jsx-runtime"`; npm script `gen:lit-types` orchestrates the pipeline |
 </phase_requirements>
 
 ---
 
 ## Summary
 
-Phase 4 adds `@streem/lit` — a zero-runtime-dependency package that extends the `@streem/dom` JSX runtime to handle Lit web components ergonomically. The implementation has three distinct surfaces: (1) runtime JSX prop dispatch for `prop:` / `attr:` / `on:` namespace prefixes in `applyProps()`, (2) an `observeLitProp()` utility that creates a Streem signal that stays in sync with a Lit element property via event-driven pull, and (3) a code-generation CLI script that reads CEM JSON and produces a `lit-elements.d.ts` TypeScript declaration augmenting `JSX.IntrinsicElements` in the `@streem/dom/jsx-runtime` module.
+Phase 4 adds `/lit` — a zero-runtime-dependency package that extends the `/dom` JSX runtime to handle Lit web components ergonomically. The implementation has three distinct surfaces: (1) runtime JSX prop dispatch for `prop:` / `attr:` / `on:` namespace prefixes in `applyProps()`, (2) an `observeLitProp()` utility that creates a Streem signal that stays in sync with a Lit element property via event-driven pull, and (3) a code-generation CLI script that reads CEM JSON and produces a `lit-elements.d.ts` TypeScript declaration augmenting `JSX.IntrinsicElements` in the `/dom/jsx-runtime` module.
 
 The most critical architectural finding is that the existing `applyProps()` function in `h.ts` already handles `on*` event routing — but it uses lowercase event name detection and does NOT handle the `prop:` / `attr:` / `on:` prefix model. The JSX runtime must be extended to detect these namespace prefixes before the existing `on*` catch, so `on:custom-event` routes directly to `addEventListener` while `onClick` routes through the existing convention. The `prop:` case needs a reactive `effect()` binding that sets the JS property directly — `el[propName] = accessor()` — not `setAttribute`.
 
 Vitest Browser Mode (stable in Vitest 4.0, shipped October 2025) with `@vitest/browser-playwright` is the required test environment for LIT-03 verification. Shadow DOM event retargeting failures do not surface in happy-dom or JSDOM; only a real browser catches them. The test suite must live in a separate `vitest.browser.config.ts` invoked by a `test:browser` script, parallel to the existing `pnpm test` suite.
 
-**Primary recommendation:** New package `packages/lit/` with `src/index.ts` (runtime utils + `applyLitProps`), `scripts/gen-lit-types.ts` (CEM pipeline), `src/lit-types/` (generated `.d.ts` output), and `vitest.browser.config.ts` (browser test suite). Extend `@streem/dom`'s `applyProps()` to handle `prop:` / `attr:` / `on:` prefixes, keeping the change entirely additive and backward-compatible.
+**Primary recommendation:** New package `packages/lit/` with `src/index.ts` (runtime utils + `applyLitProps`), `scripts/gen-lit-types.ts` (CEM pipeline), `src/lit-types/` (generated `.d.ts` output), and `vitest.browser.config.ts` (browser test suite). Extend `/dom`'s `applyProps()` to handle `prop:` / `attr:` / `on:` prefixes, keeping the change entirely additive and backward-compatible.
 
 ---
 
@@ -90,7 +90,7 @@ Vitest Browser Mode (stable in Vitest 4.0, shipped October 2025) with `@vitest/b
 
 | Library | Version | Purpose | When to Use |
 |---------|---------|---------|-------------|
-| `lit` | ^3.x | Dev-only: used in browser test files to define stub LitElement subclasses | Test-only devDependency — no runtime dependency in `@streem/lit` |
+| `lit` | ^3.x | Dev-only: used in browser test files to define stub LitElement subclasses | Test-only devDependency — no runtime dependency in `/lit` |
 
 ### Alternatives Considered
 
@@ -98,7 +98,7 @@ Vitest Browser Mode (stable in Vitest 4.0, shipped October 2025) with `@vitest/b
 |------------|-----------|----------|
 | `@wc-toolkit/jsx-types` (programmatic) | Hand-written CEM→types script | wc-toolkit is purpose-built and handles edge cases (event types, property vs attribute, CSS properties); hand-rolling wastes time and misses corner cases |
 | `@vitest/browser-playwright` | Playwright standalone or Cypress | Vitest browser mode shares test runner with Node suite — same `describe`/`it`/`expect` API, same coverage; standalone Playwright requires separate test runner |
-| `declare module "@streem/dom/jsx-runtime"` augmentation | Global `declare namespace JSX` | React 19+ / modern JSX transform ignores global JSX namespace; module-scoped augmentation is the correct pattern for `jsxImportSource`-style runtimes |
+| `declare module "/dom/jsx-runtime"` augmentation | Global `declare namespace JSX` | React 19+ / modern JSX transform ignores global JSX namespace; module-scoped augmentation is the correct pattern for `jsxImportSource`-style runtimes |
 
 **Installation (new `packages/lit/` package):**
 ```bash
@@ -108,7 +108,7 @@ pnpm add -D @custom-elements-manifest/analyzer @wc-toolkit/jsx-types lit @vitest
 
 **Installation (new `packages/lit/` package — runtime zero-dep, type augmentation only):**
 ```bash
-# No runtime npm install needed; @streem/dom and @streem/core are workspace peers
+# No runtime npm install needed; /dom and /core are workspace peers
 ```
 
 ---
@@ -119,9 +119,9 @@ pnpm add -D @custom-elements-manifest/analyzer @wc-toolkit/jsx-types lit @vitest
 
 ```
 packages/lit/
-├── package.json                  # name: @streem/lit; no runtime deps; peerDeps: @streem/dom, @streem/core
-├── tsconfig.json                 # extends ../../tsconfig.base.json; jsx: react-jsx; jsxImportSource: @streem/dom
-├── vite.config.ts                # library build: entry src/index.ts; external @streem/core, @streem/dom
+├── package.json                  # name: /lit; no runtime deps; peerDeps: /dom, /core
+├── tsconfig.json                 # extends ../../tsconfig.base.json; jsx: react-jsx; jsxImportSource: /dom
+├── vite.config.ts                # library build: entry src/index.ts; external /core, /dom
 ├── vitest.browser.config.ts      # browser mode + Playwright; include tests/browser/**
 ├── scripts/
 │   └── gen-lit-types.ts          # CEM pipeline: glob sources → cem analyze → generateJsxTypes → write lit-elements.d.ts
@@ -135,7 +135,7 @@ packages/lit/
         └── lit-interop.browser.test.ts  # Playwright Vitest browser tests for LIT-01..04
 ```
 
-**`@streem/dom` changes (additive only):**
+**`/dom` changes (additive only):**
 ```
 packages/dom/src/
 ├── h.ts                          # applyProps: add prop:/attr:/on: prefix handling BEFORE existing on* handler
@@ -144,7 +144,7 @@ packages/dom/src/
 **Type declaration destination:**
 ```
 packages/lit/src/lit-types/
-└── lit-elements.d.ts             # committed; augments declare module "@streem/dom/jsx-runtime"
+└── lit-elements.d.ts             # committed; augments declare module "/dom/jsx-runtime"
 ```
 
 ### Pattern 1: JSX Namespace Prefix Dispatch in `applyProps()`
@@ -210,7 +210,7 @@ export function applyProps(el: HTMLElement, props: Record<string, unknown>): voi
 **Example:**
 ```typescript
 // Source: pattern derived from existing bindAttr() in packages/dom/src/bindings.ts
-import { effect } from '@streem/core'
+import { effect } from '/core'
 
 export function bindLitProp(
   el: Record<string, unknown>,
@@ -233,8 +233,8 @@ export function bindLitProp(
 ```typescript
 // Source: Lit docs — events dispatched via dispatchEvent with CustomEvent detail
 // https://lit.dev/docs/components/events/
-import { signal, onCleanup } from '@streem/core'
-import type { Signal } from '@streem/core'
+import { signal, onCleanup } from '/core'
+import type { Signal } from '/core'
 
 export function observeLitProp<T>(
   el: EventTarget,
@@ -263,7 +263,7 @@ export function observeLitProp<T>(
 
 ### Pattern 4: TypeScript `declare module` Augmentation for Custom JSX Runtime
 
-**What:** Augment `JSX.IntrinsicElements` inside the module `"@streem/dom/jsx-runtime"` — the exact module path TypeScript resolves from `jsxImportSource: "@streem/dom"`.
+**What:** Augment `JSX.IntrinsicElements` inside the module `"/dom/jsx-runtime"` — the exact module path TypeScript resolves from `jsxImportSource: "/dom"`.
 
 **When to use:** Generated `lit-elements.d.ts` output; also for the base custom element type with Shadow DOM attributes.
 
@@ -275,7 +275,7 @@ export function observeLitProp<T>(
 // packages/lit/src/lit-types/lit-elements.d.ts  (GENERATED — DO NOT EDIT)
 import type { CustomElements } from '@wc-toolkit/jsx-types'
 
-declare module '@streem/dom/jsx-runtime' {
+declare module '/dom/jsx-runtime' {
   namespace JSX {
     interface IntrinsicElements extends CustomElements {}
   }
@@ -285,7 +285,7 @@ declare module '@streem/dom/jsx-runtime' {
 **For the base custom element type (hand-authored, not generated):**
 ```typescript
 // packages/lit/src/base-custom-element-types.d.ts  (hand-authored once)
-declare module '@streem/dom/jsx-runtime' {
+declare module '/dom/jsx-runtime' {
   namespace JSX {
     interface IntrinsicElements {
       // All custom elements (hyphenated tags) get Shadow DOM attributes + prefix namespaces
@@ -324,7 +324,7 @@ const manifest = JSON.parse(readFileSync('./custom-elements.json', 'utf8'))
 generateJsxTypes(manifest, {
   fileName: 'lit-elements.d.ts',
   outdir: './src/lit-types',
-  // For @streem/dom's custom JSX runtime, the augmentation module is the jsx-runtime subpath:
+  // For /dom's custom JSX runtime, the augmentation module is the jsx-runtime subpath:
   // generateJsxTypes does NOT write the declare module wrapper itself — that's our wrapper
 })
 ```
@@ -353,7 +353,7 @@ import { playwright } from '@vitest/browser-playwright'
 
 export default defineConfig({
   test: {
-    name: '@streem/lit:browser',
+    name: '/lit:browser',
     include: ['tests/browser/**/*.browser.test.{ts,tsx}'],
     browser: {
       provider: playwright(),
@@ -379,10 +379,10 @@ export default defineConfig({
 
 - **`el.setAttribute('value', String(val))`** for `prop:value` — loses type information for non-string properties (arrays, objects, numbers, booleans are stringified); `el['value'] = val` is always correct for JS properties.
 - **Routing `on:` through the existing `on*` handler** — the existing handler lowercases everything: `onClick` → `click`. The `on:` prefix should preserve the event name as-is: `on:my-custom-event` → `my-custom-event`. These must be separate branches.
-- **Global `declare namespace JSX`** — ignored by TypeScript when `jsxImportSource` is set (React 19 / modern JSX transform behavior). Always use `declare module "@streem/dom/jsx-runtime"`.
+- **Global `declare namespace JSX`** — ignored by TypeScript when `jsxImportSource` is set (React 19 / modern JSX transform behavior). Always use `declare module "/dom/jsx-runtime"`.
 - **Running browser tests in happy-dom** — happy-dom does not implement Shadow DOM's event retargeting behavior. LIT-03 can only be verified in a real browser.
 - **Depending on Lit's auto-property-change events** — Lit does NOT automatically dispatch `{prop}-changed` events. This is a Polymer/community convention. Components must explicitly dispatch these events. The `observeLitProp()` utility documents this contract clearly; developers must ensure their components dispatch such events.
-- **Adding `lit` as a runtime dependency of `@streem/lit`** — the interop package works with any `HTMLElement` subclass. Lit is a devDependency only (for test stub components).
+- **Adding `lit` as a runtime dependency of `/lit`** — the interop package works with any `HTMLElement` subclass. Lit is a devDependency only (for test stub components).
 
 ---
 
@@ -442,11 +442,11 @@ export default defineConfig({
 
 ### Pitfall 5: `declare module` path must exactly match the resolved jsxImportSource subpath
 
-**What goes wrong:** Types declared in `declare module "@streem/dom"` instead of `declare module "@streem/dom/jsx-runtime"` — TypeScript cannot find the augmentation.
+**What goes wrong:** Types declared in `declare module "/dom"` instead of `declare module "/dom/jsx-runtime"` — TypeScript cannot find the augmentation.
 
-**Why it happens:** With `jsxImportSource: "@streem/dom"`, TypeScript resolves JSX types from `@streem/dom/jsx-runtime` (the `/jsx-runtime` subpath export). The module augmentation MUST use the exact same path.
+**Why it happens:** With `jsxImportSource: "/dom"`, TypeScript resolves JSX types from `/dom/jsx-runtime` (the `/jsx-runtime` subpath export). The module augmentation MUST use the exact same path.
 
-**How to avoid:** The generated `lit-elements.d.ts` must use `declare module "@streem/dom/jsx-runtime"`. Test this by opening a `.tsx` file that uses a generated element tag and confirming TypeScript IntelliSense shows typed props.
+**How to avoid:** The generated `lit-elements.d.ts` must use `declare module "/dom/jsx-runtime"`. Test this by opening a `.tsx` file that uses a generated element tag and confirming TypeScript IntelliSense shows typed props.
 
 **Warning signs:** `.d.ts` file exists, is included in `tsconfig.json`, but TypeScript still reports `Property 'my-element' does not exist on type 'JSX.IntrinsicElements'`.
 
@@ -531,13 +531,13 @@ generateJsxTypes(manifest, {
 })
 ```
 
-### Augmenting @streem/dom/jsx-runtime IntrinsicElements
+### Augmenting /dom/jsx-runtime IntrinsicElements
 ```typescript
 // Source: TypeScript module augmentation docs + wc-toolkit output pattern
-// The module MUST be "@streem/dom/jsx-runtime" (matches jsxImportSource + "/jsx-runtime")
+// The module MUST be "/dom/jsx-runtime" (matches jsxImportSource + "/jsx-runtime")
 import type { CustomElements } from '@wc-toolkit/jsx-types'
 
-declare module '@streem/dom/jsx-runtime' {
+declare module '/dom/jsx-runtime' {
   namespace JSX {
     interface IntrinsicElements extends CustomElements {}
   }
@@ -594,7 +594,7 @@ import { playwright } from '@vitest/browser-playwright'
 
 export default defineConfig({
   test: {
-    name: '@streem/lit:browser',
+    name: '/lit:browser',
     include: ['tests/browser/**/*.browser.test.{ts,tsx}'],
     browser: {
       provider: playwright(),
@@ -609,7 +609,7 @@ export default defineConfig({
 ### package.json scripts for lit package
 ```json
 {
-  "name": "@streem/lit",
+  "name": "/lit",
   "scripts": {
     "build": "vite build",
     "test": "vitest run",
@@ -617,8 +617,8 @@ export default defineConfig({
     "gen:lit-types": "cem analyze --litelement && tsx scripts/gen-lit-types.ts"
   },
   "peerDependencies": {
-    "@streem/core": "workspace:*",
-    "@streem/dom": "workspace:*"
+    "/core": "workspace:*",
+    "/dom": "workspace:*"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.5",
@@ -653,12 +653,12 @@ export default defineConfig({
 1. **Does `@wc-toolkit/jsx-types` write the `declare module` wrapper or just the interface body?**
    - What we know: `generateJsxTypes()` writes a `.d.ts` file; its output references a `CustomElements` type. The docs show the consumer writing the `declare module` wrapper.
    - What's unclear: Whether the generated file already contains `declare module "..."` or just the bare interface — this determines whether the generation script must wrap the output.
-   - Recommendation: The gen script should always write its own wrapper to guarantee the correct module path (`@streem/dom/jsx-runtime`). Either wrap the `generateJsxTypes` output or write the file manually using the manifest data.
+   - Recommendation: The gen script should always write its own wrapper to guarantee the correct module path (`/dom/jsx-runtime`). Either wrap the `generateJsxTypes` output or write the file manually using the manifest data.
 
-2. **Does `@streem/dom`'s `applyProps()` live in `h.ts` or should the `prop:`/`attr:`/`on:` dispatch be a separate file in `@streem/lit`?**
-   - What we know: `@streem/lit` has no runtime dependency on Lit. The `prop:`/`attr:`/`on:` prefixes are useful for ANY custom element, not just Lit ones. The existing `applyProps()` in `h.ts` handles all element prop dispatch.
-   - What's unclear: Whether to monkey-patch `applyProps` in `@streem/dom` directly (one place, always available) or override in `@streem/lit` (requires users to import something from `@streem/lit` at runtime).
-   - Recommendation: Modify `applyProps()` in `@streem/dom` directly — the `prop:`/`attr:`/`on:` feature is a standard part of the JSX runtime, not Lit-specific. This ensures any custom element (not just Lit) gets the feature. `@streem/lit` becomes types-and-tooling only.
+2. **Does `/dom`'s `applyProps()` live in `h.ts` or should the `prop:`/`attr:`/`on:` dispatch be a separate file in `/lit`?**
+   - What we know: `/lit` has no runtime dependency on Lit. The `prop:`/`attr:`/`on:` prefixes are useful for ANY custom element, not just Lit ones. The existing `applyProps()` in `h.ts` handles all element prop dispatch.
+   - What's unclear: Whether to monkey-patch `applyProps` in `/dom` directly (one place, always available) or override in `/lit` (requires users to import something from `/lit` at runtime).
+   - Recommendation: Modify `applyProps()` in `/dom` directly — the `prop:`/`attr:`/`on:` feature is a standard part of the JSX runtime, not Lit-specific. This ensures any custom element (not just Lit) gets the feature. `/lit` becomes types-and-tooling only.
 
 3. **How to handle the `on:` event name when the component dispatches camelCase vs kebab-case?**
    - What we know: `on:my-event` → `addEventListener('my-event', ...)`. Custom events in Lit are typically lowercase-kebab. Standard DOM events (`click`, `input`) are lowercase.

@@ -1,0 +1,66 @@
+# Publish all streem packages to npm via OIDC Trusted Publishing.
+# No NPM_TOKEN needed — npm exchanges the GitHub OIDC token automatically.
+#
+# Prerequisites (one-time setup per package on npmjs.com):
+#   Package settings → Trusted Publishers → Add → GitHub Actions
+#   Owner: snowdamiz  Repo: streem-2  Workflow: publish-npm.yml
+#
+# Trigger: create a GitHub Release (vX.Y.Z tag).
+#
+# pnpm does not yet support OIDC natively (github.com/pnpm/pnpm/issues/9812).
+# Workaround: pack with pnpm (resolves workspace:* → real versions), then
+# publish each tarball with npm CLI which does the OIDC exchange.
+
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write # required for OIDC token exchange with npm
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+
+      # Node 22.14+ ships npm 11.5.1+ which is required for OIDC trusted publishing.
+      # registry-url configures the publish endpoint; omitting NODE_AUTH_TOKEN
+      # causes npm to fall through to the OIDC exchange automatically.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm --filter @streeem/core --filter @streeem/dom --filter @streeem/streams --filter @streeem/lit --filter streeem --filter @streeem/create build
+
+      # pnpm pack resolves workspace:* references to real version numbers in
+      # the tarball's package.json (e.g. "workspace:*" → "0.1.0").
+      - name: Pack packages
+        run: |
+          mkdir -p /tmp/packed
+          for pkg in packages/core packages/dom packages/streams packages/lit packages/streem packages/create-streem; do
+            (cd "$pkg" && pnpm pack --pack-destination /tmp/packed)
+          done
+
+      # npm publish uses the OIDC token — no NODE_AUTH_TOKEN env var set.
+      - name: Publish packages
+        run: |
+          for tarball in /tmp/packed/*.tgz; do
+            npm publish "$tarball" --provenance --access public
+          done

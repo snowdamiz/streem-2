@@ -1,5 +1,5 @@
 /**
- * @streem/core — Owner tree test suite
+ * @streeem/core — Owner tree test suite
  *
  * Covers:
  *  - SIGNAL-04: createRoot() disposes all nested effects and signals when dispose() is called

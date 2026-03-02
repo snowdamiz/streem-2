@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import tailwind from '@tailwindcss/vite'
-import { streemHMR } from 'streem'
+import { streemHMR } from 'streeem'
 
 export default defineConfig({
   plugins: [tailwind(), streemHMR()],

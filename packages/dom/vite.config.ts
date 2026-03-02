@@ -12,7 +12,7 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['@streem/core'],
+      external: ['@streeem/core'],
     },
   },
   plugins: [

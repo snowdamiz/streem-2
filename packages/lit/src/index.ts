@@ -1,7 +1,7 @@
 /// <reference path="./base-custom-element-types.d.ts" />
 /// <reference path="./lit-types/lit-elements.d.ts" />
 /**
- * @streem/lit — Lit web component interop utilities
+ * @streeem/lit — Lit web component interop utilities
  *
  * Runtime:
  *   bindLitProp()    — reactive effect() binding for prop: JSX prefix (used internally by applyProps)

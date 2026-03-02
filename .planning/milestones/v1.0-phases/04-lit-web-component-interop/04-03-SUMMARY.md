@@ -16,11 +16,11 @@ requires:
 provides:
   - "Vitest Browser Mode test suite (Playwright Chromium) for all LIT-01..04 behaviors"
   - "gen-lit-types.ts: CEM pipeline script for LIT-04 type generation tooling"
-  - "custom-elements-manifest.config.mjs: CEM analyzer config for @streem/lit"
-  - "src/lit-types/lit-elements.d.ts: placeholder augmenting @streem/dom/jsx-runtime"
+  - "custom-elements-manifest.config.mjs: CEM analyzer config for /lit"
+  - "src/lit-types/lit-elements.d.ts: placeholder augmenting /dom/jsx-runtime"
 
 affects:
-  - developers using @streem/lit who want typed custom elements in TSX
+  - developers using /lit who want typed custom elements in TSX
 
 # Tech tracking
 tech-stack:
@@ -30,7 +30,7 @@ tech-stack:
     - "Vitest Browser Mode: playwright() provider with Chromium headless — real DOM, real Shadow DOM"
     - "Lit static properties declaration (constructor init) avoids class-field-shadowing warning"
     - "CEM pipeline: cem analyze --litelement → generateJsxTypes() → lit-elements.d.ts"
-    - "declare module '@streem/dom/jsx-runtime' augmentation path for element-specific types"
+    - "declare module '/dom/jsx-runtime' augmentation path for element-specific types"
     - "gen-lit-types.ts post-processes generateJsxTypes output to add correct module wrapper"
 
 key-files:
@@ -95,7 +95,7 @@ completed: 2026-02-28
 - Updated `vitest.config.ts` to exclude browser tests from node runner + `passWithNoTests: true`
 - Created `scripts/gen-lit-types.ts` CEM pipeline script with `--pkg` flag support
 - Created `custom-elements-manifest.config.mjs` with `litelement: true` and exclusion patterns
-- Created `src/lit-types/lit-elements.d.ts` placeholder augmenting `@streem/dom/jsx-runtime`
+- Created `src/lit-types/lit-elements.d.ts` placeholder augmenting `/dom/jsx-runtime`
 
 ## Task Commits
 
@@ -141,7 +141,7 @@ Each task was committed atomically:
 - **Commit:** Included in dd524c3
 
 **3. [Rule 2 - Missing Critical] vitest.config.ts picks up browser tests in node mode**
-- **Found during:** Task 1 post-browser-success verification (`pnpm --filter @streem/lit test`)
+- **Found during:** Task 1 post-browser-success verification (`pnpm --filter /lit test`)
 - **Issue:** Default vitest include glob picked up `tests/browser/lit-interop.browser.test.ts` and ran it in node environment; `document is not defined` caused all 7 tests to fail.
 - **Fix:** Added `exclude: ['tests/browser/**', 'node_modules/**']` and `passWithNoTests: true` to `vitest.config.ts`.
 - **Files modified:** `packages/lit/vitest.config.ts`
@@ -187,5 +187,5 @@ Each task was committed atomically:
 - VERIFIED: composed: true in test file
 - VERIFIED: generateJsxTypes imported in gen-lit-types.ts
 - VERIFIED: litelement: true in CEM config
-- VERIFIED: declare module '@streem/dom/jsx-runtime' in lit-elements.d.ts
+- VERIFIED: declare module '/dom/jsx-runtime' in lit-elements.d.ts
 - VERIFIED: 7 browser tests pass in Playwright Chromium headless

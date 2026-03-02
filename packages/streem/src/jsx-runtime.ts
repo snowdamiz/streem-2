@@ -1,3 +1,3 @@
-// Re-export the JSX runtime from @streem/dom so that
-// jsxImportSource: "streem" in tsconfig.json resolves correctly.
-export * from '@streem/dom/jsx-runtime'
+// Re-export the JSX runtime from @streeem/dom so that
+// jsxImportSource: "streeem" in tsconfig.json resolves correctly.
+export * from '@streeem/dom/jsx-runtime'

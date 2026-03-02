@@ -1,4 +1,4 @@
-import { effect, onCleanup } from '@streem/core'
+import { effect, onCleanup } from '@streeem/core'
 import type { ClassValue } from './types.js'
 
 /**

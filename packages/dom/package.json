@@ -1,5 +1,5 @@
 {
-  "name": "@streem/dom",
+  "name": "@streeem/dom",
   "version": "0.1.0",
   "type": "module",
   "exports": {
@@ -16,13 +16,21 @@
       "types": "./dist/jsx-dev-runtime.d.ts"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snowdamiz/streem-2.git",
+    "directory": "packages/dom"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "vite build",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@streem/core": "workspace:*"
+    "@streeem/core": "workspace:*"
   },
   "devDependencies": {
     "vite": "^7.0.0",

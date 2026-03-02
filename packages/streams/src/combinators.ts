@@ -1,5 +1,5 @@
-import { signal, effect, onCleanup, startBatch, endBatch } from '@streem/core'
-import type { Signal } from '@streem/core'
+import { signal, effect, onCleanup, startBatch, endBatch } from '@streeem/core'
+import type { Signal } from '@streeem/core'
 
 /**
  * Group multiple signal writes into a single batch, flushing all effects once

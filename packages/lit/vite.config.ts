@@ -20,7 +20,7 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['@streem/core', '@streem/dom'],
+      external: ['@streeem/core', '@streeem/dom'],
     },
   },
   plugins: [

@@ -7,14 +7,14 @@ tags: [dom, jsx, css, classnames, styles, typescript]
 # Dependency graph
 requires:
   - phase: 07-package-quality
-    provides: CSSProperties type in types.ts and @streem/dom exports
+    provides: CSSProperties type in types.ts and /dom exports
 provides:
   - ClassValue type (string | false | null | undefined | Record<string, boolean> | ClassValue[])
   - bindClass() updated to accept and resolve ClassValue (clsx-compatible)
   - resolveClassValue() exported helper for static class resolution
   - bindStyle() with prev/next key diffing and removeProperty for stale styles
   - applyProps() handling className alias, new ClassValue dispatch, classList removed
-  - ClassValue exported from @streem/dom
+  - ClassValue exported from /dom
 affects:
   - 11-02 (test updates — ClassValue behavior, bindStyle diff, className alias)
   - 11-03 (CSS Modules — uses updated class API)
@@ -44,7 +44,7 @@ key-decisions:
   - "className and class handled identically in applyProps — no preference expressed"
 
 patterns-established:
-  - "ClassValue: recursive union type matching clsx signature — import from @streem/dom"
+  - "ClassValue: recursive union type matching clsx signature — import from /dom"
   - "resolveClassValue: pure function, call for both reactive (inside bindClass effect) and static (applyProps direct setAttribute) paths"
 
 requirements-completed: [STYLES-DX-01, STYLES-DX-02, STYLES-DX-03, STYLES-DX-04]
@@ -68,11 +68,11 @@ completed: 2026-03-01
 
 ## Accomplishments
 
-- Added recursive `ClassValue` type exported from `@streem/dom` — accepts strings, arrays, objects, and mixed nested arrays (clsx-compatible)
+- Added recursive `ClassValue` type exported from `/dom` — accepts strings, arrays, objects, and mixed nested arrays (clsx-compatible)
 - Updated `bindClass()` and added `resolveClassValue()` helper so any ClassValue shape resolves to a space-separated class string reactively or statically
 - Fixed `bindStyle()` to diff previous/next style keys and call `el.style.removeProperty()` for removed properties — eliminating stale inline styles bug
 - Added `className` as first-class alias for `class` in `applyProps()`, removed `classList` handling entirely
-- All 95 existing `@streem/dom` tests pass
+- All 95 existing `/dom` tests pass
 
 ## Task Commits
 
@@ -119,9 +119,9 @@ None — plan executed cleanly once the blocking test import was resolved.
 
 ## Next Phase Readiness
 
-- `ClassValue` type exported from `@streem/dom` — ready for use in Plan 02 tests and Plan 03 CSS Modules work
+- `ClassValue` type exported from `/dom` — ready for use in Plan 02 tests and Plan 03 CSS Modules work
 - `resolveClassValue` exported and available for any future utility needs
-- `@streem/dom` builds successfully with full type declarations
+- `/dom` builds successfully with full type declarations
 - Plan 02 should add tests for new ClassValue behaviors: arrays, objects, mixed, className alias, bindStyle removeProperty
 
 ---

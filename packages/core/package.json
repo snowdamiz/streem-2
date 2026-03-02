@@ -1,5 +1,5 @@
 {
-  "name": "@streem/core",
+  "name": "@streeem/core",
   "version": "0.1.0",
   "type": "module",
   "exports": {
@@ -7,6 +7,14 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snowdamiz/streem-2.git",
+    "directory": "packages/core"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "vite build",

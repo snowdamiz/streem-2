@@ -1,4 +1,4 @@
-// CEM analyzer config for @streem/lit
+// CEM analyzer config for @streeem/lit
 // Run via: pnpm gen:lit-types (which calls: cem analyze --litelement && tsx scripts/gen-lit-types.ts)
 export default {
   globs: ['src/**/*.ts'],

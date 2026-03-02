@@ -1,5 +1,5 @@
 {
-  "name": "@streem/lit",
+  "name": "@streeem/lit",
   "version": "0.1.0",
   "type": "module",
   "exports": {
@@ -7,6 +7,14 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snowdamiz/streem-2.git",
+    "directory": "packages/lit"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "vite build",
@@ -16,8 +24,8 @@
     "gen:lit-types": "cem analyze --litelement && tsx scripts/gen-lit-types.ts"
   },
   "peerDependencies": {
-    "@streem/core": "workspace:*",
-    "@streem/dom": "workspace:*"
+    "@streeem/core": "workspace:*",
+    "@streeem/dom": "workspace:*"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.5",

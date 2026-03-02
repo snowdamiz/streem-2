@@ -1,5 +1,5 @@
 {
-  "name": "@streem/streams",
+  "name": "@streeem/streams",
   "version": "0.1.0",
   "type": "module",
   "exports": {
@@ -8,13 +8,21 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snowdamiz/streem-2.git",
+    "directory": "packages/streams"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "vite build",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@streem/core": "workspace:*"
+    "@streeem/core": "workspace:*"
   },
   "devDependencies": {
     "eventsource": "^4.1.0",

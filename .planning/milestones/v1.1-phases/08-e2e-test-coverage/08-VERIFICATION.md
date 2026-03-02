@@ -5,10 +5,10 @@ status: passed
 score: 6/6 must-haves verified
 gaps: []
 human_verification:
-  - test: "Run `pnpm --filter @streem/e2e exec playwright test cli-scaffold --reporter=line`"
+  - test: "Run `pnpm --filter /e2e exec playwright test cli-scaffold --reporter=line`"
     expected: "Test exits 0, scaffold builds with npm run build"
     why_human: "Test spawns expect (TCL), runs npm install (~60s), and pnpm build — network-dependent, cannot run headlessly in verifier context without side effects"
-  - test: "Run `pnpm --filter @streem/e2e exec playwright test hmr-signal --reporter=line`"
+  - test: "Run `pnpm --filter /e2e exec playwright test hmr-signal --reporter=line`"
     expected: "Both HMR tests pass — count preserved at 3/5, no framenavigated event fired"
     why_human: "Requires Vite dev server to be started by Playwright webServer config, writes to apps/demo/src/App.tsx, needs live Chromium browser"
 ---
@@ -43,7 +43,7 @@ human_verification:
 
 | Artifact | Expected | Status | Details |
 |----------|----------|--------|---------|
-| `apps/e2e/package.json` | E2E package with playwright dependency | VERIFIED | Name `@streem/e2e`, `"@playwright/test": "^1.50.0"` present; installed version 1.58.2 |
+| `apps/e2e/package.json` | E2E package with playwright dependency | VERIFIED | Name `/e2e`, `"@playwright/test": "^1.50.0"` present; installed version 1.58.2 |
 | `apps/e2e/playwright.config.ts` | Playwright config for CLI and HMR tests | VERIFIED | Exports default via `defineConfig`; 120s timeout, retries: 2, two projects (cli-scaffold, hmr-signal), webServer on port 5174 |
 | `apps/e2e/tests/cli-scaffold.spec.ts` | TEST-01: CLI scaffold test | VERIFIED | 174 lines; substantive implementation using expect TCL + filesystem polling + npm install + npm run build assertions |
 | `apps/e2e/tests/hmr-signal.spec.ts` | TEST-02: HMR signal state preservation test | VERIFIED | 113 lines; two tests — count preservation and no-full-reload assertion using framenavigated listener |
@@ -101,13 +101,13 @@ Plan template had `../..` (2 levels) which would have resolved to `apps/` not mo
 
 #### 1. TEST-01 Live Run: CLI Scaffold and Build
 
-**Test:** From monorepo root, run `pnpm --filter @streem/e2e exec playwright test cli-scaffold --reporter=line`
+**Test:** From monorepo root, run `pnpm --filter /e2e exec playwright test cli-scaffold --reporter=line`
 **Expected:** Test passes in ~1-5 minutes; exits 0; scaffolded project created in temp dir, npm install completes, npm run build exits 0; temp dir cleaned up
 **Why human:** Test spawns a real `expect` PTY process, runs npm install (~60s, network-dependent), and executes vite build. Cannot be run safely in verifier context without side effects and long waits.
 
 #### 2. TEST-02 Live Run: HMR Signal State Preservation
 
-**Test:** From monorepo root, run `pnpm --filter @streem/e2e exec playwright test hmr-signal --reporter=line`
+**Test:** From monorepo root, run `pnpm --filter /e2e exec playwright test hmr-signal --reporter=line`
 **Expected:** Playwright starts Vite dev server on port 5174; browser opens to demo app; count increments to 3/5; App.tsx write triggers HMR; DOM shows preserved count; framenavigated not fired; both tests pass (3-4s each)
 **Why human:** Requires live Chromium browser, Vite dev server, and Vite file watcher. Writes to `apps/demo/src/App.tsx` during the test (restored in finally block). Cannot be verified programmatically without running the browser stack.
 

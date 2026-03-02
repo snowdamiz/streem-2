@@ -83,7 +83,7 @@ completed: 2026-02-28
 - `For()` uses a `Map<key, RowEntry>` reconciler — on each list update: stale entries are disposed and removed, new entries get their own `createRoot` scope, and all entries are re-ordered via `insertBefore(node, anchor)` without recreating DOM nodes
 - Index getter implemented as a mutable ref closure (`let indexRef = i; () => indexRef`) — `setIndex(newIndex)` updates the ref on reorder; no signal needed, no DOM teardown for index changes
 - Updated `packages/dom/src/index.ts` to export `Show`, `For`, `onMount` alongside existing exports
-- All 58 `@streem/dom` tests pass (32 existing + 26 new)
+- All 58 `/dom` tests pass (32 existing + 26 new)
 
 ## Task Commits
 

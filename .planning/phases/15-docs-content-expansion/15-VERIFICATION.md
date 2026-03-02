@@ -75,7 +75,7 @@ No orphaned requirements — REQUIREMENTS.md traceability table maps DOCS-04 and
 
 No TODO, FIXME, PLACEHOLDER, or empty implementation stubs detected. The one match for "placeholder" was inside a Code block template string (an HTML attribute `placeholder="Email"` in the LoginForm example) — this is intentional documentation content, not a code stub.
 
-TypeScript compile: `pnpm --filter @streem/landing exec tsc --noEmit` exits with zero errors.
+TypeScript compile: `pnpm --filter /landing exec tsc --noEmit` exits with zero errors.
 
 ---
 

@@ -81,7 +81,7 @@ completed: 2026-03-01
 - Created `vite-env.d.ts` with `*.module.css` ambient declaration in both `apps/landing/src/` and `packages/create-streem/templates/default/src/`
 - Added shared `.section-label`, `.section-title`, `.section-sub` typography to `global.css` — used by 3 components without module duplication
 - Fixed `jsx-runtime.ts` `class` prop type mismatch (string vs ClassValue) that was blocking TypeScript compilation
-- Landing app `pnpm --filter @streem/landing build` exits 0; all 105 `@streem/dom` tests pass
+- Landing app `pnpm --filter /landing build` exits 0; all 105 `/dom` tests pass
 
 ## Task Commits
 
@@ -122,9 +122,9 @@ Each task was committed atomically:
 **1. [Rule 1 - Bug] Fixed stale class prop type in jsx-runtime.ts**
 - **Found during:** Task 2 (landing app build verification)
 - **Issue:** `tsc --noEmit` failed with TS2322 on `class={[styles.demoValue, styles.accent]}` — `packages/dom/src/jsx-runtime.ts` had `class?: string | (() => string)` (old type). Plan 01 updated `types.ts` but `jsx-runtime.ts` has its own duplicate inline JSX namespace with the old signature.
-- **Fix:** Updated `jsx-runtime.ts` to import `ClassValue` from `types.ts` and changed `class?:` to `ClassValue | (() => ClassValue)`, added `className?:`, removed `classList?:`. Rebuilt `@streem/dom` and `streem` packages.
+- **Fix:** Updated `jsx-runtime.ts` to import `ClassValue` from `types.ts` and changed `class?:` to `ClassValue | (() => ClassValue)`, added `className?:`, removed `classList?:`. Rebuilt `/dom` and `streem` packages.
 - **Files modified:** `packages/dom/src/jsx-runtime.ts`
-- **Verification:** `pnpm --filter @streem/landing build` exits 0; 105 dom tests pass
+- **Verification:** `pnpm --filter /landing build` exits 0; 105 dom tests pass
 - **Committed in:** `3a92ceb` (Task 2 commit)
 
 ---
@@ -139,7 +139,7 @@ None beyond the auto-fixed jsx-runtime.ts type bug above.
 ## Next Phase Readiness
 
 - Phase 11 is now complete — all 3 plans done
-- `@streem/dom` dist now has correct ClassValue types in jsx-runtime
+- `/dom` dist now has correct ClassValue types in jsx-runtime
 - CSS Modules pattern is proven with the landing page dogfood
 - Future components can follow the established pattern: co-located `.module.css`, camelCase class names, `import styles from './Foo.module.css'`
 

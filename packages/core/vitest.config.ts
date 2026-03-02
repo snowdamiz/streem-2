@@ -3,6 +3,6 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     environment: 'node',
-    name: '@streem/core',
+    name: '@streeem/core',
   },
 })

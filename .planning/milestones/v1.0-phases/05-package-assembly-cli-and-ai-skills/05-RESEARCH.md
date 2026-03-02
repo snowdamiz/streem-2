@@ -16,8 +16,8 @@
 - CLI prompts for: (1) project name, (2) package manager choice (npm / pnpm / yarn) — then auto-installs deps before handing off
 
 **Meta-package API surface:**
-- Flat re-exports from `@streem/core`, `@streem/dom`, `@streem/streams` — everything at the top level: `import { signal, fromWebSocket, render } from 'streem'`
-- Lit interop is NOT included in the `streem` meta-package — stays in `@streem/lit` only (avoids Lit peer dep for users who don't need it)
+- Flat re-exports from `/core`, `/dom`, `/streams` — everything at the top level: `import { signal, fromWebSocket, render } from 'streem'`
+- Lit interop is NOT included in the `streem` meta-package — stays in `/lit` only (avoids Lit peer dep for users who don't need it)
 - JSX runtime is configured via `jsxImportSource: "streem"` in tsconfig — not re-exported from the package
 - Strict public API boundary: only developer-facing primitives are re-exported; internal helpers from sub-packages are not surfaced
 
@@ -55,7 +55,7 @@
 
 Phase 5 assembles three previously isolated deliverables: (1) the `streem` meta-package that re-exports all three sub-packages as one import, (2) the `create-streem` CLI that scaffolds new projects following the `npm create vite@latest` pattern, and (3) the `install-streem-skill.mjs` script that installs skill files into AI tool directories across six supported tools.
 
-All three deliverables have well-established patterns to follow. The meta-package is a simple barrel index that re-exports from `@streem/core`, `@streem/dom`, and `@streem/streams` — the only non-trivial aspect is correctly threading the JSX runtime subpath exports so `jsxImportSource: "streem"` resolves to the right files. The `create-streem` CLI follows the exact structure of `create-vite` (itself now at v8.3.0), using `@clack/prompts` for interactive input and file-copy for templates. The install script is a standalone `.mjs` script with zero-dependency interactive prompts — using `@clack/prompts` for the tool selection checklist.
+All three deliverables have well-established patterns to follow. The meta-package is a simple barrel index that re-exports from `/core`, `/dom`, and `/streams` — the only non-trivial aspect is correctly threading the JSX runtime subpath exports so `jsxImportSource: "streem"` resolves to the right files. The `create-streem` CLI follows the exact structure of `create-vite` (itself now at v8.3.0), using `@clack/prompts` for interactive input and file-copy for templates. The install script is a standalone `.mjs` script with zero-dependency interactive prompts — using `@clack/prompts` for the tool selection checklist.
 
 The primary complexity is the AI skill install paths, which differ per tool and must be confirmed. Research has confirmed six tool locations (Claude, Codex, Copilot, Gemini, Windsurf, OpenCode), each with project-scoped and user-scoped variants. The install script should default to project-scoped (`.claude/skills/` etc.) which is cross-tool compatible.
 
@@ -103,7 +103,7 @@ pnpm add -D @clack/prompts picocolors tsup --filter create-streem
 packages/
 ├── streem/                    # Meta-package: the "streem" npm package
 │   ├── src/
-│   │   └── index.ts           # Flat re-exports from @streem/core, @streem/dom, @streem/streams
+│   │   └── index.ts           # Flat re-exports from /core, /dom, /streams
 │   ├── skills/
 │   │   ├── SKILL.md           # Root skill with topic routing table
 │   │   ├── signals.md         # Signal sub-skill
@@ -218,18 +218,18 @@ main().catch(console.error)
 ```typescript
 // packages/streem/src/index.ts
 // Core signals
-export { signal, computed, effect, createRoot, onCleanup, getOwner, runWithOwner, batch } from '@streem/core'
-export type { Signal, Owner } from '@streem/core'
+export { signal, computed, effect, createRoot, onCleanup, getOwner, runWithOwner, batch } from '/core'
+export type { Signal, Owner } from '/core'
 
 // DOM / JSX runtime
-export { h, Fragment, render, onMount, Show, For, ErrorBoundary, Suspense } from '@streem/dom'
+export { h, Fragment, render, onMount, Show, For, ErrorBoundary, Suspense } from '/dom'
 
 // Streaming primitives
-export { fromWebSocket, fromSSE, fromReadable, fromObservable, throttle, debounce } from '@streem/streams'
-export type { StreamStatus, StreamTuple, WebSocketOptions, SSEOptions } from '@streem/streams'
+export { fromWebSocket, fromSSE, fromReadable, fromObservable, throttle, debounce } from '/streams'
+export type { StreamStatus, StreamTuple, WebSocketOptions, SSEOptions } from '/streams'
 
 // NOTE: Do NOT export: startBatch, endBatch, HMR utilities, streemHMR plugin, internal helpers
-// NOTE: Do NOT re-export from @streem/lit (Lit peer dep must remain opt-in)
+// NOTE: Do NOT re-export from /lit (Lit peer dep must remain opt-in)
 ```
 
 ```json
@@ -254,8 +254,8 @@ export type { StreamStatus, StreamTuple, WebSocketOptions, SSEOptions } from '@s
 ```
 
 ```typescript
-// packages/streem/src/jsx-runtime.ts — re-export from @streem/dom
-export * from '@streem/dom/jsx-runtime'
+// packages/streem/src/jsx-runtime.ts — re-export from /dom
+export * from '/dom/jsx-runtime'
 ```
 
 ### Pattern 3: AI Skill Install Script
@@ -374,8 +374,8 @@ For general framework questions, the sections below provide an overview.
 
 - **Vite library mode for the CLI entry:** Vite cannot preserve `#!/usr/bin/env node` hashbangs. Use tsup for `create-streem`, which handles hashbangs automatically.
 - **Re-exporting HMR utilities from `streem`:** `registerForHMR`, `getRestoredValue`, `saveToHotData`, `streemHMR` are Vite dev internals — do not surface in the public API.
-- **Re-exporting `startBatch`/`endBatch` from `streem`:** These are low-level internal batch primitives; only `batch()` from `@streem/streams` combinators is developer-facing.
-- **Including `@streem/lit` in the meta-package:** Would force Lit as a peer dep for all users. Lit stays in `@streem/lit` only.
+- **Re-exporting `startBatch`/`endBatch` from `streem`:** These are low-level internal batch primitives; only `batch()` from `/streams` combinators is developer-facing.
+- **Including `/lit` in the meta-package:** Would force Lit as a peer dep for all users. Lit stays in `/lit` only.
 - **Flat skill file install (single SKILL.md):** Each tool expects a `streem/` folder with `SKILL.md` inside, not a single file. Use `cp -r skills/ targetPath`.
 - **Missing `jsx-runtime` subpath export from `streem`:** Without it, `jsxImportSource: "streem"` fails to resolve — TypeScript cannot find `streem/jsx-runtime`.
 
@@ -398,7 +398,7 @@ For general framework questions, the sections below provide an overview.
 
 **Why it happens:** TypeScript resolves `jsxImportSource: "streem"` by looking for `streem/jsx-runtime` in the package's `exports` map. If there is no `"./jsx-runtime"` entry, the import fails.
 
-**How to avoid:** The `streem` meta-package MUST include three entries in `exports`: `.` (main), `./jsx-runtime`, and `./jsx-dev-runtime`. The `jsx-runtime.ts` source simply re-exports from `@streem/dom/jsx-runtime`.
+**How to avoid:** The `streem` meta-package MUST include three entries in `exports`: `.` (main), `./jsx-runtime`, and `./jsx-dev-runtime`. The `jsx-runtime.ts` source simply re-exports from `/dom/jsx-runtime`.
 
 **Warning signs:** TypeScript error `Module 'streem/jsx-runtime' has no exported member 'jsx'` or similar.
 
@@ -406,7 +406,7 @@ For general framework questions, the sections below provide an overview.
 
 **What goes wrong:** Internal helpers like `startBatch`, `endBatch`, `getOwner`, HMR utilities are re-exported from `streem`, polluting the public API surface and creating misleading TypeScript autocomplete.
 
-**Why it happens:** A naive `export * from '@streem/core'` catches everything including internals.
+**Why it happens:** A naive `export * from '/core'` catches everything including internals.
 
 **How to avoid:** Use named exports only — explicitly list each exported symbol in `packages/streem/src/index.ts`. Never use `export *` for sub-packages.
 
@@ -414,13 +414,13 @@ For general framework questions, the sections below provide an overview.
 
 ### Pitfall 3: Template `package.json` Using `workspace:*` Dependencies
 
-**What goes wrong:** The scaffolded project's `package.json` references `@streem/dom: "workspace:*"` — which only resolves inside the monorepo. A user outside the monorepo gets an install error.
+**What goes wrong:** The scaffolded project's `package.json` references `/dom: "workspace:*"` — which only resolves inside the monorepo. A user outside the monorepo gets an install error.
 
 **Why it happens:** Copying the `apps/demo` package.json verbatim without substituting workspace links with semver versions.
 
-**How to avoid:** The template `package.json` must use published semver versions (e.g., `"@streem/core": "^0.1.0"`) or `"latest"` — never `workspace:*`.
+**How to avoid:** The template `package.json` must use published semver versions (e.g., `"/core": "^0.1.0"`) or `"latest"` — never `workspace:*`.
 
-**Warning signs:** `pnpm install` in the scaffolded project fails with "No matching version found for @streem/core@workspace:*".
+**Warning signs:** `pnpm install` in the scaffolded project fails with "No matching version found for /core@workspace:*".
 
 ### Pitfall 4: `@clack/prompts` `isCancel` Not Checked
 
@@ -442,9 +442,9 @@ For general framework questions, the sections below provide an overview.
 
 **Warning signs:** AI tools report skill loaded but cannot read `signals.md` because it does not exist.
 
-### Pitfall 6: `@streem/dom` Dependencies Not Externalized in Meta-Package Build
+### Pitfall 6: `/dom` Dependencies Not Externalized in Meta-Package Build
 
-**What goes wrong:** The `streem` meta-package bundles the source of `@streem/core`, `@streem/dom`, `@streem/streams` into a single file. Users get duplicate code if they also import sub-packages directly.
+**What goes wrong:** The `streem` meta-package bundles the source of `/core`, `/dom`, `/streams` into a single file. Users get duplicate code if they also import sub-packages directly.
 
 **Why it happens:** Vite `lib` mode bundles all imports unless explicitly externalized.
 
@@ -526,7 +526,7 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['@streem/core', '@streem/dom', '@streem/streams'],
+      external: ['/core', '/dom', '/streams'],
     },
     target: 'es2022',
     minify: false,
@@ -594,9 +594,9 @@ description: Streem reactive framework — use when working with signals, stream
 ## Open Questions
 
 1. **`streemHMR` export from `streem` meta-package**
-   - What we know: `streemHMR` is a Vite plugin exported from `@streem/dom`. The demo's `vite.config.ts` uses it. The template's `vite.config.ts` needs it.
-   - What's unclear: Should `streemHMR` be re-exported from `streem` (making the template use `import { streemHMR } from 'streem'`) or should it come from `@streem/dom`?
-   - Recommendation: Re-export `streemHMR` from `streem` to keep the template's imports minimal — the template should only depend on `streem`, not `@streem/dom`. This is a developer-facing primitive.
+   - What we know: `streemHMR` is a Vite plugin exported from `/dom`. The demo's `vite.config.ts` uses it. The template's `vite.config.ts` needs it.
+   - What's unclear: Should `streemHMR` be re-exported from `streem` (making the template use `import { streemHMR } from 'streem'`) or should it come from `/dom`?
+   - Recommendation: Re-export `streemHMR` from `streem` to keep the template's imports minimal — the template should only depend on `streem`, not `/dom`. This is a developer-facing primitive.
 
 2. **`create-streem` package location in monorepo**
    - What we know: The monorepo has `packages/` and `apps/`. `pnpm-workspace.yaml` includes `packages/*`.
@@ -615,7 +615,7 @@ description: Streem reactive framework — use when working with signals, stream
 ## Sources
 
 ### Primary (HIGH confidence)
-- `apps/demo/tsconfig.json`, `vite.config.ts` — confirmed working `jsxImportSource: "@streem/dom"` pattern (direct file inspection)
+- `apps/demo/tsconfig.json`, `vite.config.ts` — confirmed working `jsxImportSource: "/dom"` pattern (direct file inspection)
 - `packages/*/package.json` — confirmed sub-package names, versions, exports fields (direct file inspection)
 - `packages/*/src/index.ts` — confirmed public API symbols for each sub-package (direct file inspection)
 - https://opencode.ai/docs/skills/ — OpenCode skills directory paths (official docs, WebFetch confirmed)

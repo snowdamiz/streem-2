@@ -49,11 +49,11 @@
 
 | ID | Description | Research Support |
 |----|-------------|-----------------|
-| STREAM-01 | Developer can bind a WebSocket connection to a signal using `fromWebSocket()` — connection is automatically closed via `onCleanup()` when the component unmounts | `onCleanup()` is fully implemented in `@streem/core`; WebSocket API is available natively; adapter pattern documented below |
+| STREAM-01 | Developer can bind a WebSocket connection to a signal using `fromWebSocket()` — connection is automatically closed via `onCleanup()` when the component unmounts | `onCleanup()` is fully implemented in `/core`; WebSocket API is available natively; adapter pattern documented below |
 | STREAM-02 | Developer can bind a Server-Sent Events stream to a signal using `fromSSE()` — connection is automatically closed via `onCleanup()` when the component unmounts | Native `EventSource` API handles reconnect and Last-Event-ID automatically; `close()` registered via `onCleanup()` |
 | STREAM-03 | Developer can bind a WHATWG `ReadableStream` (Fetch API) to a signal using `fromReadable()` — stream is automatically cancelled via `onCleanup()` when the component unmounts | `ReadableStream.getReader()` + `reader.cancel()` in `onCleanup()`; async iteration pattern documented |
 | STREAM-04 | Developer can bind an Observable or RxJS source to a signal using `fromObservable()` — subscription is automatically unsubscribed via `onCleanup()` when the component unmounts | Minimal `Subscribable<T>` interface (`subscribe` returning `{ unsubscribe() }`) covers RxJS 7 and any TC39-compatible observable |
-| STREAM-05 | Developer can batch multiple synchronous signal writes using `batch()` to prevent browser freeze on high-frequency streams (>30 messages/second) | `startBatch()` / `endBatch()` stub already in `@streem/core/src/reactive.ts`; Phase 3 just needs to expose a public `batch(fn)` wrapper |
+| STREAM-05 | Developer can batch multiple synchronous signal writes using `batch()` to prevent browser freeze on high-frequency streams (>30 messages/second) | `startBatch()` / `endBatch()` stub already in `/core/src/reactive.ts`; Phase 3 just needs to expose a public `batch(fn)` wrapper |
 | STREAM-06 | Developer can throttle or debounce signal updates from streams using `throttle()` and `debounce()` combinators | Both are hand-implemented timing utilities; no external library needed; patterns documented below |
 | STREAM-07 | Each stream adapter exposes a typed connection-status signal reflecting the current state (`connected \| reconnecting \| error \| closed`) | `signal<StreamStatus>('connecting')` with TypeScript string union type; all adapters share the same status union |
 | STREAM-08 | WebSocket adapter automatically reconnects with exponential backoff on connection loss | Exponential backoff formula: `Math.min(initialDelay * 2^attempt + jitter, maxDelay)`; `setTimeout`-based; `maxRetries` guard with `MaxRetriesExceeded` error |
@@ -63,13 +63,13 @@
 
 ## Summary
 
-Phase 3 creates a new `@streem/streams` package that exposes four DOM-agnostic stream adapters. The key insight is that this package depends only on `@streem/core` (Phase 1) — not `@streem/dom` — making all adapters testable in a Node-like environment without a DOM. The `onCleanup()` API from `@streem/core` is the primary cleanup mechanism: each adapter registers its teardown (WebSocket close, EventSource close, reader cancel, subscription unsubscribe) with the active owner scope on creation.
+Phase 3 creates a new `/streams` package that exposes four DOM-agnostic stream adapters. The key insight is that this package depends only on `/core` (Phase 1) — not `/dom` — making all adapters testable in a Node-like environment without a DOM. The `onCleanup()` API from `/core` is the primary cleanup mechanism: each adapter registers its teardown (WebSocket close, EventSource close, reader cancel, subscription unsubscribe) with the active owner scope on creation.
 
-The reactive infrastructure for batching is already partially built in `@streem/core/src/reactive.ts` — `startBatch()` and `endBatch()` exist as stubs from Phase 1 planning. Phase 3 exposes the public `batch(fn)` combinator that calls these internal APIs. The `throttle()` and `debounce()` combinators are simple timing wrappers that take a `Signal<T>` and return a new derived signal — no external dependencies needed.
+The reactive infrastructure for batching is already partially built in `/core/src/reactive.ts` — `startBatch()` and `endBatch()` exist as stubs from Phase 1 planning. Phase 3 exposes the public `batch(fn)` combinator that calls these internal APIs. The `throttle()` and `debounce()` combinators are simple timing wrappers that take a `Signal<T>` and return a new derived signal — no external dependencies needed.
 
-For testing without a real server: WebSocket tests use `vitest-websocket-mock` (which patches the global `WebSocket` in the happy-dom environment already used by `@streem/dom`), SSE tests use `MSW` (which has first-class `sse()` mocking since v2.12.0 — this also works in the `@streem/streams` node-environment tests via `msw/node`), and ReadableStream/Observable tests can be fully synchronous using hand-rolled mock streams.
+For testing without a real server: WebSocket tests use `vitest-websocket-mock` (which patches the global `WebSocket` in the happy-dom environment already used by `/dom`), SSE tests use `MSW` (which has first-class `sse()` mocking since v2.12.0 — this also works in the `/streams` node-environment tests via `msw/node`), and ReadableStream/Observable tests can be fully synchronous using hand-rolled mock streams.
 
-**Primary recommendation:** Create `packages/streams` with `@streem/core` as its only runtime dependency. Use `vitest-websocket-mock` for WS tests, `msw` for SSE tests, and `happy-dom` or `node` environment depending on which globals are needed per test suite.
+**Primary recommendation:** Create `packages/streams` with `/core` as its only runtime dependency. Use `vitest-websocket-mock` for WS tests, `msw` for SSE tests, and `happy-dom` or `node` environment depending on which globals are needed per test suite.
 
 ---
 
@@ -78,7 +78,7 @@ For testing without a real server: WebSocket tests use `vitest-websocket-mock` (
 ### Core
 | Library | Version | Purpose | Why Standard |
 |---------|---------|---------|--------------|
-| `@streem/core` | `workspace:*` | `signal()`, `onCleanup()`, `Signal<T>` types | The reactive foundation Phase 3 extends; provides all cleanup plumbing |
+| `/core` | `workspace:*` | `signal()`, `onCleanup()`, `Signal<T>` types | The reactive foundation Phase 3 extends; provides all cleanup plumbing |
 | `vitest` | `^4.0.0` | Test runner (already in workspace) | Already locked in all packages |
 | `typescript` | `~5.8.0` | Type-checking (already in workspace) | Already locked in workspace root |
 | `vite` | `^7.0.0` | Build tooling (already in workspace) | Already locked in workspace root |
@@ -89,18 +89,18 @@ For testing without a real server: WebSocket tests use `vitest-websocket-mock` (
 |---------|---------|---------|-------------|
 | `vitest-websocket-mock` | `^2.0.0` | Patches global `WebSocket` with a mock server | WS adapter tests (`fromWebSocket`) |
 | `msw` | `^2.12.0` | Network-layer SSE/HTTP mocking | SSE adapter tests (`fromSSE`) via `msw/node` |
-| `happy-dom` | `^14.0.0` | Browser-like globals (`EventSource`, `ReadableStream`) | Already used in `@streem/dom`; reuse if globals needed |
+| `happy-dom` | `^14.0.0` | Browser-like globals (`EventSource`, `ReadableStream`) | Already used in `/dom`; reuse if globals needed |
 
 ### Alternatives Considered
 | Instead of | Could Use | Tradeoff |
 |------------|-----------|----------|
 | `vitest-websocket-mock` | `vitest-mock-socket` | `vitest-mock-socket` is a cleaner rewrite on `mock-socket` directly; either works — `vitest-websocket-mock` has more GitHub stars and adoption |
 | `msw` for SSE | `vi.stubGlobal('EventSource', MockEventSource)` | Manual stub requires more setup; MSW `sse()` API is more realistic and less error-prone |
-| `happy-dom` environment | `node` environment | `@streem/streams` should target `node` environment to keep tests fast; `happy-dom` only needed if browser globals are required (e.g., `EventSource`) |
+| `happy-dom` environment | `node` environment | `/streams` should target `node` environment to keep tests fast; `happy-dom` only needed if browser globals are required (e.g., `EventSource`) |
 
 **Installation (new `packages/streams`):**
 ```bash
-pnpm add -D vitest-websocket-mock msw happy-dom --filter @streem/streams
+pnpm add -D vitest-websocket-mock msw happy-dom --filter /streams
 ```
 
 ---
@@ -131,12 +131,12 @@ packages/streams/
 ```
 
 ### Pattern 1: Adapter Return Tuple
-**What:** All adapters return `[data, status, error]` as a fixed-shape tuple using `Signal` from `@streem/core`.
+**What:** All adapters return `[data, status, error]` as a fixed-shape tuple using `Signal` from `/core`.
 **When to use:** Every adapter — locked decision from CONTEXT.md.
 
 ```typescript
 // packages/streams/src/types.ts
-import type { Signal } from '@streem/core'
+import type { Signal } from '/core'
 
 export type StreamStatus = 'connecting' | 'connected' | 'reconnecting' | 'error' | 'closed'
 
@@ -167,8 +167,8 @@ export interface SSEOptions<T> {
 **When to use:** All four adapters.
 
 ```typescript
-// Source: @streem/core onCleanup API (packages/core/src/owner.ts)
-import { signal, onCleanup } from '@streem/core'
+// Source: /core onCleanup API (packages/core/src/owner.ts)
+import { signal, onCleanup } from '/core'
 import type { StreamTuple, WebSocketOptions, StreamStatus } from './types.js'
 
 export function fromWebSocket<T>(
@@ -262,7 +262,7 @@ export class MaxRetriesExceededError extends Error {
 
 ```typescript
 // Source: MDN EventSource API + CONTEXT.md locked decision
-import { signal, onCleanup } from '@streem/core'
+import { signal, onCleanup } from '/core'
 import type { StreamTuple, SSEOptions, StreamStatus } from './types.js'
 
 export function fromSSE<T>(
@@ -323,7 +323,7 @@ export function fromSSE<T>(
 
 ```typescript
 // Source: MDN ReadableStream + WHATWG Streams Standard
-import { signal, onCleanup } from '@streem/core'
+import { signal, onCleanup } from '/core'
 import type { StreamTuple, StreamStatus } from './types.js'
 
 export function fromReadable<T>(
@@ -376,7 +376,7 @@ export function fromReadable<T>(
 
 ```typescript
 // Source: RxJS Subscribable<T> interface (framework-agnostic minimum contract)
-import { signal, onCleanup } from '@streem/core'
+import { signal, onCleanup } from '/core'
 import type { StreamTuple, StreamStatus } from './types.js'
 
 // Framework-agnostic Subscribable contract (matches RxJS Subscribable<T>)
@@ -428,10 +428,10 @@ export function fromObservable<T>(
 **When to use:** High-frequency message handlers (>30 msg/sec).
 
 ```typescript
-// Source: @streem/core/src/reactive.ts — startBatch/endBatch already implemented
-import { startBatch, endBatch } from '@streem/core/reactive' // internal re-export needed
+// Source: /core/src/reactive.ts — startBatch/endBatch already implemented
+import { startBatch, endBatch } from '/core/reactive' // internal re-export needed
 
-// OR: export from @streem/core directly and expose in @streem/streams
+// OR: export from /core directly and expose in /streams
 
 export function batch(fn: () => void): void {
   startBatch()
@@ -443,11 +443,11 @@ export function batch(fn: () => void): void {
 }
 ```
 
-**Important:** `startBatch` and `endBatch` are currently exported from `reactive.ts` but NOT from `packages/core/src/index.ts`. The `batch()` public combinator can live in `@streem/streams/combinators.ts` but needs these internal functions exposed. Two implementation options:
-1. Export `startBatch` / `endBatch` from `@streem/core/index.ts` (preferred — keeps batch logic in core)
+**Important:** `startBatch` and `endBatch` are currently exported from `reactive.ts` but NOT from `packages/core/src/index.ts`. The `batch()` public combinator can live in `/streams/combinators.ts` but needs these internal functions exposed. Two implementation options:
+1. Export `startBatch` / `endBatch` from `/core/index.ts` (preferred — keeps batch logic in core)
 2. Re-implement `isBatching` flag in streams package (avoid — duplicates state)
 
-**Decision for planner:** Option 1 — add `startBatch` and `endBatch` to `@streem/core`'s public exports, then `batch()` in `@streem/streams` calls them.
+**Decision for planner:** Option 1 — add `startBatch` and `endBatch` to `/core`'s public exports, then `batch()` in `/streams` calls them.
 
 ### Pattern 7: throttle() and debounce() Combinators
 **What:** Signal-to-signal timing wrappers. Take a source `Signal<T>` and return a new `Signal<T>` (actually a `computed`-like derived signal that updates on a timer).
@@ -455,8 +455,8 @@ export function batch(fn: () => void): void {
 
 ```typescript
 // Source: MDN Glossary/Debounce + standard JS timing patterns
-import { signal, effect, onCleanup } from '@streem/core'
-import type { Signal } from '@streem/core'
+import { signal, effect, onCleanup } from '/core'
+import type { Signal } from '/core'
 
 export function throttle<T>(source: Signal<T>, intervalMs: number): Signal<T> {
   const out = signal<T>(source())
@@ -515,7 +515,7 @@ export function debounce<T>(source: Signal<T>, delayMs: number): Signal<T> {
 | Observable type compatibility | Custom `Observable` class | Use the `Subscribable<T>` structural interface | Any object with `subscribe(observer)` returning `{ unsubscribe() }` passes the type check — works with RxJS 7, RxJS 8, xstream, etc. |
 | Exponential backoff | Custom complex backoff class | Inline formula: `Math.min(initialDelay * 2^attempt + jitter, maxDelay)` | No library needed; 2-line formula covers all cases |
 
-**Key insight:** The stream adapters are adapters — thin wrappers that wire existing APIs to `@streem/core` signals. The hard work (reactive graph, ownership, cleanup) is done. The adapters are glue code, not new machinery.
+**Key insight:** The stream adapters are adapters — thin wrappers that wire existing APIs to `/core` signals. The hard work (reactive graph, ownership, cleanup) is done. The adapters are glue code, not new machinery.
 
 ---
 
@@ -539,11 +539,11 @@ export function debounce<T>(source: Signal<T>, delayMs: number): Signal<T> {
 **How to avoid:** Check `es.readyState` inside the error handler: `CONNECTING` (0) = reconnecting in progress (native), `CLOSED` (2) = permanent failure. Set `'reconnecting'` vs `'error'`/`'closed'` accordingly.
 **Warning signs:** `status()` shows `'error'` immediately after brief network blip, then switches to `'connected'` — flickering status.
 
-### Pitfall 4: batch() Must Import from @streem/core Internal
-**What goes wrong:** `startBatch()` and `endBatch()` are exported from `reactive.ts` but NOT currently re-exported from `packages/core/src/index.ts`. If `@streem/streams` tries to import them, it gets a module-not-found error.
+### Pitfall 4: batch() Must Import from /core Internal
+**What goes wrong:** `startBatch()` and `endBatch()` are exported from `reactive.ts` but NOT currently re-exported from `packages/core/src/index.ts`. If `/streams` tries to import them, it gets a module-not-found error.
 **Why it happens:** Phase 1 intentionally did not expose these as they were stubs for Phase 3.
-**How to avoid:** Plan 03-01 or 03-04 must add `startBatch` and `endBatch` to `@streem/core/src/index.ts` exports before implementing `batch()`.
-**Warning signs:** TypeScript error: `Module '@streem/core' has no exported member 'startBatch'`.
+**How to avoid:** Plan 03-01 or 03-04 must add `startBatch` and `endBatch` to `/core/src/index.ts` exports before implementing `batch()`.
+**Warning signs:** TypeScript error: `Module '/core' has no exported member 'startBatch'`.
 
 ### Pitfall 5: throttle()/debounce() Require Active Owner Scope
 **What goes wrong:** `throttle()` and `debounce()` call `effect()` internally. If called outside a `createRoot()` / component scope, the dev-mode warning fires and the effect is never auto-disposed.
@@ -560,7 +560,7 @@ export function debounce<T>(source: Signal<T>, delayMs: number): Signal<T> {
 ### Pitfall 7: vitest-websocket-mock Requires happy-dom (Not node)
 **What goes wrong:** `vitest-websocket-mock` (via `mock-socket`) patches the global `WebSocket` object. In a `node` environment, there is no global `WebSocket` before Node 22 / Vitest 4 runtime injection.
 **Why it happens:** `mock-socket` replaces `globalThis.WebSocket` — if it doesn't exist, patching fails silently.
-**How to avoid:** Configure `@streem/streams` vitest to use `happy-dom` environment for WebSocket tests (same as `@streem/dom`). Alternatively: use `globalThis.WebSocket` availability check in vitest setup, or use `msw` with `setupServer` from `msw/node` for both WS and SSE (MSW handles its own patching).
+**How to avoid:** Configure `/streams` vitest to use `happy-dom` environment for WebSocket tests (same as `/dom`). Alternatively: use `globalThis.WebSocket` availability check in vitest setup, or use `msw` with `setupServer` from `msw/node` for both WS and SSE (MSW handles its own patching).
 **Warning signs:** `ReferenceError: WebSocket is not defined` in tests, or WebSocket connects to real URLs instead of mock.
 
 ---
@@ -584,7 +584,7 @@ function getBackoffDelay(attempt: number, initialDelay: number, maxDelay: number
 // Source: github.com/akiomik/vitest-websocket-mock README
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import WS from 'vitest-websocket-mock'
-import { createRoot } from '@streem/core'
+import { createRoot } from '/core'
 import { fromWebSocket } from '../src/from-websocket.js'
 
 describe('fromWebSocket', () => {
@@ -621,7 +621,7 @@ describe('fromWebSocket', () => {
 import { setupServer } from 'msw/node'
 import { sse } from 'msw'
 import { afterAll, afterEach, beforeAll, it, expect } from 'vitest'
-import { createRoot } from '@streem/core'
+import { createRoot } from '/core'
 import { fromSSE } from '../src/from-sse.js'
 
 const server = setupServer(
@@ -646,10 +646,10 @@ it('updates data signal from SSE', async () => {
 })
 ```
 
-### package.json for @streem/streams
+### package.json for /streams
 ```json
 {
-  "name": "@streem/streams",
+  "name": "/streams",
   "version": "0.1.0",
   "type": "module",
   "exports": {
@@ -664,7 +664,7 @@ it('updates data signal from SSE', async () => {
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@streem/core": "workspace:*"
+    "/core": "workspace:*"
   },
   "devDependencies": {
     "vite": "^7.0.0",
@@ -684,20 +684,20 @@ it('updates data signal from SSE', async () => {
 }
 ```
 
-### @streem/streams vitest.config.ts
+### /streams vitest.config.ts
 ```typescript
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
     environment: 'happy-dom',  // provides WebSocket global for mock-socket
-    name: '@streem/streams',
+    name: '/streams',
     setupFiles: ['./tests/setup.ts'],
   },
 })
 ```
 
-### @streem/streams tests/setup.ts
+### /streams tests/setup.ts
 ```typescript
 // MSW server setup for SSE tests
 import { setupServer } from 'msw/node'
@@ -728,10 +728,10 @@ afterAll(() => mswServer.close())
 
 ## Open Questions
 
-1. **`startBatch` / `endBatch` export from `@streem/core`**
+1. **`startBatch` / `endBatch` export from `/core`**
    - What we know: Both functions are implemented in `reactive.ts` and exported from there. `index.ts` does not re-export them.
-   - What's unclear: Whether `batch()` should live in `@streem/core` or `@streem/streams`. Architecturally it belongs in core (it's a reactive primitive), but the requirements say "ships with Phase 3".
-   - Recommendation: Export `startBatch`/`endBatch` from `@streem/core/index.ts` in Plan 03-04, then implement the public `batch(fn)` wrapper there. `@streem/streams` can also re-export it for convenience.
+   - What's unclear: Whether `batch()` should live in `/core` or `/streams`. Architecturally it belongs in core (it's a reactive primitive), but the requirements say "ships with Phase 3".
+   - Recommendation: Export `startBatch`/`endBatch` from `/core/index.ts` in Plan 03-04, then implement the public `batch(fn)` wrapper there. `/streams` can also re-export it for convenience.
 
 2. **`fromReadable` async iteration vs `getReader()` loop**
    - What we know: `for await (const chunk of stream)` is syntactically cleaner and `break` automatically triggers cancel. However, when `onCleanup()` fires, there's no way to `break` from outside the loop — `reader.cancel()` is needed.
@@ -748,9 +748,9 @@ afterAll(() => mswServer.close())
 ## Sources
 
 ### Primary (HIGH confidence)
-- `@streem/core/src/reactive.ts` — `startBatch`/`endBatch` stub implementation (read from codebase)
-- `@streem/core/src/owner.ts` — `onCleanup()` full implementation and behaviour (read from codebase)
-- `@streem/core/src/signal.ts` — `Signal<T>` interface, `signal()` API (read from codebase)
+- `/core/src/reactive.ts` — `startBatch`/`endBatch` stub implementation (read from codebase)
+- `/core/src/owner.ts` — `onCleanup()` full implementation and behaviour (read from codebase)
+- `/core/src/signal.ts` — `Signal<T>` interface, `signal()` API (read from codebase)
 - MDN EventSource API — `readyState` values, `close()`, `error` event behaviour
 - WHATWG Streams Standard — `getReader()`, `reader.read()`, `reader.cancel()` semantics
 - RxJS GitHub `packages/rxjs/src/internal/types.ts` — `Subscribable<T>` and `Unsubscribable` interfaces (verified via WebFetch)
@@ -770,7 +770,7 @@ afterAll(() => mswServer.close())
 
 **Confidence breakdown:**
 - Standard stack: HIGH — all libraries confirmed via direct source reads and official documentation
-- Architecture: HIGH — adapter patterns derived from the actual `@streem/core` API (read source), not from generic knowledge
+- Architecture: HIGH — adapter patterns derived from the actual `/core` API (read source), not from generic knowledge
 - Pitfalls: HIGH for WebSocket/SSE/ReadableStream (verified from spec and MDN); MEDIUM for testing environment (mock-socket + happy-dom interaction)
 
 **Research date:** 2026-02-28

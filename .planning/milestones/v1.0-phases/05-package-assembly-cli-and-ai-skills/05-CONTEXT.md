@@ -20,8 +20,8 @@ Assemble the three existing sub-packages into a shippable distribution: a `stree
 - CLI prompts for: (1) project name, (2) package manager choice (npm / pnpm / yarn) — then auto-installs deps before handing off
 
 ### Meta-package API surface
-- Flat re-exports from `@streem/core`, `@streem/dom`, `@streem/streams` — everything at the top level: `import { signal, fromWebSocket, render } from 'streem'`
-- Lit interop is NOT included in the `streem` meta-package — stays in `@streem/lit` only (avoids Lit peer dep for users who don't need it)
+- Flat re-exports from `/core`, `/dom`, `/streams` — everything at the top level: `import { signal, fromWebSocket, render } from 'streem'`
+- Lit interop is NOT included in the `streem` meta-package — stays in `/lit` only (avoids Lit peer dep for users who don't need it)
 - JSX runtime is configured via `jsxImportSource: "streem"` in tsconfig — not re-exported from the package
 - Strict public API boundary: only developer-facing primitives are re-exported; internal helpers from sub-packages are not surfaced
 

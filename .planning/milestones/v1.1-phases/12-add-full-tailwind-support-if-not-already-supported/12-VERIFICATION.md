@@ -21,7 +21,7 @@ re_verification: false
 
 | # | Truth | Status | Evidence |
 |---|-------|--------|----------|
-| 1 | Landing page builds successfully (tsc + vite build) with Tailwind v4 and CSS Modules both active | VERIFIED | `pnpm --filter @streem/landing build` exits 0, 81 modules transformed, no errors |
+| 1 | Landing page builds successfully (tsc + vite build) with Tailwind v4 and CSS Modules both active | VERIFIED | `pnpm --filter /landing build` exits 0, 81 modules transformed, no errors |
 | 2 | Utility classes (spacing, layout, typography) are present in vite build output CSS from Tailwind | VERIFIED | `jsx-runtime-19plWfld.css` contains: py-20, py-24, text-center, grid, gap-6, mb-4, mb-5, mb-12, mt-3, flex, gap-4, grid-cols-2, hover: variants |
 | 3 | CSS Modules (Hero.module.css, Features.module.css, etc.) remain active alongside Tailwind — not removed | VERIFIED | `main-DgFZ57yj.css` contains hashed CSS Module names: `_hero_r1eaa_1`, `_featuresGrid_m1x9t_3`, `_ctaSection_7hr2g_1`, `_codeSection_s8pdu_1`, `_ctaActions_7hr2g_24`, etc. |
 | 4 | Dynamic ClassValue patterns (arrays, objects) used in the landing page do not cause class-scanning gaps | VERIFIED | All Tailwind utility strings in landing components are static string literals inside ClassValue arrays (e.g., `class={[styles.hero, "py-24 text-center"]}`). No dynamic computed class name construction. No purging gaps observed in output. |
@@ -99,7 +99,7 @@ No requirement IDs were declared in either plan's `requirements` field (both are
 
 #### 1. Landing Page Visual Coexistence
 
-**Test:** Run `pnpm --filter @streem/landing dev`, open in browser, inspect the landing page sections.
+**Test:** Run `pnpm --filter /landing dev`, open in browser, inspect the landing page sections.
 **Expected:** Hero section has vertical padding (`py-24`) and centered text. Features section has a two-column responsive grid (`sm:grid-cols-2`). Each section has uniform spacing from Tailwind `py-20`. CSS Module scoped styles (border radii, token-based colors, card backgrounds) apply correctly alongside Tailwind utilities.
 **Why human:** Visual appearance and correct CSS specificity order (Tailwind utilities vs CSS Module overrides) cannot be verified programmatically.
 

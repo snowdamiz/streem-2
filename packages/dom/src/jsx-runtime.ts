@@ -1,6 +1,6 @@
 /**
  * JSX runtime entry point — imported automatically by TypeScript when
- * jsxImportSource: "@streem/dom" (or "streem" for the meta-package).
+ * jsxImportSource: "@streeem/dom" (or "streeem" for the meta-package).
  *
  * TypeScript's react-jsx transform calls:
  *   jsx(type, props, key)   — for single-child elements
@@ -26,7 +26,7 @@ export function jsx(
 export { jsx as jsxs, Fragment }
 
 /**
- * JSX type declarations for @streem/dom.
+ * JSX type declarations for @streeem/dom.
  * TypeScript reads these when jsxImportSource resolves to this package.
  * Declared inline here (rather than re-exported from types.ts) so that
  * vite-plugin-dts rollupTypes preserves the full namespace members.

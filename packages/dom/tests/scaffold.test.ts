@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { h, Fragment, render, For } from '../src/index.js'
-import { signal } from '@streem/core'
+import { signal } from '@streeem/core'
 
-describe('@streem/dom scaffold', () => {
+describe('@streeem/dom scaffold', () => {
   it('h() creates a DOM element', () => {
     const el = h('div', { id: 'test' }) as HTMLElement
     expect(el).toBeInstanceOf(HTMLElement)

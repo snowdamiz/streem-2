@@ -1,7 +1,7 @@
 import type { Plugin } from 'vite'
 
 /**
- * streemHMR() — Vite plugin for @streem/dom HMR integration.
+ * streemHMR() — Vite plugin for @streeem/dom HMR integration.
  *
  * This plugin makes component .tsx/.jsx files self-accepting HMR boundaries.
  * The actual state save/restore is handled in component files using

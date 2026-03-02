@@ -1,5 +1,5 @@
 /**
- * @streem/core — Dev-mode warning test suite
+ * @streeem/core — Dev-mode warning test suite
  *
  * Covers:
  *  - DX-02: console.warn fires when signal read outside reactive tracking context

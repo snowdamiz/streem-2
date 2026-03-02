@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import WS from 'vitest-websocket-mock'
-import { createRoot } from '@streem/core'
+import { createRoot } from '@streeem/core'
 import { fromWebSocket, MaxRetriesExceededError } from '../src/from-websocket.js'
 
 const WS_URL = 'ws://localhost:1234'

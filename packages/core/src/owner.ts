@@ -1,5 +1,5 @@
 /**
- * @streem/core — Owner tree implementation
+ * @streeem/core — Owner tree implementation
  *
  * The owner tree is the fundamental scope/disposal mechanism. Every reactive
  * computation (effect, computed) must be created inside an owner scope so it

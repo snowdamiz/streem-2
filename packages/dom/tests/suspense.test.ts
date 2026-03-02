@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { createRoot } from '@streem/core'
+import { createRoot } from '@streeem/core'
 import { Suspense, ErrorBoundary } from '../src/components.js'
 
 // ---------------------------------------------------------------------------

@@ -6,15 +6,15 @@ tags: [eventsource, sse, server-sent-events, signals, cleanup, msw, mock]
 
 requires:
   - phase: 03-01
-    provides: "@streem/streams package scaffold, fromWebSocket() adapter, types.ts (StreamTuple, StreamStatus, SSEOptions)"
+    provides: "/streams package scaffold, fromWebSocket() adapter, types.ts (StreamTuple, StreamStatus, SSEOptions)"
 
 provides:
   - "fromSSE() adapter using native EventSource API with JSON parse + raw string fallback"
   - "MockEventSource test harness for synchronous SSE event testing"
   - "11-test suite covering all fromSSE behaviors: JSON, raw string, transform, named events, disposal, readyState-based error distinction, withCredentials"
-  - "Updated @streem/streams barrel export including fromSSE"
+  - "Updated /streams barrel export including fromSSE"
 
-affects: [03-03, 03-04, any phase using @streem/streams SSE adapter]
+affects: [03-03, 03-04, any phase using /streams SSE adapter]
 
 tech-stack:
   added:
@@ -113,7 +113,7 @@ completed: 2026-02-28
 ## Next Phase Readiness
 
 - `fromSSE()` ready for use in Plan 03-03 (fromReadable) and 03-04 (fromObservable)
-- `@streem/streams` barrel exports: `fromWebSocket`, `MaxRetriesExceededError`, `fromSSE`, all types
+- `/streams` barrel exports: `fromWebSocket`, `MaxRetriesExceededError`, `fromSSE`, all types
 - All 20 tests passing (9 fromWebSocket + 11 fromSSE)
 - MockEventSource test pattern available for any future SSE-related tests
 

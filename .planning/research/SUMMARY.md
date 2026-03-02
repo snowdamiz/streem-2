@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-Streem occupies a genuine gap in the 2026 frontend landscape: every framework either adds compiler complexity (Svelte runes, Vue Vapor, React Compiler, Qwik optimizer) or treats real-time streaming as an afterthought requiring manual bridging. The research confirms this gap is real and the technical path to filling it is clear. The recommended approach is a layered monorepo with four distinct packages — `@streem/core` (DOM-free signals and owner tree), `@streem/dom` (JSX runtime), `@streem/streams` (stream adapters), and `@streem/lit` (Lit interop types) — assembled into a single `streem` meta-package. This structure is dictated by a strict dependency ordering that emerges from the architecture: nothing can be built before the reactive owner tree, because every other subsystem depends on `onCleanup` for correctness.
+Streem occupies a genuine gap in the 2026 frontend landscape: every framework either adds compiler complexity (Svelte runes, Vue Vapor, React Compiler, Qwik optimizer) or treats real-time streaming as an afterthought requiring manual bridging. The research confirms this gap is real and the technical path to filling it is clear. The recommended approach is a layered monorepo with four distinct packages — `/core` (DOM-free signals and owner tree), `/dom` (JSX runtime), `/streams` (stream adapters), and `/lit` (Lit interop types) — assembled into a single `streem` meta-package. This structure is dictated by a strict dependency ordering that emerges from the architecture: nothing can be built before the reactive owner tree, because every other subsystem depends on `onCleanup` for correctness.
 
 The technical bets are sound and low-risk. `alien-signals` (v3.1.2, the benchmark leader) provides the reactive core without any renderer coupling; Vite 7 with native esbuild JSX transform eliminates Babel and any custom compiler step; TypeScript 5.8 with `jsxImportSource` wires the whole thing together without magic. The critical constraint from v1 — no custom compiler, no rune syntax — is validated by competitor analysis (Svelte's compiler costs compound; Qwik never gained adoption due to internal-model exposure) and confirmed as a genuine differentiator for TypeScript-heavy teams and AI tooling. The "no compiler" position is not a limitation — it is the product.
 
@@ -72,15 +72,15 @@ The feature landscape is clearly split between non-negotiable table stakes and t
 The architecture follows a strict layered monorepo where each package has a single direction of dependency: `core` (zero DOM) ← `dom` (JSX runtime) ← `streams` (adapters, no DOM dep) and `dom` ← `lit` (type augmentations only). The meta-package `streem` re-exports everything. Component functions run exactly once on mount; reactivity lives in JSX expressions and effects, not in repeated function execution. The JSX runtime distinguishes static values from reactive values by checking whether a prop is a function — if it is, it wraps it in an effect that updates only the exact target DOM node. This is the SolidJS mental model and is the correct model for this architecture.
 
 **Major components and their build order:**
-1. `@streem/core` — Signal, Memo, Effect, Store, Owner/cleanup tree; zero DOM dependency; testable in Node; build first
-2. `@streem/dom` — JSX runtime (`h`, `Fragment`, `render`), reactive DOM bindings; depends on core only
-3. `@streem/streams` — `fromWebSocket`, `fromSSE`, `fromReadable`, `fromObservable`; depends on core only, no DOM
-4. `@streem/lit` — `JSX.IntrinsicElements` augmentation for Lit custom elements; type-level only, zero runtime cost
+1. `/core` — Signal, Memo, Effect, Store, Owner/cleanup tree; zero DOM dependency; testable in Node; build first
+2. `/dom` — JSX runtime (`h`, `Fragment`, `render`), reactive DOM bindings; depends on core only
+3. `/streams` — `fromWebSocket`, `fromSSE`, `fromReadable`, `fromObservable`; depends on core only, no DOM
+4. `/lit` — `JSX.IntrinsicElements` augmentation for Lit custom elements; type-level only, zero runtime cost
 5. `streem` meta-package — re-exports all sub-packages; the user-facing npm package
 6. `skills/` — `SKILL.md` + sub-skills (`signals.md`, `streaming.md`, `components.md`, `lit-interop.md`) + `install.mjs`
 7. `apps/landing` — dogfood landing page; pain here is a framework regression, not a user issue
 
-The owner/cleanup tree is the most important architectural primitive. Every stream adapter, effect, and component scope must register an owner so that `onCleanup` fires correctly on disposal. This is not optional and cannot be retrofitted — it must be in the first implementation of `@streem/core`.
+The owner/cleanup tree is the most important architectural primitive. Every stream adapter, effect, and component scope must register an owner so that `onCleanup` fires correctly on disposal. This is not optional and cannot be retrofitted — it must be in the first implementation of `/core`.
 
 ### Critical Pitfalls
 
@@ -105,29 +105,29 @@ Additional critical pitfalls: circular signal dependencies (need cycle detection
 The dependency graph from ARCHITECTURE.md dictates a strict build order. Pitfalls add further constraints — certain correctness properties (owner tree, backpressure) cannot be retrofitted and must be in their respective foundational phases.
 
 ### Phase 1: Reactive Core
-**Rationale:** Everything else depends on `@streem/core`. Signals, memos, effects, and the owner/cleanup tree are the absolute foundation. No DOM, no streams, no JSX — just the reactive graph and scope system. Building this first allows it to be tested in Node with no browser dependency, forces the correct architecture boundary, and prevents the catastrophic technical debt of retrofitting disposal later.
-**Delivers:** `@streem/core` package with typed `signal()`, `computed()`, `effect()`, `createRoot()`, `onCleanup()`, `getOwner()`, `runWithOwner()`. Dev-mode warnings for signals read outside reactive scope and computations created outside owner scope.
+**Rationale:** Everything else depends on `/core`. Signals, memos, effects, and the owner/cleanup tree are the absolute foundation. No DOM, no streams, no JSX — just the reactive graph and scope system. Building this first allows it to be tested in Node with no browser dependency, forces the correct architecture boundary, and prevents the catastrophic technical debt of retrofitting disposal later.
+**Delivers:** `/core` package with typed `signal()`, `computed()`, `effect()`, `createRoot()`, `onCleanup()`, `getOwner()`, `runWithOwner()`. Dev-mode warnings for signals read outside reactive scope and computations created outside owner scope.
 **P1 features addressed:** Reactive signals primitives, automatic dependency tracking, derived/computed values, lifecycle hooks (`onCleanup` specifically)
 **Pitfalls avoided:** Signal disposal on unmount (owner tree), circular dependency infinite loops (cycle detection), signal reads outside reactive scope (dev warnings)
 **Research flag:** Standard patterns from SolidJS — well-documented, skip dedicated research phase
 
 ### Phase 2: JSX Runtime and DOM Renderer
-**Rationale:** The JSX runtime is the second dependency layer. With `@streem/core` stable, the JSX factory can wire reactive bindings to real DOM nodes using the accessor-function pattern. This is where the "no VDOM" claim becomes real: components run once, JSX expressions establish live bindings via effects.
-**Delivers:** `@streem/dom` package — `h()`, `Fragment`, `render()`, reactive DOM bindings for text nodes, attributes, and events. `<Show>`, `<For>`, `<ErrorBoundary>`, `<Suspense>` components. `onMount` lifecycle hook. Vite esbuild configuration (`jsxImportSource`) and HMR integration.
+**Rationale:** The JSX runtime is the second dependency layer. With `/core` stable, the JSX factory can wire reactive bindings to real DOM nodes using the accessor-function pattern. This is where the "no VDOM" claim becomes real: components run once, JSX expressions establish live bindings via effects.
+**Delivers:** `/dom` package — `h()`, `Fragment`, `render()`, reactive DOM bindings for text nodes, attributes, and events. `<Show>`, `<For>`, `<ErrorBoundary>`, `<Suspense>` components. `onMount` lifecycle hook. Vite esbuild configuration (`jsxImportSource`) and HMR integration.
 **P1 features addressed:** Component model with JSX/TSX, conditional/list rendering, error boundaries, Suspense, HMR state preservation
 **Pitfalls avoided:** Component body trap (JSX expressions wrapped in effects), TypeScript JSX type conflicts (module-scoped declarations)
 **Research flag:** JSX runtime internals are well-documented via SolidJS patterns — may need targeted research on Suspense + signal pending state integration
 
 ### Phase 3: Streaming Primitives
-**Rationale:** Streaming is the core differentiator and must be built as a separate package (`@streem/streams`) that depends only on `@streem/core`, keeping it DOM-agnostic. Backpressure primitives must ship in this phase, not as a follow-up — retrofitting `batch()` and `throttle()` after streaming is released creates a breaking API change.
-**Delivers:** `@streem/streams` — `fromWebSocket()`, `fromSSE()`, `fromReadable()`, `fromObservable()`, all with automatic `onCleanup` integration and typed connection status signals (`connected | reconnecting | error | closed`). `batch()`, `throttle()`, `debounce()` combinators. `keepLastOnReconnect` option. WebSocket exponential backoff reconnection.
+**Rationale:** Streaming is the core differentiator and must be built as a separate package (`/streams`) that depends only on `/core`, keeping it DOM-agnostic. Backpressure primitives must ship in this phase, not as a follow-up — retrofitting `batch()` and `throttle()` after streaming is released creates a breaking API change.
+**Delivers:** `/streams` — `fromWebSocket()`, `fromSSE()`, `fromReadable()`, `fromObservable()`, all with automatic `onCleanup` integration and typed connection status signals (`connected | reconnecting | error | closed`). `batch()`, `throttle()`, `debounce()` combinators. `keepLastOnReconnect` option. WebSocket exponential backoff reconnection.
 **P1 features addressed:** All four streaming primitives (WebSocket, SSE, ReadableStream, Observable), Suspense as streaming loading state
 **Pitfalls avoided:** Stream subscription leaks (onCleanup integration), backpressure freeze (batch/throttle), missed events on reconnect (connection status signal, Last-Event-ID for SSE), SSE auth token leakage (document cookie-based auth)
 **Research flag:** May need research phase — WebSocket reconnection strategies, SSE `Last-Event-ID` server coordination, and Observable interop protocol have niche edge cases not fully covered by existing research
 
 ### Phase 4: Lit Web Component Interop
-**Rationale:** Lit interop is a significant differentiator but has a hard dependency on the JSX runtime (needs the `JSX.IntrinsicElements` namespace from `@streem/dom`) and must be verified against real browser Shadow DOM behavior — not JSDOM. This phase ships primarily as TypeScript declarations with a runtime helper for the event delegation problem.
-**Delivers:** `@streem/lit` — `JSX.IntrinsicElements` augmentation with `prop:` / `attr:` / `on:` namespaces. `createLitComponent` wrapper that maps JSX-style event props to direct `addEventListener` calls. CEM analyzer integration for auto-generating types from Lit component manifests. Vitest Browser Mode test suite verifying Shadow DOM event propagation.
+**Rationale:** Lit interop is a significant differentiator but has a hard dependency on the JSX runtime (needs the `JSX.IntrinsicElements` namespace from `/dom`) and must be verified against real browser Shadow DOM behavior — not JSDOM. This phase ships primarily as TypeScript declarations with a runtime helper for the event delegation problem.
+**Delivers:** `/lit` — `JSX.IntrinsicElements` augmentation with `prop:` / `attr:` / `on:` namespaces. `createLitComponent` wrapper that maps JSX-style event props to direct `addEventListener` calls. CEM analyzer integration for auto-generating types from Lit component manifests. Vitest Browser Mode test suite verifying Shadow DOM event propagation.
 **P1 features addressed:** Lit web component interop (typed props, correct event binding, no Shadow DOM suppression)
 **Pitfalls avoided:** Shadow DOM event retargeting (direct listeners in wrapper), `any` types for Lit props (CEM-generated types), TypeScript IntelliSense gaps
 **Research flag:** `createLitComponent` wrapper design and CEM tooling integration may benefit from a focused research phase — MEDIUM confidence on those specifics

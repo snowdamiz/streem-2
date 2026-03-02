@@ -9,10 +9,10 @@
 
 ### What Was Built
 
-- `@streem/core` — DOM-free reactive graph: signal(), computed(), effect(), createRoot(), onCleanup() with dev-mode reactive-context warnings and 40-test Vitest suite
-- `@streem/dom` — JSX runtime with surgical DOM updates (no VDOM), Show/For/ErrorBoundary/Suspense, component-runs-once model, Vite HMR signal-state preservation
-- `@streem/streams` — Four stream adapters (WebSocket, SSE, ReadableStream, Observable) with auto-cleanup, typed status signals, exponential backoff, and backpressure combinators
-- `@streem/lit` — TypeScript-typed Lit web component consumption via prop:/attr:/on: prefix routing and CEM-driven IntrinsicElements generation
+- `/core` — DOM-free reactive graph: signal(), computed(), effect(), createRoot(), onCleanup() with dev-mode reactive-context warnings and 40-test Vitest suite
+- `/dom` — JSX runtime with surgical DOM updates (no VDOM), Show/For/ErrorBoundary/Suspense, component-runs-once model, Vite HMR signal-state preservation
+- `/streams` — Four stream adapters (WebSocket, SSE, ReadableStream, Observable) with auto-cleanup, typed status signals, exponential backoff, and backpressure combinators
+- `/lit` — TypeScript-typed Lit web component consumption via prop:/attr:/on: prefix routing and CEM-driven IntrinsicElements generation
 - `streem` meta-package + `create-streem` CLI + 5-file progressive-disclosure AI skills for 6 tools
 - Official landing page (`apps/landing`) — live 200 msg/sec ticker, Shoelace design system components, GitHub Actions Pages deployment
 
@@ -34,14 +34,14 @@
 ### Patterns Established
 
 - **OwnerRef/EffectCleanupRef structural interfaces** — bridge reactive.ts ↔ owner.ts without circular imports; use this pattern whenever cross-module state needs to flow without creating a dep cycle
-- **external: [@streem/core] in tsup config** — every package that imports @streem/core must declare it external; bundling it in creates reactive singleton duplication (signals lose identity across package boundaries)
+- **external: [/core] in tsup config** — every package that imports /core must declare it external; bundling it in creates reactive singleton duplication (signals lose identity across package boundaries)
 - **Cleanup-first adapter pattern** — onCleanup() registered before connect() in all stream adapters; prevents race conditions where the component unmounts before the connection resolves
 - **Streaming signals lifted above Suspense** — fromWebSocket/fromSSE signals must live in parent scope, not inside the Suspense child; Suspense retry-loops if the signal is re-created on each thrown Promise
 - **JSX namespace inline in jsx-runtime.ts** — vite-plugin-dts rollupTypes silently strips re-exported namespace members; declare the JSX namespace in the same file it's consumed, never re-export it
 
 ### Key Lessons
 
-1. **Reactive singleton = runtime singleton.** Each package that bundles @streem/core gets its own reactive graph. All packages must declare @streem/core external in their build config — verify this immediately when adding a new package.
+1. **Reactive singleton = runtime singleton.** Each package that bundles /core gets its own reactive graph. All packages must declare /core external in their build config — verify this immediately when adding a new package.
 2. **Dogfood surfaces framework bugs, not page bugs.** Every painful integration on the landing page (SVG namespace, Suspense scope, Shadow DOM events) was a real framework design gap. The constraint paid off.
 3. **CEM type generation is straightforward but the post-processing step matters.** `generateJsxTypes()` returns a string; add the `declare module` wrapper before writing to disk or TypeScript won't pick it up via jsxImportSource resolution.
 4. **Structural interfaces prevent circular deps at scale.** When two modules need to share state, define a minimal interface (just the fields needed) in the dependency direction rather than extracting a third module. Keeps the graph flat.
@@ -62,7 +62,7 @@
 
 ### What Was Built
 
-- TypeScript IntrinsicElements for all sl-* Shoelace elements in `@streem/lit` dist/ (vite-plugin-dts beforeWriteFile hook pattern)
+- TypeScript IntrinsicElements for all sl-* Shoelace elements in `/lit` dist/ (vite-plugin-dts beforeWriteFile hook pattern)
 - Playwright E2E coverage: `npm create streem@latest` CLI scaffold flow verified end-to-end; Vite HMR signal state preservation proven across hot reloads
 - Reactive core benchmarked against SolidJS and Preact signals — tinybench suites covering signal/computed/effect, BENCHMARKS.md committed with methodology
 - Phase 9.1 performance optimizations: O(1) batchedEffects dedup (Set), lazy Owner children/cleanups init (null vs []), ~12% signal throughput improvement

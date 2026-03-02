@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import { streemHMR } from '@streem/dom'
+import { streemHMR } from '@streeem/dom'
 
 export default defineConfig({
   plugins: [streemHMR()],

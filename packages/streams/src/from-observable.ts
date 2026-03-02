@@ -1,4 +1,4 @@
-import { signal, onCleanup } from '@streem/core'
+import { signal, onCleanup } from '@streeem/core'
 import type { StreamTuple, ObservableOptions, StreamStatus, Subscribable } from './types.js'
 
 export function fromObservable<T>(

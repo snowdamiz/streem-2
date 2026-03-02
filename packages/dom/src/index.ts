@@ -1,5 +1,5 @@
 /**
- * @streem/dom — JSX runtime and reactive DOM renderer
+ * @streeem/dom — JSX runtime and reactive DOM renderer
  *
  * Public API:
  *   h()             — JSX factory (used directly or via jsxImportSource)

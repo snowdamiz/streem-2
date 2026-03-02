@@ -13,7 +13,7 @@ Streem is a fine-grained reactive framework for TypeScript/TSX. Components run o
 | `signal()`, `computed()`, `effect()`, `createRoot()`  | `signals.md`       |
 | `fromWebSocket()`, `fromSSE()`, `fromReadable()`, SSE | `streaming.md`     |
 | Components, JSX, `render()`, `Show`, `For`, `onMount` | `components.md`    |
-| Lit web components, `prop:`, `on:`, `@streem/lit`     | `lit-interop.md`   |
+| Lit web components, `prop:`, `on:`, `@streeem/lit`     | `lit-interop.md`   |
 
 ## Quick Start
 

@@ -33,7 +33,7 @@ key_files:
 decisions:
   - "Template package.json uses \"streem\": \"latest\" (not workspace:*) — prevents install failures outside monorepo"
   - "Template tsconfig.json is standalone (no extends) — user projects won't have tsconfig.base.json"
-  - "Template jsxImportSource is \"streem\" (not \"@streem/dom\") — uses the published meta-package"
+  - "Template jsxImportSource is \"streem\" (not \"/dom\") — uses the published meta-package"
   - "Template vite.config.ts imports streemHMR from \"streem\" — consistent with meta-package API"
 metrics:
   duration: "102s"

@@ -9,9 +9,9 @@ requires:
   - phase: 05-package-assembly-cli-and-ai-skills
     provides: streem meta-package with streemHMR Vite plugin and jsx-runtime exports
   - phase: 04-lit-web-component-interop
-    provides: "@streem/lit workspace package for Shoelace Lit component bindings"
+    provides: "/lit workspace package for Shoelace Lit component bindings"
 provides:
-  - "@streem/landing workspace app with package.json, tsconfig, vite.config"
+  - "/landing workspace app with package.json, tsconfig, vite.config"
   - "MPA Vite config with two HTML entry points (/ and /docs)"
   - "Dark mode global CSS with FOUCE prevention for Shoelace custom elements"
   - "main.tsx with setBasePath-first ordering preventing Shoelace FOUCE"
@@ -65,7 +65,7 @@ completed: 2026-02-28
 
 # Phase 06 Plan 01: Landing App Scaffold Summary
 
-**Vite MPA scaffold for @streem/landing with Shoelace integration, dark mode CSS, and FOUCE-safe setBasePath ordering**
+**Vite MPA scaffold for /landing with Shoelace integration, dark mode CSS, and FOUCE-safe setBasePath ordering**
 
 ## Performance
 
@@ -76,11 +76,11 @@ completed: 2026-02-28
 - **Files modified:** 11
 
 ## Accomplishments
-- @streem/landing workspace app with correct pnpm workspace deps (streem, @streem/lit, @shoelace-style/shoelace)
+- /landing workspace app with correct pnpm workspace deps (streem, /lit, @shoelace-style/shoelace)
 - Vite MPA config with two rollupOptions.input entries (main: index.html, docs: docs/index.html) and viteStaticCopy for Shoelace assets
 - main.tsx with setBasePath as the first side-effect call before any Shoelace component import
 - Dark mode global.css with CSS design tokens and FOUCE prevention for sl-button/sl-badge custom elements
-- Build verified: `pnpm --filter @streem/landing build` exits 0, dist/ contains main + docs JS bundles and 2053 Shoelace assets
+- Build verified: `pnpm --filter /landing build` exits 0, dist/ contains main + docs JS bundles and 2053 Shoelace assets
 
 ## Task Commits
 
@@ -90,7 +90,7 @@ Each task was committed atomically:
 2. **Task 2: Create HTML entry points, TSX entry files, and global CSS** - `b99fed3` (feat)
 
 ## Files Created/Modified
-- `apps/landing/package.json` - @streem/landing workspace app with streem, @streem/lit, @shoelace-style/shoelace dependencies
+- `apps/landing/package.json` - /landing workspace app with streem, /lit, @shoelace-style/shoelace dependencies
 - `apps/landing/tsconfig.json` - Standalone tsconfig with jsxImportSource: "streem", jsx: "react-jsx"
 - `apps/landing/vite.config.ts` - MPA config: base URL, streemHMR, viteStaticCopy, rollupOptions with main+docs entries
 - `apps/landing/index.html` - Landing page entry with sl-theme-dark class

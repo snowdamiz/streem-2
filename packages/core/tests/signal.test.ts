@@ -1,5 +1,5 @@
 /**
- * @streem/core — Signal primitives test suite
+ * @streeem/core — Signal primitives test suite
  *
  * Covers:
  *  - SIGNAL-01: signal() creates a typed reactive signal readable/writable from plain TypeScript

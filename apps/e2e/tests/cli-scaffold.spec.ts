@@ -134,13 +134,13 @@ test.describe('TEST-01: create-streem CLI scaffold', () => {
     expect(existsSync(join(scaffoldedDir, 'src/App.tsx'))).toBe(true)
     expect(existsSync(join(scaffoldedDir, 'vite.config.ts'))).toBe(true)
 
-    // Patch package.json: replace "streem": "latest" with local workspace package.
-    // The template uses "streem": "latest" which is not available in local dev.
-    // We override with file: path to the local built streem package.
+    // Patch package.json: replace "streeem": "latest" with local workspace package.
+    // The template uses "streeem": "latest" which is not available in local dev.
+    // We override with file: path to the local built streeem package.
     const pkgJsonPath = join(scaffoldedDir, 'package.json')
     const pkg = JSON.parse(readFileSync(pkgJsonPath, 'utf-8'))
     pkg.dependencies = pkg.dependencies ?? {}
-    pkg.dependencies['streem'] = `file:${STREEM_PKG_DIR}`
+    pkg.dependencies['streeem'] = `file:${STREEM_PKG_DIR}`
     writeFileSync(pkgJsonPath, JSON.stringify(pkg, null, 2) + '\n')
 
     // Install dependencies using npm (CLI selected npm as package manager)

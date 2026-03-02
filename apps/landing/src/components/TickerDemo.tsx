@@ -1,5 +1,5 @@
-import { signal, effect, Suspense, For, ErrorBoundary } from 'streem'
-import { fromObservable, batch, throttle } from 'streem'
+import { signal, effect, Suspense, For, ErrorBoundary } from 'streeem'
+import { fromObservable, batch, throttle } from 'streeem'
 import { createTickerSource, SYMBOLS } from '../lib/ticker'
 import { buildSparklinePath } from '../lib/sparkline'
 import styles from './TickerDemo.module.css'

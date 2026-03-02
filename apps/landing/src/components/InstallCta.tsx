@@ -1,11 +1,11 @@
-import { signal } from 'streem'
+import { signal } from 'streeem'
 
 export function InstallCta(): Node {
   const installCopied = signal(false)
   const skillCopied = signal(false)
 
   const copyInstall = async () => {
-    await navigator.clipboard.writeText('npm create streem@latest').catch(() => {})
+    await navigator.clipboard.writeText('npm create @streeem@latest').catch(() => {})
     installCopied.set(true)
     setTimeout(() => installCopied.set(false), 2000)
   }
@@ -36,7 +36,7 @@ export function InstallCta(): Node {
             <div class="w-full max-w-[480px]">
               <div class="text-[11px] font-mono text-muted-2 uppercase tracking-[0.08em] mb-2 text-left">Bootstrap new project</div>
               <div class="flex items-center border border-border-2 rounded-lg overflow-hidden bg-bg">
-                <code class="flex-1 px-[18px] py-[13px] text-sm font-mono text-text bg-transparent border-none select-all">npm create streem@latest</code>
+                <code class="flex-1 px-[18px] py-[13px] text-sm font-mono text-text bg-transparent border-none select-all">npm create @streeem@latest</code>
                 <button class="min-w-[56px] px-4 py-[13px] bg-surface-2 border-l border-border-2 text-muted text-[12px] font-mono cursor-pointer transition-colors hover:text-text hover:bg-surface-3" onclick={copyInstall}>
                   {() => installCopied.value ? '✓' : 'Copy'}
                 </button>

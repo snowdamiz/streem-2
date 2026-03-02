@@ -8,7 +8,7 @@ tags: [typescript, css, types, documentation, streem-dom]
 requires: []
 provides:
   - CSSProperties type alias defined in packages/dom/src/types.ts as Partial<CSSStyleDeclaration>
-  - CSSProperties exported from @streem/dom public API (packages/dom/src/index.ts)
+  - CSSProperties exported from /dom public API (packages/dom/src/index.ts)
   - CSSProperties re-exported from streem meta-package (packages/streem/src/index.ts)
   - style prop in jsx-runtime.ts IntrinsicElements typed as CSSProperties | (() => CSSProperties)
   - docs/STYLING.md with CSS Modules guide and CSSProperties usage examples
@@ -28,11 +28,11 @@ key-files:
   modified:
     - packages/dom/src/jsx-runtime.ts (style prop uses CSSProperties)
     - packages/dom/src/index.ts (exports CSSProperties)
-    - packages/streem/src/index.ts (re-exports CSSProperties from @streem/dom)
+    - packages/streem/src/index.ts (re-exports CSSProperties from /dom)
 
 key-decisions:
   - "CSSProperties defined as Partial<CSSStyleDeclaration> — consistent with CSSStyleDeclaration DOM API, matches React convention"
-  - "Build @streem/dom before typechecking streem meta-package — workspace packages resolve via dist/ under bundler moduleResolution"
+  - "Build /dom before typechecking streem meta-package — workspace packages resolve via dist/ under bundler moduleResolution"
   - "docs/STYLING.md recommends CSS Modules over CSS-in-JS — zero runtime overhead, Vite-native, sufficient for all use cases"
 
 patterns-established:
@@ -47,7 +47,7 @@ completed: 2026-02-28
 
 # Phase 7 Plan 02: CSSProperties Type and CSS Modules Documentation Summary
 
-**CSSProperties type alias exported from @streem/dom and streem, with CSS Modules guide in docs/STYLING.md**
+**CSSProperties type alias exported from /dom and streem, with CSS Modules guide in docs/STYLING.md**
 
 ## Performance
 
@@ -60,14 +60,14 @@ completed: 2026-02-28
 ## Accomplishments
 - CSSProperties type alias defined as `Partial<CSSStyleDeclaration>` in packages/dom/src/types.ts with JSDoc and examples
 - style prop in jsx-runtime.ts IntrinsicElements updated to use CSSProperties instead of inline Partial<CSSStyleDeclaration>
-- CSSProperties exported from @streem/dom public API and re-exported from streem meta-package
+- CSSProperties exported from /dom public API and re-exported from streem meta-package
 - docs/STYLING.md created with CSS Modules setup guide, TypeScript autocomplete tip, style objects section, and CSSProperties usage
 
 ## Task Commits
 
 Each task was committed atomically:
 
-1. **Task 1: Define CSSProperties and update style prop types in @streem/dom** - `f61cab0` (feat)
+1. **Task 1: Define CSSProperties and update style prop types in /dom** - `f61cab0` (feat)
 2. **Task 2: Export CSSProperties from streem meta-package and write CSS Modules docs** - `62e2c72` (feat)
 
 **Plan metadata:** (committed with SUMMARY.md)
@@ -76,20 +76,20 @@ Each task was committed atomically:
 - `packages/dom/src/types.ts` - Added CSSProperties type alias before JSX namespace; updated style prop to use CSSProperties
 - `packages/dom/src/jsx-runtime.ts` - Imported CSSProperties from types.ts; updated style prop in IntrinsicElements
 - `packages/dom/src/index.ts` - Added `export type { CSSProperties } from './types.js'`
-- `packages/streem/src/index.ts` - Added `export type { CSSProperties } from '@streem/dom'`
+- `packages/streem/src/index.ts` - Added `export type { CSSProperties } from '/dom'`
 - `docs/STYLING.md` - New file: CSS Modules guide, style objects section, CSSProperties examples
 
 ## Decisions Made
-- Built @streem/dom before typechecking streem meta-package since workspace packages resolve via `dist/` under `moduleResolution: bundler`
+- Built /dom before typechecking streem meta-package since workspace packages resolve via `dist/` under `moduleResolution: bundler`
 - Placed CSSProperties in types.ts (the existing JSX types file) rather than a new file — keeps all JSX-related types co-located
 - CSS Modules recommended over CSS-in-JS in docs — no runtime overhead, Vite-native, sufficient for all use cases
 
 ## Deviations from Plan
 
-**1. [Rule 3 - Blocking] Built @streem/dom before typechecking streem meta-package**
+**1. [Rule 3 - Blocking] Built /dom before typechecking streem meta-package**
 - **Found during:** Task 2 (streem typecheck step)
-- **Issue:** pnpm --filter streem exec tsc --noEmit failed with "Module '@streem/dom' has no exported member 'CSSProperties'" because streem resolves @streem/dom via dist/ (moduleResolution: bundler)
-- **Fix:** Ran `pnpm --filter @streem/dom build` to regenerate dist with CSSProperties in declaration files
+- **Issue:** pnpm --filter streem exec tsc --noEmit failed with "Module '/dom' has no exported member 'CSSProperties'" because streem resolves /dom via dist/ (moduleResolution: bundler)
+- **Fix:** Ran `pnpm --filter /dom build` to regenerate dist with CSSProperties in declaration files
 - **Files modified:** packages/dom/dist/ (gitignored, not committed)
 - **Verification:** pnpm --filter streem exec tsc --noEmit exits 0
 - **Committed in:** 62e2c72 (Task 2 commit)
@@ -100,13 +100,13 @@ Each task was committed atomically:
 **Impact on plan:** Required one build step not explicitly listed in the plan. No scope creep.
 
 ## Issues Encountered
-- dist/ is gitignored, so the @streem/dom build output is not committed. The source changes in packages/dom/src/ are committed and will be built as part of the normal CI/publish process.
+- dist/ is gitignored, so the /dom build output is not committed. The source changes in packages/dom/src/ are committed and will be built as part of the normal CI/publish process.
 
 ## User Setup Required
 None - no external service configuration required.
 
 ## Next Phase Readiness
-- CSSProperties available from both @streem/dom and streem meta-package
+- CSSProperties available from both /dom and streem meta-package
 - docs/STYLING.md provides developer guidance for the recommended styling patterns
 - Phase 10 (landing page) can now import CSSProperties for typed style variables
 

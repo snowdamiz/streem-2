@@ -1,16 +1,16 @@
 /**
  * Base JSX type declarations for custom elements (hyphenated tags).
- * Augments @streem/dom/jsx-runtime with:
+ * Augments @streeem/dom/jsx-runtime with:
  *   - Standard Shadow DOM attributes (part, slot, exportparts)
  *   - prop: namespace prefix index signature (JS property routing)
  *   - attr: namespace prefix index signature (explicit attribute routing)
  *   - on: namespace prefix index signature (direct addEventListener routing)
  *
- * This declaration is included automatically when @streem/lit is used.
- * The declare module path MUST be '@streem/dom/jsx-runtime' — this is what
- * TypeScript resolves from jsxImportSource: "@streem/dom".
+ * This declaration is included automatically when @streeem/lit is used.
+ * The declare module path MUST be '@streeem/dom/jsx-runtime' — this is what
+ * TypeScript resolves from jsxImportSource: "@streeem/dom".
  */
-declare module '@streem/dom/jsx-runtime' {
+declare module '@streeem/dom/jsx-runtime' {
   namespace JSX {
     interface IntrinsicElements {
       /**

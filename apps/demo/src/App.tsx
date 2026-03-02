@@ -1,5 +1,5 @@
-import { signal } from '@streem/core'
-import { Show, For, onMount, getRestoredValue, saveSignalCount } from '@streem/dom'
+import { signal } from '@streeem/core'
+import { Show, For, onMount, getRestoredValue, saveSignalCount } from '@streeem/dom'
 
 // HMR state preservation: restore signal values from previous module instance
 const SIGNAL_KEYS = ['count', 'showExtra']

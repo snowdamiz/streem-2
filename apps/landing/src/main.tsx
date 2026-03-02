@@ -4,7 +4,7 @@ setBasePath('./shoelace_assets')
 
 import '@shoelace-style/shoelace/dist/themes/dark.css'
 import './styles/global.css'
-import { render } from 'streem'
+import { render } from 'streeem'
 import { App } from './App'
 
 render(App, document.getElementById('app')!)

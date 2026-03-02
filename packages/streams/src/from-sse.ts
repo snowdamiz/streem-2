@@ -1,4 +1,4 @@
-import { signal, onCleanup } from '@streem/core'
+import { signal, onCleanup } from '@streeem/core'
 import type { StreamTuple, SSEOptions, StreamStatus } from './types.js'
 
 export function fromSSE<T>(

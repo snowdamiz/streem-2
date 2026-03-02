@@ -21,7 +21,7 @@ DOM-free signal primitives (`signal()`, `computed()`, `effect()`), owner/cleanup
 - Optional second argument for debug label: `signal(0, { name: 'count' })` — shows in dev warnings, zero cost when omitted
 
 ### alien-signals integration
-- alien-signals is inspiration only — `@streem/core` is a fully custom implementation with no runtime dep on alien-signals
+- alien-signals is inspiration only — `/core` is a fully custom implementation with no runtime dep on alien-signals
 - Algorithm basis: push-pull (signals push change notifications, computeds pull lazily on read)
 - Circular dependency handling: throw a descriptive error in dev mode, silent cycle-break in prod
 - Internal data structures (arrays vs. sets for dependency tracking): Claude's discretion

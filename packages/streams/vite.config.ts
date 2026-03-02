@@ -11,7 +11,7 @@ export default defineConfig({
     target: 'es2022',
     minify: false,
     rollupOptions: {
-      external: ['@streem/core'],
+      external: ['@streeem/core'],
     },
   },
   plugins: [

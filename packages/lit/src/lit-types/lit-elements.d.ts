@@ -2,7 +2,7 @@
 // Source: @shoelace-style/shoelace/dist/custom-elements.json
 // @see https://github.com/wc-toolkit/jsx-types
 
-declare module '@streem/dom/jsx-runtime' {
+declare module '@streeem/dom/jsx-runtime' {
   namespace JSX {
 
     import type { SlAlert } from "components/alert/alert.js";

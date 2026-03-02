@@ -60,7 +60,7 @@ This enables `import styles from './Button.module.css'` to return `Record<string
 
 ## Style objects (for dynamic inline styles)
 
-Use the `CSSProperties` type from `@streem/dom` or `streem` to type extracted style variables:
+Use the `CSSProperties` type from `/dom` or `streem` to type extracted style variables:
 
 ```typescript
 import type { CSSProperties } from 'streem'

@@ -1,5 +1,5 @@
 /**
- * @streem/core — Internal push-pull reactive graph
+ * @streeem/core — Internal push-pull reactive graph
  *
  * This module is NOT part of the public API. It contains the internal node
  * types and the push-pull algorithm that signal.ts builds on top of.

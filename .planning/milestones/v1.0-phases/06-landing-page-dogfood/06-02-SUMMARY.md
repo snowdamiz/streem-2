@@ -7,7 +7,7 @@ tags: [vite, streem, landing-page, tsx, signals, streaming, suspense, for, error
 # Dependency graph
 requires:
   - phase: 06-01
-    provides: "@streem/landing scaffold with package.json, tsconfig, vite.config, stub App.tsx, stub DocsApp.tsx"
+    provides: "/landing scaffold with package.json, tsconfig, vite.config, stub App.tsx, stub DocsApp.tsx"
 provides:
   - "apps/landing/src/lib/ticker.ts — Subscribable<TickerMessage[]> at 200 msg/sec, no RxJS"
   - "apps/landing/src/lib/sparkline.ts — SVG path math for sparkline rendering"
@@ -79,7 +79,7 @@ completed: 2026-02-28
 - `CodeSample.tsx`: annotated code section with `signal`-backed copy button (no Suspense import)
 - `App.tsx`: wires Hero → TickerDemo → Features → CodeSample → InstallCtaStub
 - `DocsApp.tsx`: 151-line docs page with 5 sections covering complete API surface (signals, components, streams, lit-interop, getting-started)
-- Build verified: `pnpm --filter @streem/landing build` exits 0, dist/ contains 3 JS bundles (main, docs, jsx-runtime shared chunk)
+- Build verified: `pnpm --filter /landing build` exits 0, dist/ contains 3 JS bundles (main, docs, jsx-runtime shared chunk)
 
 ## Task Commits
 

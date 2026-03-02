@@ -24,7 +24,7 @@ export function Nav(): Node {
             </svg>
             GitHub
           </a>
-          <code class="hidden md:inline-block px-3 py-[5px] bg-surface-2 border border-border-2 rounded-[6px] text-[12px] font-mono text-muted cursor-default select-all">npm create streem@latest</code>
+          <code class="hidden md:inline-block px-3 py-[5px] bg-surface-2 border border-border-2 rounded-[6px] text-[12px] font-mono text-muted cursor-default select-all">npm create @streeem@latest</code>
         </div>
       </div>
     </nav>

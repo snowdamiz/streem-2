@@ -328,7 +328,7 @@ export function DocsApp(): Node {
 There must be NO `<style>` block in this file. All styling is handled by Tailwind utility classes and the two global.css rules added in Task 1 (.nav-icon and safelist).
   </action>
   <verify>
-    <automated>cd /Users/sn0w/Documents/dev/streem-2 && npx tsc --noEmit -p apps/landing/tsconfig.json 2>&1 | head -30 && pnpm --filter @streem/landing build 2>&1 | tail -10</automated>
+    <automated>cd /Users/sn0w/Documents/dev/streem-2 && npx tsc --noEmit -p apps/landing/tsconfig.json 2>&1 | head -30 && pnpm --filter /landing build 2>&1 | tail -10</automated>
   </verify>
   <done>DocsApp.tsx has no `&lt;style&gt;` tag, is under 100 lines, TypeScript and Vite build both exit 0</done>
 </task>
@@ -338,13 +338,13 @@ There must be NO `<style>` block in this file. All styling is handled by Tailwin
     DocsApp split into 10 component files under apps/landing/src/docs/ and DocsApp.tsx rewritten with Tailwind utility classes. Inline style block removed. .nav-icon and safelist moved to global.css.
   </what-built>
   <how-to-verify>
-    1. Run: `pnpm --filter @streem/landing dev` and open the docs page (http://localhost:5173/streem-2/docs/ or the docs/index.html route)
+    1. Run: `pnpm --filter /landing dev` and open the docs page (http://localhost:5173/streem-2/docs/ or the docs/index.html route)
     2. Verify: Sidebar nav is visible on the left (220px), content area on the right
     3. Verify: Nav icons (small SVGs) appear next to each label and are sized correctly (14px)
     4. Click each of the 9 nav items — verify section content switches correctly and active item has a visible highlight
     5. Resize viewport below 700px — nav should collapse to a horizontal scrollable row
     6. Open DevTools Elements panel — confirm NO `<style>` tag is present in the DocsApp output
-    7. Run: `pnpm --filter @streem/landing build` — must exit 0 with no errors
+    7. Run: `pnpm --filter /landing build` — must exit 0 with no errors
   </how-to-verify>
   <resume-signal>Type "approved" when layout and nav work correctly, or describe any visual regressions</resume-signal>
 </task>
@@ -353,7 +353,7 @@ There must be NO `<style>` block in this file. All styling is handled by Tailwin
 
 <verification>
 - `npx tsc --noEmit -p apps/landing/tsconfig.json` exits 0
-- `pnpm --filter @streem/landing build` exits 0
+- `pnpm --filter /landing build` exits 0
 - DocsApp.tsx contains no `<style>` tag
 - All 10 files exist under `apps/landing/src/docs/`
 - DocsApp.tsx is under 100 lines (was 442)

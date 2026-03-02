@@ -60,20 +60,20 @@ Output: Top-level SKILL.md entry point + 6 focused sub-skills with accurate Type
 
 **Package structure:**
 - `streem` (main, re-exports all below)
-- `@streem/core` — `packages/core/src/`
-- `@streem/dom` — `packages/dom/src/`
-- `@streem/streams` — `packages/streams/src/`
-- `@streem/lit` — `packages/lit/src/`
+- `/core` — `packages/core/src/`
+- `/dom` — `packages/dom/src/`
+- `/streams` — `packages/streams/src/`
+- `/lit` — `packages/lit/src/`
 
 **Key codebase facts (extracted from source):**
 
-`@streem/core` exports: `signal`, `computed`, `effect`, `isSignal`, `createRoot`, `onCleanup`, `getOwner`, `runWithOwner`, `startBatch`, `endBatch`, `Signal` (type), `Owner` (type)
+`/core` exports: `signal`, `computed`, `effect`, `isSignal`, `createRoot`, `onCleanup`, `getOwner`, `runWithOwner`, `startBatch`, `endBatch`, `Signal` (type), `Owner` (type)
 
-`@streem/dom` exports: `h`, `Fragment`, `render`, `onMount`, `Show`, `For`, `ErrorBoundary`, `Suspense`, `streemHMR` (Vite plugin), HMR utilities
+`/dom` exports: `h`, `Fragment`, `render`, `onMount`, `Show`, `For`, `ErrorBoundary`, `Suspense`, `streemHMR` (Vite plugin), HMR utilities
 
-`@streem/streams` exports: `fromWebSocket`, `fromSSE`, `fromReadable`, `fromObservable`, `batch`, `throttle`, `debounce`, `StreamTuple` (type), `StreamStatus` (type)
+`/streams` exports: `fromWebSocket`, `fromSSE`, `fromReadable`, `fromObservable`, `batch`, `throttle`, `debounce`, `StreamTuple` (type), `StreamStatus` (type)
 
-`@streem/lit` exports: `bindLitProp`, `observeLitProp`
+`/lit` exports: `bindLitProp`, `observeLitProp`
 
 **Signal interface:**
 ```typescript
@@ -98,7 +98,7 @@ type StreamTuple<T> = [
 
 **effect() returns:** `() => void` (a dispose function)
 
-**JSX config:** `jsxImportSource: '@streem/dom'` in tsconfig/vite config
+**JSX config:** `jsxImportSource: '/dom'` in tsconfig/vite config
 
 **prop: prefix** — forces JS property assignment (bypasses setAttribute), used for Lit elements
 **on: prefix** — addEventListener without lowercasing (for custom events like `on:my-event`)
@@ -130,10 +130,10 @@ type StreamTuple<T> = [
     | Package | Import | Contents |
     |---------|--------|----------|
     | `streem` | `import { ... } from 'streem'` | Re-exports everything |
-    | `@streem/core` | `import { ... } from '@streem/core'` | Signals, effects, scopes |
-    | `@streem/dom` | configured via jsxImportSource | JSX factory, render, components |
-    | `@streem/streams` | `import { ... } from '@streem/streams'` | Stream adapters, combinators |
-    | `@streem/lit` | `import { ... } from '@streem/lit'` | Lit/custom element interop |
+    | `/core` | `import { ... } from '/core'` | Signals, effects, scopes |
+    | `/dom` | configured via jsxImportSource | JSX factory, render, components |
+    | `/streams` | `import { ... } from '/streams'` | Stream adapters, combinators |
+    | `/lit` | `import { ... } from '/lit'` | Lit/custom element interop |
 
     ## Sub-skills (load on demand)
 
@@ -179,7 +179,7 @@ type StreamTuple<T> = [
 
     # Signals
 
-    Import from `@streem/core` or `streem`.
+    Import from `/core` or `streem`.
 
     ## Signal interface
 
@@ -196,7 +196,7 @@ type StreamTuple<T> = [
     Creates reactive state. Reading `.value` inside an effect or computed registers a dependency.
 
     ```typescript
-    import { signal } from '@streem/core'
+    import { signal } from '/core'
 
     const count = signal(0)
     const name = signal('alice', { name: 'name' }) // named for dev warnings
@@ -214,7 +214,7 @@ type StreamTuple<T> = [
     Must be called inside a reactive scope (createRoot or component body).
 
     ```typescript
-    import { signal, computed } from '@streem/core'
+    import { signal, computed } from '/core'
 
     createRoot((dispose) => {
       const count = signal(0)
@@ -237,7 +237,7 @@ type StreamTuple<T> = [
     `onCleanup()` inside fn fires before each re-run and on dispose.
 
     ```typescript
-    import { signal, effect, onCleanup } from '@streem/core'
+    import { signal, effect, onCleanup } from '/core'
 
     createRoot((dispose) => {
       const url = signal('/api/data')
@@ -258,7 +258,7 @@ type StreamTuple<T> = [
     Type guard — returns `true` if value is a `Signal` created by `signal()`.
 
     ```typescript
-    import { isSignal } from '@streem/core'
+    import { isSignal } from '/core'
 
     isSignal(count)    // true
     isSignal(42)       // false
@@ -284,7 +284,7 @@ type StreamTuple<T> = [
 
     # Lifecycle & Scope
 
-    Import from `@streem/core` or `streem`. `onMount` is from `@streem/dom`.
+    Import from `/core` or `streem`. `onMount` is from `/dom`.
 
     ## createRoot(fn)
 
@@ -292,7 +292,7 @@ type StreamTuple<T> = [
     disposed when `dispose()` is called. Bottom-up disposal (children before parents).
 
     ```typescript
-    import { createRoot, signal, effect } from '@streem/core'
+    import { createRoot, signal, effect } from '/core'
 
     const dispose = createRoot((dispose) => {
       const count = signal(0)
@@ -323,10 +323,10 @@ type StreamTuple<T> = [
     Runs `fn` once when the component's DOM is ready (synchronous — `h()` creates DOM immediately).
     If `fn` returns a cleanup function, it fires on component unmount.
 
-    Import from `@streem/dom`.
+    Import from `/dom`.
 
     ```typescript
-    import { onMount } from '@streem/dom'
+    import { onMount } from '/dom'
 
     function MyComponent() {
       onMount(() => {
@@ -346,7 +346,7 @@ type StreamTuple<T> = [
     Capture and re-attach reactive scope across async boundaries.
 
     ```typescript
-    import { getOwner, runWithOwner, effect } from '@streem/core'
+    import { getOwner, runWithOwner, effect } from '/core'
 
     createRoot(() => {
       const owner = getOwner()
@@ -386,20 +386,20 @@ type StreamTuple<T> = [
 
     # Components & JSX
 
-    Import from `@streem/dom` or configure via `jsxImportSource`.
+    Import from `/dom` or configure via `jsxImportSource`.
 
     ## TSConfig / Vite setup
 
     ```json
     // tsconfig.json
-    { "compilerOptions": { "jsxImportSource": "@streem/dom" } }
+    { "compilerOptions": { "jsxImportSource": "/dom" } }
     ```
 
     ```typescript
     // vite.config.ts
     import { defineConfig } from 'vite'
     export default defineConfig({
-      esbuild: { jsxImportSource: '@streem/dom' }
+      esbuild: { jsxImportSource: '/dom' }
     })
     ```
 
@@ -437,7 +437,7 @@ type StreamTuple<T> = [
     Mounts a component into a DOM element. Returns a dispose function.
 
     ```typescript
-    import { render } from '@streem/dom'
+    import { render } from '/dom'
 
     const dispose = render(() => <App />, document.getElementById('app')!)
     // dispose() — unmounts and cleans up all effects
@@ -523,7 +523,7 @@ type StreamTuple<T> = [
 
     # Stream Adapters
 
-    Import from `@streem/streams` or `streem`.
+    Import from `/streams` or `streem`.
 
     ## StreamTuple pattern
 
@@ -551,7 +551,7 @@ type StreamTuple<T> = [
     WebSocket adapter with exponential backoff reconnection.
 
     ```typescript
-    import { fromWebSocket } from '@streem/streams'
+    import { fromWebSocket } from '/streams'
 
     createRoot(() => {
       const [data, status, error] = fromWebSocket<PriceUpdate>('wss://api.example.com/prices', {
@@ -582,7 +582,7 @@ type StreamTuple<T> = [
     Server-Sent Events adapter. Browser handles reconnection natively.
 
     ```typescript
-    import { fromSSE } from '@streem/streams'
+    import { fromSSE } from '/streams'
 
     createRoot(() => {
       const [data, status] = fromSSE<LogEntry>('/api/logs', {
@@ -600,7 +600,7 @@ type StreamTuple<T> = [
     Web Streams `ReadableStream` adapter.
 
     ```typescript
-    import { fromReadable } from '@streem/streams'
+    import { fromReadable } from '/streams'
 
     createRoot(() => {
       const readable = response.body!
@@ -615,7 +615,7 @@ type StreamTuple<T> = [
     RxJS / TC39 Observable adapter. Uses structural typing — no RxJS runtime dependency.
 
     ```typescript
-    import { fromObservable } from '@streem/streams'
+    import { fromObservable } from '/streams'
     import { interval } from 'rxjs'
 
     createRoot(() => {
@@ -645,7 +645,7 @@ type StreamTuple<T> = [
 
     # Stream Combinators
 
-    Import from `@streem/streams` or `streem`.
+    Import from `/streams` or `streem`.
 
     ## batch(fn)
 
@@ -654,7 +654,7 @@ type StreamTuple<T> = [
     (>30 msg/sec).
 
     ```typescript
-    import { batch } from '@streem/streams'
+    import { batch } from '/streams'
 
     ws.addEventListener('message', (e) => {
       const msg = JSON.parse(e.data)
@@ -677,8 +677,8 @@ type StreamTuple<T> = [
     Must be called inside a reactive scope.
 
     ```typescript
-    import { throttle } from '@streem/streams'
-    import { signal } from '@streem/core'
+    import { throttle } from '/streams'
+    import { signal } from '/core'
 
     createRoot(() => {
       const rawPrice = signal(0)
@@ -696,8 +696,8 @@ type StreamTuple<T> = [
     Must be called inside a reactive scope.
 
     ```typescript
-    import { debounce } from '@streem/streams'
-    import { signal } from '@streem/core'
+    import { debounce } from '/streams'
+    import { signal } from '/core'
 
     createRoot(() => {
       const query = signal('')
@@ -729,7 +729,7 @@ type StreamTuple<T> = [
 
     # Lit / Custom Element Interop
 
-    Import from `@streem/lit`.
+    Import from `/lit`.
 
     ## Why this package exists
 
@@ -744,7 +744,7 @@ type StreamTuple<T> = [
     <my-chart prop:data={() => chartData.value} prop:config={staticConfig} />
 
     // Manual usage (outside JSX)
-    import { bindLitProp } from '@streem/lit'
+    import { bindLitProp } from '/lit'
     bindLitProp(el, 'data', () => chartData.value)
     ```
 
@@ -754,7 +754,7 @@ type StreamTuple<T> = [
     Must be called inside a reactive scope.
 
     ```typescript
-    import { bindLitProp } from '@streem/lit'
+    import { bindLitProp } from '/lit'
 
     createRoot(() => {
       const el = document.querySelector('my-element') as Record<string, unknown>
@@ -777,7 +777,7 @@ type StreamTuple<T> = [
     `detail: { value: T }`.
 
     ```typescript
-    import { observeLitProp } from '@streem/lit'
+    import { observeLitProp } from '/lit'
 
     createRoot(() => {
       const el = document.querySelector('my-counter')!

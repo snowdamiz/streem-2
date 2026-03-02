@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { signal, createRoot, effect } from '@streem/core'
+import { signal, createRoot, effect } from '@streeem/core'
 import { For } from '../src/components.js'
 
 type Item = { id: number; name: string }

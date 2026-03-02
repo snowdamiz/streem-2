@@ -70,7 +70,7 @@ No TODOs, FIXMEs, placeholder returns, empty handlers, or stub implementations f
 
 ### Build Verification
 
-`pnpm --filter @streem/landing build` result:
+`pnpm --filter /landing build` result:
 
 ```
 > tsc --noEmit && vite build
@@ -85,7 +85,7 @@ TypeScript compiles clean. Vite bundles without error. Exit 0 confirmed.
 
 #### 1. Bar Chart Visual Layout
 
-**Test:** Open the landing page in a browser (run `pnpm --filter @streem/landing dev`, navigate to the printed URL). Scroll past the "Real-time data, zero overhead" ticker section.
+**Test:** Open the landing page in a browser (run `pnpm --filter /landing dev`, navigate to the printed URL). Scroll past the "Real-time data, zero overhead" ticker section.
 **Expected:** A "Performance / Benchmark comparison" section appears with a grouped SVG bar chart showing three clusters labelled signal, computed, effect. Each cluster has three bars (Streem white, Preact indigo, SolidJS blue). Ops/sec labels appear above bars (e.g. "46.8M"). A legend row shows colored dots with library names. A footnote reads "Primitive only (no createRoot overhead) · tinybench 5,000 iterations · Apple M4 · 2026-03-01".
 **Why human:** Visual rendering and proportional correctness of SVG bar heights cannot be confirmed from static analysis.
 

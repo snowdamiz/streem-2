@@ -11,7 +11,7 @@ provides:
   - packages/core/src/reactive.ts — push-pull reactive graph (SignalNode, ComputedNode, EffectNode, trackRead, notifySubscribers, getCurrentSubscriber)
   - packages/core/src/owner.ts — owner tree (createRoot, onCleanup, getOwner, runWithOwner, getCurrentOwner)
   - isBatching/startBatch/endBatch stub for Phase 3 batch() extension
-  - vite lib mode + vite-plugin-dts build config for @streem/core
+  - vite lib mode + vite-plugin-dts build config for /core
 
 affects:
   - 01-reactive-core/01-02 (signal.ts public API wraps these internals)
@@ -22,7 +22,7 @@ tech-stack:
   added:
     - typescript ~5.8 (ES2022, bundler moduleResolution, strict mode)
     - pnpm workspaces ^9 (workspace protocol, strict isolation)
-    - vite ^7.0 (lib mode build for @streem/core)
+    - vite ^7.0 (lib mode build for /core)
     - vite-plugin-dts ^4.0 (rollupTypes: true for single .d.ts output)
     - vitest ^4.0 (test.projects pattern, not deprecated vitest.workspace)
   patterns:
@@ -73,7 +73,7 @@ completed: 2026-02-28
 
 # Phase 01 Plan 01: Reactive Core Foundation Summary
 
-**pnpm monorepo scaffold + push-pull reactive graph (SignalNode/ComputedNode/EffectNode) + owner tree (createRoot/onCleanup/getOwner/runWithOwner) — internal foundation for all @streem/core public API**
+**pnpm monorepo scaffold + push-pull reactive graph (SignalNode/ComputedNode/EffectNode) + owner tree (createRoot/onCleanup/getOwner/runWithOwner) — internal foundation for all /core public API**
 
 ## Performance
 
@@ -107,7 +107,7 @@ Each task was committed atomically:
 - `pnpm-workspace.yaml` — Workspace definition: packages/*, apps/*
 - `tsconfig.base.json` — Shared TS config: ES2022 target, bundler moduleResolution, strict, vite/client types
 - `vitest.config.ts` — Root vitest config using test.projects array (not deprecated vitest.workspace)
-- `packages/core/package.json` — @streem/core 0.1.0, ESM exports
+- `packages/core/package.json` — /core 0.1.0, ESM exports
 - `packages/core/tsconfig.json` — Extends root, composite: true, declarationMap, includes src + tests
 - `packages/core/vite.config.ts` — Lib mode, es format, dts({ rollupTypes: true })
 - `.gitignore` — node_modules/, dist/, *.tsbuildinfo

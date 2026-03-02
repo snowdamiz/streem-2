@@ -32,12 +32,12 @@ human_verification:
 | 5 | `className` is accepted as an alias for `class` on DOM elements | VERIFIED | `applyProps` checks `key === 'class' \|\| key === 'className'` identically; JSX types in both `types.ts` and `jsx-runtime.ts` declare `className?: ClassValue \| (() => ClassValue)`; tests pass |
 | 6 | `classList` prop is fully removed — `applyProps` no longer handles it | VERIFIED | No `classList` handling in `h.ts` (only a comment noting intentional removal); `classList` absent from `types.ts` and `jsx-runtime.ts`; no `bindClassList` in `bindings.ts` |
 | 7 | Reactive style updates clear removed properties (no stale inline styles) | VERIFIED | `bindStyle` tracks `prevKeys`, calls `el.style.removeProperty(key.replace(/([A-Z])/g, '-$1').toLowerCase())`; two diff tests pass confirming `el.style.fontSize === ''` after property dropped |
-| 8 | `ClassValue` type is exported from `@streem/dom` | VERIFIED | `packages/dom/src/index.ts:24`: `export type { CSSProperties, ClassValue } from './types.js'` |
-| 9 | Tests pass for all ClassValue shapes: string, array, object, mixed | VERIFIED | 7 `bindClass` tests cover all shapes; `@streem/dom` runs 105 tests, all passing |
+| 8 | `ClassValue` type is exported from `/dom` | VERIFIED | `packages/dom/src/index.ts:24`: `export type { CSSProperties, ClassValue } from './types.js'` |
+| 9 | Tests pass for all ClassValue shapes: string, array, object, mixed | VERIFIED | 7 `bindClass` tests cover all shapes; `/dom` runs 105 tests, all passing |
 | 10 | Tests pass for bindStyle removing stale properties after reactive update | VERIFIED | "clears properties removed in a reactive update" and "handles full style object replacement without stale properties" both present and passing |
 | 11 | No landing component contains an inline `<style>{...}</style>` block | VERIFIED | `grep -rn "<style>" apps/landing/src/components/` returns no matches |
 | 12 | Each landing component imports from a co-located `.module.css` file | VERIFIED | All five components contain `import styles from './X.module.css'` as first import after external deps |
-| 13 | The landing app TypeScript compilation and Vite build pass with CSS Module imports | VERIFIED | `pnpm --filter @streem/landing build` exits 0; 81 modules transformed; dist produced successfully |
+| 13 | The landing app TypeScript compilation and Vite build pass with CSS Module imports | VERIFIED | `pnpm --filter /landing build` exits 0; 81 modules transformed; dist produced successfully |
 
 **Score:** 13/13 truths verified
 
@@ -137,7 +137,7 @@ One notable observation in `Features.module.css`: `.featuresSection {}` is an em
 
 #### 1. Landing Page Visual Rendering
 
-**Test:** Open `apps/landing` in a browser (`pnpm --filter @streem/landing dev`) and visually inspect all five component sections.
+**Test:** Open `apps/landing` in a browser (`pnpm --filter /landing dev`) and visually inspect all five component sections.
 **Expected:** Hero, Features, CodeSample, TickerDemo, and InstallCta sections all render with correct styles matching the pre-migration appearance. No missing styles, broken layout, or unstyled elements.
 **Why human:** CSS Modules correctly hash class names and the Vite build bundles them into `dist/assets/main-*.css`. Automated verification confirmed the build succeeds (81 modules, 22 kB CSS output). Visual correctness of the actual rendered styles requires browser inspection to confirm no style regressions from the inline-to-module migration.
 
@@ -147,7 +147,7 @@ One notable observation in `Features.module.css`: `.featuresSection {}` is an em
 
 No functional gaps found. All phase goal deliverables are present, substantive, and wired:
 
-1. **ClassValue type** — defined and exported from `@streem/dom` with full recursive union (string | false | null | undefined | Record\<string, boolean\> | ClassValue[])
+1. **ClassValue type** — defined and exported from `/dom` with full recursive union (string | false | null | undefined | Record\<string, boolean\> | ClassValue[])
 2. **bindClass overhaul** — accepts `() => ClassValue`; `resolveClassValue` exported helper handles all shapes recursively
 3. **bindStyle diff/clear** — `prevKeys` tracking with `el.style.removeProperty()` for stale properties, confirmed by two targeted tests
 4. **className alias** — handled identically to `class` in both `applyProps` and JSX type declarations

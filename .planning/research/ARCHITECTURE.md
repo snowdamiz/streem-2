@@ -100,7 +100,7 @@ streem/
 │   │   └── package.json
 │   └── streem/                  # Meta-package: re-exports everything, user-facing
 │       ├── src/
-│       │   └── index.ts         # export * from '@streem/core', @streem/dom, etc.
+│       │   └── index.ts         # export * from '/core', /dom, etc.
 │       └── package.json
 ├── apps/
 │   └── landing/                 # Official landing page — dogfood constraint
@@ -188,7 +188,7 @@ export function fromSSE<T>(url: string): () => T | undefined {
 
 **Example:**
 ```typescript
-import { createRoot, runWithOwner, getOwner } from '@streem/core'
+import { createRoot, runWithOwner, getOwner } from '/core'
 
 // In a component:
 const owner = getOwner()
@@ -217,7 +217,7 @@ export default defineConfig({
   esbuild: {
     jsxFactory: 'h',
     jsxFragment: 'Fragment',
-    jsxInject: `import { h, Fragment } from '@streem/dom'`,
+    jsxInject: `import { h, Fragment } from '/dom'`,
   },
 })
 ```
@@ -226,7 +226,7 @@ export default defineConfig({
 {
   "compilerOptions": {
     "jsx": "preserve",
-    "jsxImportSource": "@streem/dom",
+    "jsxImportSource": "/dom",
     "isolatedModules": true
   }
 }
@@ -236,16 +236,16 @@ export default defineConfig({
 
 **What:** Augment the framework's `JSX.IntrinsicElements` interface with typed declarations for Lit custom elements. Use `prop:` namespace for property binding (objects, arrays, complex values) and `on:` namespace for custom events. Attributes map through `attr:`.
 
-**When to use:** Any Lit component consumption. The declaration file ships in `@streem/lit` and is imported once (or via tsconfig `types`).
+**When to use:** Any Lit component consumption. The declaration file ships in `/lit` and is imported once (or via tsconfig `types`).
 
 **Trade-offs:** Type-safe, zero runtime cost. Users get autocomplete on Lit props. The trade-off is that types must be written/generated per Lit component — not automatic unless a codegen tool (ts-morph or `@custom-elements-manifest/analyzer`) is run.
 
 **Example:**
 ```typescript
 // packages/lit/src/intrinsic.d.ts
-import type { HTMLAttributes } from '@streem/dom'
+import type { HTMLAttributes } from '/dom'
 
-declare module '@streem/dom' {
+declare module '/dom' {
   namespace JSX {
     interface IntrinsicElements {
       'my-lit-button': HTMLAttributes & {
@@ -349,10 +349,10 @@ The dependency graph dictates this order. Each layer must exist before the next.
 
 | Phase | What to Build | Why This Order |
 |-------|---------------|----------------|
-| 1 | `@streem/core` — Signal, Memo, Effect, Store, Owner tree | Zero dependencies. Everything else imports from here. Testable in Node. |
-| 2 | `@streem/dom` — JSX runtime (`h`, `Fragment`), `render()`, DOM bindings | Needs core (effects for reactive bindings). This is what Vite's jsxFactory points to. |
-| 3 | `@streem/streams` — `fromWebSocket`, `fromSSE`, `fromReadable`, `fromObservable` | Needs core (`createSignal`, `onCleanup`). DOM-agnostic. |
-| 4 | `@streem/lit` — JSX.IntrinsicElements declarations, optional wrapper util | Needs dom (namespace extension). Purely additive — augments types only at first. |
+| 1 | `/core` — Signal, Memo, Effect, Store, Owner tree | Zero dependencies. Everything else imports from here. Testable in Node. |
+| 2 | `/dom` — JSX runtime (`h`, `Fragment`), `render()`, DOM bindings | Needs core (effects for reactive bindings). This is what Vite's jsxFactory points to. |
+| 3 | `/streams` — `fromWebSocket`, `fromSSE`, `fromReadable`, `fromObservable` | Needs core (`createSignal`, `onCleanup`). DOM-agnostic. |
+| 4 | `/lit` — JSX.IntrinsicElements declarations, optional wrapper util | Needs dom (namespace extension). Purely additive — augments types only at first. |
 | 5 | `streem` meta-package + Vite config scaffolding + `create-streem` CLI | Needs all packages stable. The public API surface crystallizes here. |
 | 6 | `skills/` — SKILL.md + sub-skills + `install.mjs` | Needs stable API to document. Written after API is settled. |
 | 7 | `apps/landing` — Dogfood site | Needs complete framework. Pain here = framework regressions. |
@@ -408,7 +408,7 @@ return <div>{() => userName()}</div>
 
 **Why it's wrong:** Makes the reactivity core un-importable without a DOM (breaks Node.js tests). Creates circular dependency risk. Prevents tree-shaking of unused subsystems.
 
-**Do this instead:** Keep `@streem/core` DOM-free. Depend on it from `@streem/dom` and `@streem/streams` unidirectionally. The meta-package `streem` re-exports all of them.
+**Do this instead:** Keep `/core` DOM-free. Depend on it from `/dom` and `/streams` unidirectionally. The meta-package `streem` re-exports all of them.
 
 ## Integration Points
 
@@ -420,17 +420,17 @@ return <div>{() => userName()}</div>
 | SSE endpoint | `fromSSE(url)` wraps `EventSource`; `EventSource` auto-reconnects natively | SSE cannot send data back to server — pair with fetch for commands |
 | ReadableStream (fetch) | `fromReadable(response.body)` reads stream chunks via reader, writes to signal | Cancel via `reader.cancel()` in `onCleanup` |
 | Observable / RxJS | `fromObservable(obs$)` calls `.subscribe()`, writes `next` to signal, calls `unsubscribe()` in cleanup | Subscribe must be synchronous enough to start — use `shareReplay(1)` for late subscribers |
-| Lit web components | Used in JSX as custom element tags; `@streem/lit` provides type declarations | Property binding via `prop:`, events via `on:`, attributes via `attr:` or bare prop |
+| Lit web components | Used in JSX as custom element tags; `/lit` provides type declarations | Property binding via `prop:`, events via `on:`, attributes via `attr:` or bare prop |
 
 ### Internal Boundaries
 
 | Boundary | Communication | Notes |
 |----------|---------------|-------|
-| `@streem/core` ↔ `@streem/dom` | `dom` imports signal/effect/owner primitives from `core`. One-way. | `core` must never import from `dom` — keeps core DOM-free |
-| `@streem/core` ↔ `@streem/streams` | `streams` imports `createSignal`, `onCleanup` from `core`. One-way. | Adapters are pure core-level constructs |
-| `@streem/dom` ↔ `@streem/lit` | `lit` augments the `JSX` namespace declared in `dom`. One-way type-level. | No runtime coupling — lit types extend dom types |
+| `/core` ↔ `/dom` | `dom` imports signal/effect/owner primitives from `core`. One-way. | `core` must never import from `dom` — keeps core DOM-free |
+| `/core` ↔ `/streams` | `streams` imports `createSignal`, `onCleanup` from `core`. One-way. | Adapters are pure core-level constructs |
+| `/dom` ↔ `/lit` | `lit` augments the `JSX` namespace declared in `dom`. One-way type-level. | No runtime coupling — lit types extend dom types |
 | `streem` (meta) ↔ all packages | Re-export only. `streem/index.ts` re-exports from all sub-packages. | User-facing API boundary. Sub-package internals are not stable API. |
-| Stream Adapters ↔ Owner Tree | Adapters call `onCleanup` (from `@streem/core`) — implicitly tied to whatever reactive scope they're created in | Adapters need to be called inside reactive scope — document this clearly |
+| Stream Adapters ↔ Owner Tree | Adapters call `onCleanup` (from `/core`) — implicitly tied to whatever reactive scope they're created in | Adapters need to be called inside reactive scope — document this clearly |
 
 ## Scaling Considerations
 

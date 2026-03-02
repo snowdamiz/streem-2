@@ -11,7 +11,7 @@ requires:
 provides:
   - "ErrorBoundary component: synchronous error isolation with fallback(err, reset) renderer"
   - "Suspense component: async pending state via thrown-Promise protocol with queueMicrotask deferred rendering"
-  - "Public exports: ErrorBoundary and Suspense added to @streem/dom index.ts"
+  - "Public exports: ErrorBoundary and Suspense added to /dom index.ts"
   - "TDD test suites: 24 new tests covering all error/async lifecycle paths"
 
 affects:

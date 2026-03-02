@@ -1,6 +1,6 @@
-import { signal, computed, onMount } from 'streem'
+import { signal, computed, onMount } from 'streeem'
 import '@shoelace-style/shoelace/dist/components/badge/badge.js'
-import '@streem/lit'
+import '@streeem/lit'
 import styles from './Hero.module.css'
 
 export function Hero(): Node {
@@ -42,7 +42,7 @@ export function Hero(): Node {
           </div>
         </div>
         <div class={styles.heroInstall}>
-          <code class={styles.installCmd}>npm create streem@latest</code>
+          <code class={styles.installCmd}>npm create @streeem@latest</code>
         </div>
       </div>
     </header>

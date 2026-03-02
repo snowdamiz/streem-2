@@ -1,5 +1,5 @@
-import { createRoot, effect, onCleanup, isSignal } from '@streem/core'
-import type { Signal } from '@streem/core'
+import { createRoot, effect, onCleanup, isSignal } from '@streeem/core'
+import type { Signal } from '@streeem/core'
 import {
   bindTextNode,
   bindAttr,

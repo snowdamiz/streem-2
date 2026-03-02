@@ -1,5 +1,5 @@
-import { signal, onCleanup } from '@streem/core'
-import type { Signal } from '@streem/core'
+import { signal, onCleanup } from '@streeem/core'
+import type { Signal } from '@streeem/core'
 
 export interface ObserveLitPropOptions {
   /**

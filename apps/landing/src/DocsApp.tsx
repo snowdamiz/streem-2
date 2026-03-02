@@ -1,5 +1,5 @@
 import './styles/global.css'
-import { signal, effect, onCleanup, Show } from 'streem'
+import { signal, effect, onCleanup, Show } from 'streeem'
 import {
   GettingStartedIcon, SignalsIcon, ComponentsIcon, StreamsIcon,
   LitInteropIcon, PatternsIcon, StylingIcon, TypeScriptIcon, PerformanceIcon,

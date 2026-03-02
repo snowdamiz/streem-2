@@ -1,4 +1,4 @@
-import { createRoot, effect, onCleanup } from '@streem/core'
+import { createRoot, effect, onCleanup } from '@streeem/core'
 
 // ---------------------------------------------------------------------------
 // ErrorBoundary component

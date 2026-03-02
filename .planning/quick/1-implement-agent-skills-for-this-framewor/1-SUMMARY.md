@@ -22,7 +22,7 @@ key_files:
   modified: []
 decisions:
   - "Progressive disclosure: top-level SKILL.md auto-loads, 6 sub-skills load on demand by topic"
-  - "Sub-skills organized by API domain not by package (signals/lifecycle split from @streem/core)"
+  - "Sub-skills organized by API domain not by package (signals/lifecycle split from /core)"
   - "Documented computed() returns () => T not Signal<T> — critical non-obvious behavior"
   - "Documented StreamTuple shape shared by all 4 stream adapters — avoids repeated lookup"
 metrics:
@@ -50,13 +50,13 @@ A complete agent skill tree for the streem reactive UI framework under `.agents/
 Created `.agents/skills/streem/SKILL.md` — the auto-loaded entry point.
 
 Contains:
-- Package table (streem, @streem/core, @streem/dom, @streem/streams, @streem/lit)
+- Package table (streem, /core, /dom, /streams, /lit)
 - Sub-skill routing table mapping topic keywords to sub-skill files
 - Routing rules (6 rules, one per domain)
 
 ### Task 2: signals, lifecycle, components sub-skills (commit 0656991)
 
-Created three sub-skill files documenting @streem/core and @streem/dom APIs:
+Created three sub-skill files documenting /core and /dom APIs:
 
 - **signals/SKILL.md**: Signal interface, `signal()`, `computed()` (returns getter not Signal), `effect()` (returns dispose), `isSignal()`, rules for scope requirements
 - **lifecycle/SKILL.md**: `createRoot()`, `onCleanup()` (effect vs root context behavior), `onMount()` (snapshot caveat), `getOwner()`/`runWithOwner()` (async boundary pattern), Owner interface
@@ -64,7 +64,7 @@ Created three sub-skill files documenting @streem/core and @streem/dom APIs:
 
 ### Task 3: streams, stream-combinators, lit sub-skills (commit a439cdc)
 
-Created three more sub-skill files documenting @streem/streams and @streem/lit APIs:
+Created three more sub-skill files documenting /streams and /lit APIs:
 
 - **streams/SKILL.md**: StreamTuple type definition, all four adapters (fromWebSocket with reconnect options, fromSSE with named events, fromReadable, fromObservable), cleanup-is-automatic rule
 - **stream-combinators/SKILL.md**: `batch()` (no scope needed), `throttle()` (leading-edge), `debounce()` (trailing-edge), summary table with scope requirements

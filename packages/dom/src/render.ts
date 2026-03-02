@@ -1,4 +1,4 @@
-import { createRoot } from '@streem/core'
+import { createRoot } from '@streeem/core'
 
 /**
  * render() — Mount a component into a DOM container.

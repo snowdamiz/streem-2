@@ -178,7 +178,7 @@ Note: Template literal backticks in the regex string — be careful with escapin
   </action>
   <verify>
 Run the landing dev server and visually confirm, OR check that the changes compiled:
-`cd /Users/sn0w/Documents/dev/streem-2 && pnpm --filter @streem/landing build 2>&1 | tail -20`
+`cd /Users/sn0w/Documents/dev/streem-2 && pnpm --filter /landing build 2>&1 | tail -20`
   </verify>
   <done>
 - Items 02 and 04 number labels show white/light-gray (no green or amber).
@@ -191,7 +191,7 @@ Run the landing dev server and visually confirm, OR check that the changes compi
 
 <verification>
 After implementation:
-1. Build passes: `pnpm --filter @streem/landing build` exits 0
+1. Build passes: `pnpm --filter /landing build` exits 0
 2. Features item 02 accent is `var(--color-accent)`, item 04 is `var(--color-accent-2)`
 3. `highlight.ts` handles comments, strings, keywords, function names, numbers
 4. `prop:innerHTML` used on `<code>` elements in both Features and CodeSample

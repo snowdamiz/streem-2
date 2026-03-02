@@ -1,5 +1,5 @@
 {
-  "name": "@streem/demo",
+  "name": "@streeem/demo",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@streem/core": "workspace:*",
-    "@streem/dom": "workspace:*"
+    "@streeem/core": "workspace:*",
+    "@streeem/dom": "workspace:*"
   },
   "devDependencies": {
     "vite": "^7.0.0",

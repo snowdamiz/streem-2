@@ -8,7 +8,7 @@ re_verification: false
 
 # Phase 01: Reactive Core Verification Report
 
-**Phase Goal:** Implement the reactive core primitives (signal, computed, effect, createRoot, onCleanup) as a standalone @streem/core package with zero runtime dependencies and full TypeScript support.
+**Phase Goal:** Implement the reactive core primitives (signal, computed, effect, createRoot, onCleanup) as a standalone /core package with zero runtime dependencies and full TypeScript support.
 **Verified:** 2026-02-27T23:00:00Z
 **Status:** passed
 **Re-verification:** No — initial verification
@@ -26,7 +26,7 @@ re_verification: false
 | 3 | packages/core/src/owner.ts exports createRoot, onCleanup, getOwner, runWithOwner with full owner tree implementation | VERIFIED | File exists, 259 lines, all exports confirmed; disposeOwner internal bottom-up traversal implemented |
 | 4 | All nested effects and signals stop reacting when createRoot's dispose is called | VERIFIED | 6 tests in SIGNAL-04 suite pass; nested root disposal tested and passing |
 | 5 | onCleanup callbacks fire synchronously on scope disposal AND before each effect re-run | VERIFIED | 5 tests in SIGNAL-05 suite pass; sequence-array ordering confirmed correct |
-| 6 | Developer can import signal(), computed(), effect() from @streem/core and use them from plain TypeScript | VERIFIED | signal.ts + index.ts present; vite build produces dist/index.js (263 lines) + dist/index.d.ts (213 lines) |
+| 6 | Developer can import signal(), computed(), effect() from /core and use them from plain TypeScript | VERIFIED | signal.ts + index.ts present; vite build produces dist/index.js (263 lines) + dist/index.d.ts (213 lines) |
 | 7 | signal(0) returns a callable getter; count() reads the value; count.set(1) writes the value | VERIFIED | Signal<T> interface with (): T and set(value: T): void; 4 SIGNAL-01 tests pass |
 | 8 | computed(() => count() * 2) returns a read-only getter that lazily re-evaluates | VERIFIED | readComputedNode() lazy evaluation; 6 SIGNAL-02 tests pass including diamond dependency |
 | 9 | effect(() => { ... }) runs immediately, re-runs when tracked signals change, returns dispose fn | VERIFIED | createEffectNode runs immediately; 7 SIGNAL-03 tests pass including conditional dep cleanup |

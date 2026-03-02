@@ -52,7 +52,7 @@ Does NOT include: Shadow DOM scoping, auto-scoped style tags, CSS-in-JS tagged t
 
 ### Claude's Discretion
 - The exact TypeScript type for the new `class` prop value (union of string | string[] | Record<string, boolean> | Array<string | Record<string, boolean> | false | null | undefined>)
-- Whether to export a `cx()` / `cn()` helper from `@streem/dom` for constructing class strings programmatically
+- Whether to export a `cx()` / `cn()` helper from `/dom` for constructing class strings programmatically
 - How to handle `className` and `class` both present simultaneously (last wins, or merge)
 - CSS module type declaration location (env.d.ts, vite-env.d.ts, or a dedicated types/ file)
 

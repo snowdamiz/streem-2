@@ -97,7 +97,7 @@ None - no external service configuration required.
 ## Next Phase Readiness
 - TEST-03 requirement fulfilled: nested ErrorBoundary, Suspense async error propagation, and For keyed list reordering all have coverage
 - `SuspenseProps.onError` is ready for use by future `createResource` integration (Phase 3+ note in plan context)
-- All 99 @streem/dom tests green; no regressions
+- All 99 /dom tests green; no regressions
 
 ---
 *Phase: 07-package-quality*

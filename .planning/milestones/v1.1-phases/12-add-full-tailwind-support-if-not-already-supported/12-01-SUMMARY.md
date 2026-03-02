@@ -74,7 +74,7 @@ completed: 2026-03-01
 - Wired `tailwind()` plugin first in vite.config.ts plugins array (before streemHMR)
 - Added `@import "tailwindcss"` as first line of global.css with coexistence comment
 - Applied Tailwind utility classes to all 5 landing components (Hero, Features, CodeSample, InstallCta, TickerDemo) using ClassValue array syntax alongside existing CSS Module classes
-- `pnpm --filter @streem/landing build` exits 0 with both Tailwind utilities (py-24, py-20, gap-6, grid, text-center, mb-4/5/12, etc.) and CSS Module hashed classes present in output
+- `pnpm --filter /landing build` exits 0 with both Tailwind utilities (py-24, py-20, gap-6, grid, text-center, mb-4/5/12, etc.) and CSS Module hashed classes present in output
 
 ## Task Commits
 

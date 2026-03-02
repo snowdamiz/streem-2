@@ -22,7 +22,7 @@ function printResults(name, bench) {
 }
 
 const node = process.version
-console.log(`# @streem/core Signal Benchmarks`)
+console.log(`# @streeem/core Signal Benchmarks`)
 console.log(`Node: ${node} | Date: ${new Date().toISOString().slice(0, 10)}`)
 
 const { bench: signalBench, name: signalName } = await runSignal()

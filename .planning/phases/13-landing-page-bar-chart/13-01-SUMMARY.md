@@ -88,7 +88,7 @@ Each task was committed atomically:
 
 **1. [Rule 1 - Bug] Fixed TypeScript JSX element array type mismatch**
 - **Found during:** Task 1 (BenchmarkChart component)
-- **Issue:** Initial implementation used `JSX.Element[]` but the `JSX` namespace from `@streem/dom` defines `JSX.Element = Node | Node[] | null | undefined` — the `undefined` made it incompatible with arrays expected to hold rendered nodes; also `computed()` returns `() => T` not a Signal with `.value`
+- **Issue:** Initial implementation used `JSX.Element[]` but the `JSX` namespace from `/dom` defines `JSX.Element = Node | Node[] | null | undefined` — the `undefined` made it incompatible with arrays expected to hold rendered nodes; also `computed()` returns `() => T` not a Signal with `.value`
 - **Fix:** Changed array types to `(Node | Node[] | null)[]`, added `as unknown as Node` casts on `.map()` returns, called computed result as function `getOpacity()` instead of `getOpacity.value`, refactored to `BarGroup` sub-component for clean scoping
 - **Files modified:** `apps/landing/src/components/BenchmarkChart.tsx`
 - **Verification:** `npx tsc --noEmit` passes clean; build exits 0

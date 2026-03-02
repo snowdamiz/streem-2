@@ -36,7 +36,7 @@ TypeScript-typed Lit web component bindings for TSX — `prop:` / `attr:` / `on:
 - Playwright tests run as a **separate `test:browser` script**, not part of the standard `pnpm test` (Vitest/Node) suite; CI runs both
 
 ### Lit dependency & scope
-- `@streem/lit` has **no runtime dependency on the Lit npm package** — works with any custom element / `HTMLElement` subclass
+- `/lit` has **no runtime dependency on the Lit npm package** — works with any custom element / `HTMLElement` subclass
 - Base JSX type for all custom elements includes standard Shadow DOM attributes: `part`, `slot`, `exportparts`, and equivalent spec attributes
 - Phase 4 includes **both push (write to element) and pull (observe element property changes back into a Streem signal)**
 - Pull/observe mechanism: event-driven — listen for Lit's property-change events (e.g., `my-prop-changed`) via `addEventListener`; update a signal when the event fires

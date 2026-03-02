@@ -7,19 +7,19 @@ tags: [signals, reactive, batch, throttle, debounce, backpressure, combinators]
 # Dependency graph
 requires:
   - phase: 03-03
-    provides: fromReadable() and fromObservable() adapters, complete @streem/streams adapter layer
+    provides: fromReadable() and fromObservable() adapters, complete /streams adapter layer
   - phase: 01-reactive-core
     provides: startBatch/endBatch in reactive.ts, effect(), onCleanup(), createRoot()
 provides:
-  - batch() combinator in @streem/streams for synchronous multi-signal write batching
+  - batch() combinator in /streams for synchronous multi-signal write batching
   - throttle() combinator returning a derived signal that updates at most once per intervalMs
   - debounce() combinator returning a derived signal that updates after delayMs silence
-  - startBatch/endBatch exported publicly from @streem/core
-  - Test suite covering STREAM-05 and STREAM-06 (42 total tests passing in @streem/streams)
+  - startBatch/endBatch exported publicly from /core
+  - Test suite covering STREAM-05 and STREAM-06 (42 total tests passing in /streams)
 affects:
   - 04-lit-integration
   - 05-dev-experience
-  - Any phase using @streem/streams backpressure tools
+  - Any phase using /streams backpressure tools
 
 # Tech tracking
 tech-stack:
@@ -40,7 +40,7 @@ key-files:
     - packages/streams/src/index.ts
 
 key-decisions:
-  - "startBatch/endBatch exported from @streem/core/src/index.ts — were already implemented in reactive.ts as Phase 3 extension points, this plan completes the export gate"
+  - "startBatch/endBatch exported from /core/src/index.ts — were already implemented in reactive.ts as Phase 3 extension points, this plan completes the export gate"
   - "batch() uses try/finally to guarantee endBatch() is always called even when fn() throws — error propagation safe"
   - "throttle() and debounce() must be called inside a reactive scope (createRoot/component body) — same ownership invariant as effect(), documented in JSDoc"
 
@@ -58,7 +58,7 @@ completed: 2026-02-28
 
 # Phase 3 Plan 04: Batch/Throttle/Debounce Combinators Summary
 
-**batch(), throttle(), and debounce() backpressure combinators shipping in @streem/streams, with startBatch/endBatch exposed from @streem/core — 200 synchronous writes produce 1 effect flush (not 200)**
+**batch(), throttle(), and debounce() backpressure combinators shipping in /streams, with startBatch/endBatch exposed from /core — 200 synchronous writes produce 1 effect flush (not 200)**
 
 ## Performance
 
@@ -69,10 +69,10 @@ completed: 2026-02-28
 - **Files modified:** 4
 
 ## Accomplishments
-- Exported startBatch and endBatch from @streem/core/src/index.ts (previously only accessible internally in reactive.ts)
+- Exported startBatch and endBatch from /core/src/index.ts (previously only accessible internally in reactive.ts)
 - Implemented batch(), throttle(), debounce() in packages/streams/src/combinators.ts with JSDoc documenting reactive scope requirements
 - Wrote 10-test combinators.test.ts covering STREAM-05 and STREAM-06, including the 200-write single-flush proof
-- All 42 @streem/streams tests pass across 5 test files; all 40 @streem/core tests pass; dist build clean
+- All 42 /streams tests pass across 5 test files; all 40 /core tests pass; dist build clean
 
 ## Task Commits
 
@@ -106,7 +106,7 @@ None — no external service configuration required.
 
 ## Next Phase Readiness
 - Phase 3 (Streaming Primitives) is complete: all 8 requirements (STREAM-01 through STREAM-08) satisfied across 4 plans
-- @streem/core and @streem/streams are fully built and tested
+- /core and /streams are fully built and tested
 - Phase 4 (Lit Integration) can proceed with the full streams API available: fromWebSocket, fromSSE, fromReadable, fromObservable, batch, throttle, debounce
 
 ---

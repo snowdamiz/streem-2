@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "@streem/dom",
+    "jsxImportSource": "@streeem/dom",
     "outDir": "./dist",
     "rootDir": "./src"
   },

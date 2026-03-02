@@ -9,10 +9,10 @@ requires:
   - phase: 01-reactive-core
     provides: signal(), onCleanup(), createRoot() — the reactive primitives fromWebSocket() is built on
 provides:
-  - "@streem/streams package scaffold with package.json, tsconfig.json, vite.config.ts, vitest.config.ts"
+  - "/streams package scaffold with package.json, tsconfig.json, vite.config.ts, vitest.config.ts"
   - "src/types.ts: StreamStatus union, StreamTuple<T>, WebSocketOptions<T>, SSEOptions<T>, ReadableOptions<T>, ObservableOptions<T>, Subscribable<T>"
   - "src/from-websocket.ts: fromWebSocket() adapter with MaxRetriesExceededError and exponential backoff reconnect"
-  - "src/index.ts: public barrel export for @streem/streams"
+  - "src/index.ts: public barrel export for /streams"
   - "tests/from-websocket.test.ts: 9-test suite covering STREAM-01, STREAM-07, STREAM-08"
 affects:
   - 03-02-SSE adapter (uses same StreamTuple, StreamStatus from types.ts)
@@ -44,7 +44,7 @@ key-files:
     - packages/streams/src/index.ts
     - packages/streams/tests/from-websocket.test.ts
   modified:
-    - pnpm-lock.yaml (added 57 new packages for @streem/streams devDependencies)
+    - pnpm-lock.yaml (added 57 new packages for /streams devDependencies)
 
 key-decisions:
   - "vitest-websocket-mock version fixed from plan's ^2.0.0 (non-existent) to ^0.5.0 (latest actual version)"
@@ -64,9 +64,9 @@ duration: 3min
 completed: 2026-02-28
 ---
 
-# Phase 3 Plan 01: @streem/streams Package Scaffold + fromWebSocket() Adapter Summary
+# Phase 3 Plan 01: /streams Package Scaffold + fromWebSocket() Adapter Summary
 
-**@streem/streams package scaffolded with fromWebSocket() adapter returning [data, status, error] signal tuple, typed StreamStatus union, exponential backoff reconnect, and 9 passing tests using vitest-websocket-mock 0.5.0**
+**/streams package scaffolded with fromWebSocket() adapter returning [data, status, error] signal tuple, typed StreamStatus union, exponential backoff reconnect, and 9 passing tests using vitest-websocket-mock 0.5.0**
 
 ## Performance
 
@@ -78,7 +78,7 @@ completed: 2026-02-28
 
 ## Accomplishments
 
-- Created `@streem/streams` package with full build toolchain (vite lib mode + dts, vitest happy-dom environment)
+- Created `/streams` package with full build toolchain (vite lib mode + dts, vitest happy-dom environment)
 - Defined shared type contracts: `StreamStatus`, `StreamTuple<T>`, `WebSocketOptions<T>`, `SSEOptions<T>`, `ReadableOptions<T>`, `ObservableOptions<T>`, `Subscribable<T>`
 - Implemented `fromWebSocket()` with cleanup-first pattern, disposed flag, exponential backoff reconnection, JSON auto-parse with silent fallback, and `MaxRetriesExceededError`
 - All 9 tests pass covering STREAM-01 (data updates, transform, cleanup), STREAM-07 (initial state, status transitions), STREAM-08 (reconnecting state, maxRetries exhaustion)
@@ -87,12 +87,12 @@ completed: 2026-02-28
 
 Each task was committed atomically:
 
-1. **Task 1: Scaffold @streem/streams package + define type contracts** - `974f147` (feat)
+1. **Task 1: Scaffold /streams package + define type contracts** - `974f147` (feat)
 2. **Task 2: Implement fromWebSocket() adapter + test suite** - `94733ec` (feat)
 
 ## Files Created/Modified
 
-- `packages/streams/package.json` - Package manifest with @streem/core dependency, vitest-websocket-mock/happy-dom devDeps
+- `packages/streams/package.json` - Package manifest with /core dependency, vitest-websocket-mock/happy-dom devDeps
 - `packages/streams/tsconfig.json` - Extends ../../tsconfig.base.json, composite mode
 - `packages/streams/vite.config.ts` - Lib mode, ES format, dts({ rollupTypes: true })
 - `packages/streams/vitest.config.ts` - happy-dom environment (required for WebSocket global)
@@ -144,7 +144,7 @@ None - no external service configuration required.
 
 ## Next Phase Readiness
 
-- `@streem/streams` package exists and is importable via `workspace:*` from other packages
+- `/streams` package exists and is importable via `workspace:*` from other packages
 - `StreamTuple<T>`, `StreamStatus`, `StreamTuple<T>` types ready for Plans 03-02 and 03-03
 - `fromWebSocket()` is the reference implementation for the adapter pattern — subsequent adapters follow identical `[data, status, error]` shape and `onCleanup()`-before-`connect()` order
 - `msw@2.12` installed (not yet used) — ready for SSE mocking in Plan 03-02

@@ -17,7 +17,7 @@
 - Optional second argument for debug label: `signal(0, { name: 'count' })` — shows in dev warnings, zero cost when omitted
 
 **alien-signals integration**
-- alien-signals is inspiration only — `@streem/core` is a fully custom implementation with no runtime dep on alien-signals
+- alien-signals is inspiration only — `/core` is a fully custom implementation with no runtime dep on alien-signals
 - Algorithm basis: push-pull (signals push change notifications, computeds pull lazily on read)
 - Circular dependency handling: throw a descriptive error in dev mode, silent cycle-break in prod
 - Internal data structures (arrays vs. sets for dependency tracking): Claude's discretion
@@ -48,7 +48,7 @@ None — discussion stayed within phase scope.
 
 | ID | Description | Research Support |
 |----|-------------|-----------------|
-| SIGNAL-01 | Developer can create a typed reactive signal with an initial value using `signal()` from a plain TypeScript file — no build plugin required | Custom implementation using push-pull algorithm; TypeScript generics; no Vite/Babel deps in `@streem/core` |
+| SIGNAL-01 | Developer can create a typed reactive signal with an initial value using `signal()` from a plain TypeScript file — no build plugin required | Custom implementation using push-pull algorithm; TypeScript generics; no Vite/Babel deps in `/core` |
 | SIGNAL-02 | Developer can derive computed values that auto-update using `computed()` without manual dependency arrays | Lazy computed pattern — mark Pending on dependency change, re-evaluate on read; dependency tracking via active subscriber stack |
 | SIGNAL-03 | Developer can create side effects that auto-track their reactive dependencies using `effect()` without dependency arrays | Active subscriber context during synchronous effect execution; push notification triggers re-run |
 | SIGNAL-04 | Developer can scope reactive computations using `createRoot()` so that all nested effects and signals are disposed when the root is disposed | Owner tree with bottom-up `onCleanup` traversal on dispose; SolidJS pattern well-documented |
@@ -61,7 +61,7 @@ None — discussion stayed within phase scope.
 
 ## Summary
 
-Phase 1 builds `@streem/core` — the DOM-free reactive primitive layer that every other Streem package depends on. The implementation is a custom push-pull reactive system (not a wrapper around alien-signals), with the alien-signals algorithm serving as the reference implementation. The public API surface is `signal()`, `computed()`, `effect()`, `createRoot()`, `onCleanup()`, `getOwner()`, and `runWithOwner()`. All primitives must be testable in Node with no DOM dependency.
+Phase 1 builds `/core` — the DOM-free reactive primitive layer that every other Streem package depends on. The implementation is a custom push-pull reactive system (not a wrapper around alien-signals), with the alien-signals algorithm serving as the reference implementation. The public API surface is `signal()`, `computed()`, `effect()`, `createRoot()`, `onCleanup()`, `getOwner()`, and `runWithOwner()`. All primitives must be testable in Node with no DOM dependency.
 
 The push-pull algorithm is well-understood: source signals eagerly push a `Dirty` (or lightweight `Pending`) notification through the subscriber graph when their value changes, but computed values are pulled lazily — they only re-evaluate when read and only when actually dirty. This avoids redundant computation (a computed whose source changed back to its original value before being read will detect the equality on re-read and skip downstream notifications). Effects are push-driven: they re-run synchronously when any dependency emits a dirty notification.
 
@@ -78,15 +78,15 @@ The owner tree is the most critical correctness primitive. Every `effect()` and 
 | Library | Version | Purpose | Why Standard |
 |---------|---------|---------|--------------|
 | TypeScript | ~5.8 | Language; generics for `Signal<T>`, `Computed<T>` | Current stable; `moduleResolution: "bundler"` pairs with Vite; TS 7 (Go compiler) is mid-2026 alpha — do not use |
-| Vitest | ^4.0 | Node-based test runner for the `@streem/core` test suite | Current stable (Vitest 4 released Oct 2025); `import.meta.env.DEV` is natively supported; fastest TS-native test runner |
+| Vitest | ^4.0 | Node-based test runner for the `/core` test suite | Current stable (Vitest 4 released Oct 2025); `import.meta.env.DEV` is natively supported; fastest TS-native test runner |
 | pnpm workspaces | ^9.x | Monorepo package management | Standard for TypeScript monorepos in 2026; `workspace:*` protocol; strict `node_modules` prevents phantom deps |
 
 ### Supporting
 
 | Library | Version | Purpose | When to Use |
 |---------|---------|---------|-------------|
-| vite-plugin-dts | ^4.x | Emit `.d.ts` declarations alongside ESM/CJS build | Used in Plan 01-01 for the `@streem/core` build config; `rollupTypes: true` produces a single declaration file |
-| Vite (lib mode) | ^7.0 | Build `@streem/core` as a distributable package | Required for lib mode build; esbuild handles TypeScript transpilation |
+| vite-plugin-dts | ^4.x | Emit `.d.ts` declarations alongside ESM/CJS build | Used in Plan 01-01 for the `/core` build config; `rollupTypes: true` produces a single declaration file |
+| Vite (lib mode) | ^7.0 | Build `/core` as a distributable package | Required for lib mode build; esbuild handles TypeScript transpilation |
 
 ### Alternatives Considered
 
@@ -117,7 +117,7 @@ mkdir -p packages/core/src
 ```
 streem/                           # Monorepo root
 ├── packages/
-│   └── core/                    # @streem/core — Phase 1 deliverable
+│   └── core/                    # /core — Phase 1 deliverable
 │       ├── src/
 │       │   ├── reactive.ts      # Internal: push-pull graph, Signal/Computed/Effect nodes
 │       │   ├── owner.ts         # Internal: Owner node, createRoot, onCleanup, getOwner, runWithOwner
@@ -339,7 +339,7 @@ export function effect(fn: () => void): () => void {
 }
 ```
 
-### Pattern 4: Monorepo Config for `@streem/core`
+### Pattern 4: Monorepo Config for `/core`
 
 **What:** A minimal pnpm workspace with a single package for Phase 1. The package publishes ESM, uses `vite-plugin-dts` for declarations, and has `composite: true` TypeScript project references for incremental builds.
 
@@ -357,7 +357,7 @@ packages:
 ```json
 // packages/core/package.json
 {
-  "name": "@streem/core",
+  "name": "/core",
   "version": "0.1.0",
   "type": "module",
   "exports": {
@@ -444,7 +444,7 @@ export default defineConfig({
 |---------|-------------|-------------|-----|
 | TypeScript monorepo tooling | Custom symlink scripts, manual build ordering | pnpm workspaces + `workspace:*` | pnpm handles hoisting, symlinks, strict isolation — all battle-tested |
 | Declaration file generation | Custom `tsc --declaration` pipeline | `vite-plugin-dts` with `rollupTypes: true` | Handles re-exports, produces single `.d.ts`, respects Vite lib mode entry |
-| Test runner for Node signals | Custom Node test runner | Vitest with `environment: 'node'` | `import.meta.env.DEV` works natively; fast; no DOM needed for `@streem/core` |
+| Test runner for Node signals | Custom Node test runner | Vitest with `environment: 'node'` | `import.meta.env.DEV` works natively; fast; no DOM needed for `/core` |
 | Changeset/version management | Manual changelog | `@changesets/cli` (Phase 5) | Too early for Phase 1; defer to Phase 5 packaging |
 
 **Key insight:** The reactive algorithm itself must be hand-rolled (alien-signals is inspiration only, not a runtime dep). Everything around the algorithm — tooling, test runner, build — should use standard tools.
@@ -523,7 +523,7 @@ Verified patterns from research and SolidJS official docs:
 
 ```typescript
 // Source: CONTEXT.md locked API decisions
-import { signal } from '@streem/core'
+import { signal } from '/core'
 
 const count = signal(0)
 console.log(count())   // 0 — read
@@ -538,7 +538,7 @@ const name = signal('Alice', { name: 'username' })
 
 ```typescript
 // Source: SolidJS docs pattern — https://docs.solidjs.com/reference/basic-reactivity/create-memo
-import { signal, computed, createRoot } from '@streem/core'
+import { signal, computed, createRoot } from '/core'
 
 createRoot((dispose) => {
   const count = signal(0)
@@ -555,7 +555,7 @@ createRoot((dispose) => {
 
 ```typescript
 // Source: SolidJS onCleanup docs — https://docs.solidjs.com/reference/lifecycle/on-cleanup
-import { signal, effect, onCleanup, createRoot } from '@streem/core'
+import { signal, effect, onCleanup, createRoot } from '/core'
 
 createRoot((dispose) => {
   const url = signal('/api/data')
@@ -580,7 +580,7 @@ createRoot((dispose) => {
 
 ```typescript
 // Source: CONTEXT.md locked decisions
-import { signal } from '@streem/core'
+import { signal } from '/core'
 
 const count = signal(0, { name: 'count' })
 // Called outside any createRoot/effect/computed:
@@ -592,7 +592,7 @@ count()
 
 ```typescript
 // Source: CONTEXT.md locked decisions
-import { effect } from '@streem/core'
+import { effect } from '/core'
 
 // Called at module top-level, not inside createRoot:
 effect(() => { /* ... */ })
@@ -603,7 +603,7 @@ effect(() => { /* ... */ })
 
 ```typescript
 // Source: SolidJS getOwner docs — https://docs.solidjs.com/reference/reactive-utilities/get-owner
-import { getOwner, runWithOwner, effect, createRoot } from '@streem/core'
+import { getOwner, runWithOwner, effect, createRoot } from '/core'
 
 createRoot((dispose) => {
   const owner = getOwner()
@@ -624,7 +624,7 @@ createRoot((dispose) => {
 ```typescript
 // Source: Vitest docs — vi.stubEnv, vi.spyOn
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { signal } from '@streem/core'
+import { signal } from '/core'
 
 describe('DX-02: signal read outside reactive context', () => {
   const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})

@@ -16,10 +16,10 @@ on:event={handler} — addEventListener directly on the element
 attr:name={value}  — explicit setAttribute (rarely needed — default is setAttribute)
 ```
 
-## @streem/lit Utilities
+## @streeem/lit Utilities
 
 ```typescript
-import { bindLitProp, observeLitProp } from '@streem/lit'
+import { bindLitProp, observeLitProp } from '@streeem/lit'
 
 bindLitProp<T>(el: Element, propName: string, accessor: () => T): void
 // Reactively binds accessor() result to el[propName] via effect()

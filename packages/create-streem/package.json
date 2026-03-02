@@ -1,9 +1,17 @@
 {
-  "name": "create-streem",
+  "name": "@streeem/create",
   "version": "0.1.0",
   "type": "module",
   "bin": {
-    "create-streem": "dist/index.js"
+    "create-streeem": "dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snowdamiz/streem-2.git",
+    "directory": "packages/create-streem"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "files": ["dist", "templates", "skills"],
   "scripts": {

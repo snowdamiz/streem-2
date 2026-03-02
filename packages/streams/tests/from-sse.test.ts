@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { createRoot } from '@streem/core'
+import { createRoot } from '@streeem/core'
 import { fromSSE } from '../src/from-sse.js'
 
 // ---------------------------------------------------------------------------

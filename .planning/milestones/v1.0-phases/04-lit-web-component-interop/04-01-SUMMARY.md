@@ -13,7 +13,7 @@ provides:
   - Reactive JS property binding via effect() for Lit element properties
   - Exact-case custom event binding for web component custom events
 affects:
-  - 04-lit-web-component-interop (Plan 02, 03 use this for @streem/lit)
+  - 04-lit-web-component-interop (Plan 02, 03 use this for /lit)
 
 # Tech tracking
 tech-stack:
@@ -47,7 +47,7 @@ completed: 2026-02-28
 
 # Phase 4 Plan 01: applyProps() Namespace Prefix Dispatch Summary
 
-**Extended applyProps() in @streem/dom with prop:/attr:/on: prefix dispatch enabling reactive Lit element property binding and exact-case custom event listeners**
+**Extended applyProps() in /dom with prop:/attr:/on: prefix dispatch enabling reactive Lit element property binding and exact-case custom event listeners**
 
 ## Performance
 
@@ -63,17 +63,17 @@ completed: 2026-02-28
 - Added `attr:` branch that forces `setAttribute` path (reactive via `bindAttr`, static via `el.setAttribute`)
 - Added `on:` branch that calls `bindEvent` with event name preserved exactly — critical for Lit custom events like `my-element-change`
 - All three branches inserted before the existing `on*` handler that lowercases event names
-- Added `effect` to `@streem/core` import in h.ts
+- Added `effect` to `/core` import in h.ts
 - Updated JSDoc dispatch table in applyProps() to list all new prefix rules
-- @streem/dom built successfully, dist/h-*.js chunk contains prop: prefix handling
-- All 93 existing @streem/dom tests pass (zero regressions)
+- /dom built successfully, dist/h-*.js chunk contains prop: prefix handling
+- All 93 existing /dom tests pass (zero regressions)
 
 ## Task Commits
 
 Each task was committed atomically:
 
 1. **Task 1: Add prop:/attr:/on: prefix branches to applyProps()** - `7edd4af` (feat)
-2. **Task 2: Build @streem/dom** - `7edd4af` (dist is gitignored; build verified locally — no tracked files changed)
+2. **Task 2: Build /dom** - `7edd4af` (dist is gitignored; build verified locally — no tracked files changed)
 
 ## Files Created/Modified
 
@@ -100,7 +100,7 @@ None - no external service configuration required.
 ## Next Phase Readiness
 
 - `applyProps()` now handles all three Lit interop prefixes
-- `@streem/dom` dist rebuilt and available for `@streem/lit` (Plans 02 and 03) to import
+- `/dom` dist rebuilt and available for `/lit` (Plans 02 and 03) to import
 - Plan 02 can proceed: `createLitComponent()` wrapper that uses `prop:` and `on:` in its TSX render
 
 ---
@@ -115,4 +115,4 @@ None - no external service configuration required.
 - FOUND: key.startsWith('prop:') in h.ts source (1 match)
 - FOUND: key.startsWith('attr:') in h.ts source (1 match)
 - FOUND: key.startsWith('on:') in h.ts source (1 match)
-- VERIFIED: 93 @streem/dom tests pass
+- VERIFIED: 93 /dom tests pass

@@ -1,4 +1,4 @@
-import { effect } from '@streem/core'
+import { effect } from '@streeem/core'
 
 /**
  * bindLitProp — creates a reactive effect() that keeps an element's JS property

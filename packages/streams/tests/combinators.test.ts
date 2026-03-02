@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { createRoot, signal, effect } from '@streem/core'
+import { createRoot, signal, effect } from '@streeem/core'
 import { batch, throttle, debounce } from '../src/combinators.js'
 
 describe('batch()', () => {

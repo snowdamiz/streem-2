@@ -1,4 +1,4 @@
-import type { Subscribable } from 'streem'
+import type { Subscribable } from 'streeem'
 
 export interface TickerMessage {
   symbol: string

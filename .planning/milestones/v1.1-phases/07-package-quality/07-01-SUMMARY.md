@@ -7,12 +7,12 @@ tags: [typescript, vite, vite-plugin-dts, jsx, lit, shoelace, custom-elements]
 # Dependency graph
 requires: []
 provides:
-  - "@streem/lit dist/index.d.ts includes JSX module augmentations for all sl-* custom elements"
+  - "/lit dist/index.d.ts includes JSX module augmentations for all sl-* custom elements"
   - "vite.config.ts beforeWriteFile hook appends ambient .d.ts to rolled-up output"
-  - "TypeScript users of @streem/lit get autocomplete for sl-button, sl-badge, and all Shoelace elements"
+  - "TypeScript users of /lit get autocomplete for sl-button, sl-badge, and all Shoelace elements"
 affects:
-  - "06-landing-page-dogfood (consumer of @streem/lit types)"
-  - "future packages using @streem/lit"
+  - "06-landing-page-dogfood (consumer of /lit types)"
+  - "future packages using /lit"
 
 # Tech tracking
 tech-stack:
@@ -41,9 +41,9 @@ duration: 2min
 completed: 2026-02-28
 ---
 
-# Phase 7 Plan 01: @streem/lit JSX Type Augmentation Fix Summary
+# Phase 7 Plan 01: /lit JSX Type Augmentation Fix Summary
 
-**vite.config.ts beforeWriteFile hook appends base-custom-element-types.d.ts and lit-elements.d.ts to dist/index.d.ts, giving TypeScript users full Shoelace sl-* element autocomplete via @streem/lit**
+**vite.config.ts beforeWriteFile hook appends base-custom-element-types.d.ts and lit-elements.d.ts to dist/index.d.ts, giving TypeScript users full Shoelace sl-* element autocomplete via /lit**
 
 ## Performance
 
@@ -54,7 +54,7 @@ completed: 2026-02-28
 - **Files modified:** 2
 
 ## Accomplishments
-- `dist/index.d.ts` now contains 2 `declare module '@streem/dom/jsx-runtime'` blocks covering all sl-* custom elements
+- `dist/index.d.ts` now contains 2 `declare module '/dom/jsx-runtime'` blocks covering all sl-* custom elements
 - `sl-button`, `sl-badge`, and all other Shoelace element props are now type-checked (variant, size, disabled, etc.)
 - Build exits 0, no TypeScript regressions in src/
 - No manual triple-slash references needed in consumer code
@@ -80,10 +80,10 @@ Each task was committed atomically:
 
 **1. [Rule 1 - Bug] Triple-slash + include approach did not include declare module blocks in rollupTypes output**
 - **Found during:** Task 2 (verify dist/index.d.ts)
-- **Issue:** After Task 1 changes, `grep -c "declare module '@streem/dom/jsx-runtime'" dist/index.d.ts` returned 0. `rollupTypes` (api-extractor) strips ambient `declare module` augmentations from the output.
+- **Issue:** After Task 1 changes, `grep -c "declare module '/dom/jsx-runtime'" dist/index.d.ts` returned 0. `rollupTypes` (api-extractor) strips ambient `declare module` augmentations from the output.
 - **Fix:** Updated `vite.config.ts` to read ambient `.d.ts` files via `readFileSync` at build time and append them to the rolled-up `index.d.ts` using the `beforeWriteFile` plugin hook.
 - **Files modified:** `packages/lit/vite.config.ts`
-- **Verification:** `grep -c "declare module '@streem/dom/jsx-runtime'"` returns 2, `grep -c "sl-button"` returns 8.
+- **Verification:** `grep -c "declare module '/dom/jsx-runtime'"` returns 2, `grep -c "sl-button"` returns 8.
 - **Committed in:** `55ddcae` (Task 2 commit)
 
 ---
@@ -98,9 +98,9 @@ Each task was committed atomically:
 None - no external service configuration required.
 
 ## Next Phase Readiness
-- LIT-01 complete: `@streem/lit` now ships correct TypeScript types for all sl-* custom elements
+- LIT-01 complete: `/lit` now ships correct TypeScript types for all sl-* custom elements
 - Plan 07-02 and subsequent plans can proceed independently
-- Consumers of `@streem/lit` get full autocomplete without any manual type imports
+- Consumers of `/lit` get full autocomplete without any manual type imports
 
 ---
 *Phase: 07-package-quality*

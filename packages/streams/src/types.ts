@@ -1,4 +1,4 @@
-import type { Signal } from '@streem/core'
+import type { Signal } from '@streeem/core'
 
 /**
  * Connection state for all stream adapters.

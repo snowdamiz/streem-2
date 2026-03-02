@@ -34,7 +34,7 @@ export type ClassValue =
   | ClassValue[]
 
 /**
- * JSX type declarations for @streem/dom.
+ * JSX type declarations for @streeem/dom.
  * TypeScript reads these when jsxImportSource resolves to this package.
  */
 export namespace JSX {

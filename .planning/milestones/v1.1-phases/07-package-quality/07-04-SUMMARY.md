@@ -46,7 +46,7 @@ completed: 2026-02-28
 
 # Phase 7 Plan 04: Streams Edge Case Tests Summary
 
-**Three missing error-path tests added for @streem/streams: ReadableStream controller.error(), WebSocket cancel-during-reconnect, and Observable error-after-values — plus a bug fix in fromReadable that was overwriting status=error with status=closed**
+**Three missing error-path tests added for /streams: ReadableStream controller.error(), WebSocket cancel-during-reconnect, and Observable error-after-values — plus a bug fix in fromReadable that was overwriting status=error with status=closed**
 
 ## Performance
 

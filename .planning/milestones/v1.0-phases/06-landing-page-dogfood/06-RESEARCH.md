@@ -67,7 +67,7 @@ Phase 6 builds `apps/landing` — a new pnpm workspace application inside the ex
 
 The live streaming demo uses a locally simulated Observable (no server) passed through `fromObservable()` so that `batch()`, `throttle()`, and backpressure handling are exercised against the real framework pipeline. Each ticker row holds per-row signal objects; `<For>` iterates the ticker list, and each row's price/change/sparkline are individual signal writes — not full-list re-renders. This is the correct pattern to validate LAND-02 and LAND-01's `<For>` + fine-grained DOM patching requirement.
 
-Shoelace v2.20.1 is the locked design system. It is in LTS maintenance mode but fully functional. The integration requires three steps beyond `npm install`: (1) `vite-plugin-static-copy` to copy SVG icons to the build output, (2) `setBasePath()` called at app entry before any component import, and (3) running `tsx scripts/gen-lit-types.ts --pkg @shoelace-style/shoelace` in the `@streem/lit` package to generate `IntrinsicElements` types for `sl-button` and `sl-badge`. Shoelace ships `custom-elements.json` in its package root, which the existing `gen-lit-types.ts` script already supports via the `--pkg` flag.
+Shoelace v2.20.1 is the locked design system. It is in LTS maintenance mode but fully functional. The integration requires three steps beyond `npm install`: (1) `vite-plugin-static-copy` to copy SVG icons to the build output, (2) `setBasePath()` called at app entry before any component import, and (3) running `tsx scripts/gen-lit-types.ts --pkg @shoelace-style/shoelace` in the `/lit` package to generate `IntrinsicElements` types for `sl-button` and `sl-badge`. Shoelace ships `custom-elements.json` in its package root, which the existing `gen-lit-types.ts` script already supports via the `--pkg` flag.
 
 **Primary recommendation:** Create `apps/landing` as a new Vite MPA app in the monorepo workspace, use `fromObservable()` with a local `setInterval`-driven Subject for the ticker demo, cherry-pick Shoelace components with `setBasePath` for assets, generate types from Shoelace's bundled CEM manifest, and deploy via the standard GitHub Pages Actions workflow.
 
@@ -79,7 +79,7 @@ Shoelace v2.20.1 is the locked design system. It is in LTS maintenance mode but 
 | Library | Version | Purpose | Why Standard |
 |---------|---------|---------|--------------|
 | `streem` | `workspace:*` | All Streem primitives (`signal`, `render`, `<For>`, `batch`, etc.) | The framework being dogfooded — single entry point per Phase 5 |
-| `@streem/lit` | `workspace:*` | `bindLitProp`, `observeLitProp`, CEM type generation | Lit interop layer; separate from `streem` meta-package by design |
+| `/lit` | `workspace:*` | `bindLitProp`, `observeLitProp`, CEM type generation | Lit interop layer; separate from `streem` meta-package by design |
 | `@shoelace-style/shoelace` | `^2.20.1` | `sl-button` and `sl-badge` web components | Locked decision; LTS but fully functional |
 | `vite` | `^7.0.0` | Build tool, MPA multi-entry support, dev server | Already pinned across monorepo |
 | `typescript` | `~5.8.0` | Type safety | Already pinned across monorepo |
@@ -88,7 +88,7 @@ Shoelace v2.20.1 is the locked design system. It is in LTS maintenance mode but 
 | Library | Version | Purpose | When to Use |
 |---------|---------|---------|-------------|
 | `vite-plugin-static-copy` | `latest` | Copy Shoelace SVG icon assets to `dist/` | Required for bundled Shoelace; without it icons 404 |
-| `tsx` | `latest` | Run `gen-lit-types.ts` script to generate JSX types | Build-time only; already in `@streem/lit` devDeps |
+| `tsx` | `latest` | Run `gen-lit-types.ts` script to generate JSX types | Build-time only; already in `/lit` devDeps |
 
 ### Alternatives Considered
 | Instead of | Could Use | Tradeoff |
@@ -100,7 +100,7 @@ Shoelace v2.20.1 is the locked design system. It is in LTS maintenance mode but 
 
 **Installation (in `apps/landing`):**
 ```bash
-pnpm add streem @streem/lit @shoelace-style/shoelace vite-plugin-static-copy
+pnpm add streem /lit @shoelace-style/shoelace vite-plugin-static-copy
 pnpm add -D typescript vite tsx
 ```
 
@@ -172,9 +172,9 @@ export default defineConfig({
 **When to use:** Any time a streaming demo needs no backend while still validating `batch()`, `throttle()`, and signal backpressure.
 **Example:**
 ```typescript
-// Source: Project @streem/streams Subscribable<T> interface
+// Source: Project /streams Subscribable<T> interface
 // packages/streams/src/types.ts
-import type { Subscribable } from '@streem/streams'
+import type { Subscribable } from '/streams'
 
 export interface TickerMessage {
   symbol: string
@@ -206,7 +206,7 @@ export function createTickerSource(symbols: string[]): Subscribable<TickerMessag
 **When to use:** When validating that `<For>` + fine-grained signal patching prevents full-list re-renders under 200 msg/sec load.
 **Example:**
 ```typescript
-// Source: Streem @streem/streams batch() + @streem/core signal()
+// Source: Streem /streams batch() + /core signal()
 import { signal, createRoot } from 'streem'
 import { fromObservable, batch, throttle } from 'streem'
 import { createTickerSource } from '../lib/ticker'
@@ -286,7 +286,7 @@ import '@shoelace-style/shoelace/dist/components/badge/badge.js'
 
 ```tsx
 // InstallCta.tsx — typed Shoelace props via IntrinsicElements types
-// After running: pnpm --filter @streem/lit gen:lit-types -- --pkg @shoelace-style/shoelace
+// After running: pnpm --filter /lit gen:lit-types -- --pkg @shoelace-style/shoelace
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/badge/badge.js'
 
@@ -308,8 +308,8 @@ export function InstallCta() {
 ```
 
 ### Pattern 5: Shoelace CEM Type Generation
-**What:** Run the existing `gen-lit-types.ts` script from `@streem/lit` against Shoelace's bundled `custom-elements.json` to produce `IntrinsicElements` types for `sl-button` and `sl-badge`.
-**When to use:** Once during the Plan 06-03 task — types are generated into `@streem/lit/src/lit-types/lit-elements.d.ts`.
+**What:** Run the existing `gen-lit-types.ts` script from `/lit` against Shoelace's bundled `custom-elements.json` to produce `IntrinsicElements` types for `sl-button` and `sl-badge`.
+**When to use:** Once during the Plan 06-03 task — types are generated into `/lit/src/lit-types/lit-elements.d.ts`.
 
 ```bash
 # Shoelace ships custom-elements.json at package root (verified pattern from CONTEXT.md research)
@@ -384,8 +384,8 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 
 ### Pitfall 5: `gen-lit-types.ts` Fails on Shoelace CEM
 **What goes wrong:** `tsx scripts/gen-lit-types.ts --pkg @shoelace-style/shoelace` exits with "CEM manifest not found".
-**Why it happens:** The script looks for `./node_modules/@shoelace-style/shoelace/custom-elements.json`. This file exists at the **package root**, but the `@streem/lit` package's `node_modules` only gets Shoelace if it's installed as a dependency (not just installed in `apps/landing`). pnpm hoisting may or may not make it available.
-**How to avoid:** Run the gen script from the monorepo root where pnpm hoists `@shoelace-style/shoelace` into `node_modules/`. Or install Shoelace temporarily as a devDependency of `@streem/lit` to run the generator.
+**Why it happens:** The script looks for `./node_modules/@shoelace-style/shoelace/custom-elements.json`. This file exists at the **package root**, but the `/lit` package's `node_modules` only gets Shoelace if it's installed as a dependency (not just installed in `apps/landing`). pnpm hoisting may or may not make it available.
+**How to avoid:** Run the gen script from the monorepo root where pnpm hoists `@shoelace-style/shoelace` into `node_modules/`. Or install Shoelace temporarily as a devDependency of `/lit` to run the generator.
 **Warning signs:** Script exits with path-not-found error; running from root resolves it.
 
 ### Pitfall 6: 200 msg/sec Perf Trace Shows Long Tasks
@@ -459,7 +459,7 @@ export default defineConfig({
 ### package.json for apps/landing
 ```json
 {
-  "name": "@streem/landing",
+  "name": "/landing",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -470,7 +470,7 @@ export default defineConfig({
   },
   "dependencies": {
     "streem": "workspace:*",
-    "@streem/lit": "workspace:*",
+    "/lit": "workspace:*",
     "@shoelace-style/shoelace": "^2.20.1"
   },
   "devDependencies": {
@@ -520,7 +520,7 @@ jobs:
           node-version: lts/*
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @streem/landing build
+      - run: pnpm --filter /landing build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
@@ -607,10 +607,10 @@ export function buildSparklinePath(data: number[], width = 80, height = 24): str
    - What's unclear: Whether the repo owner has a custom domain configured for this project
    - Recommendation: Default to `base: '/streem-2/'` in vite.config.ts. Make it a const at the top of the config so it's easy to change when a custom domain is added. Or use an environment variable: `base: process.env.VITE_BASE_URL ?? '/streem-2/'`.
 
-3. **pnpm hoisting and `@streem/lit`'s `gen-lit-types.ts` access to Shoelace**
+3. **pnpm hoisting and `/lit`'s `gen-lit-types.ts` access to Shoelace**
    - What we know: `@shoelace-style/shoelace` is a dependency of `apps/landing`, not `packages/lit`. pnpm's shamefully-hoist behavior may or may not make it accessible to scripts run from `packages/lit/`.
    - What's unclear: pnpm hoisting configuration in this workspace
-   - Recommendation: Run `gen-lit-types.ts` from the **monorepo root** (`pnpm --filter @streem/lit tsx packages/lit/scripts/gen-lit-types.ts --pkg @shoelace-style/shoelace`) after `pnpm install` so Shoelace is in the root `node_modules/`. Alternatively, verify the script works from `packages/lit/` with `ls ../../node_modules/@shoelace-style/shoelace/`.
+   - Recommendation: Run `gen-lit-types.ts` from the **monorepo root** (`pnpm --filter /lit tsx packages/lit/scripts/gen-lit-types.ts --pkg @shoelace-style/shoelace`) after `pnpm install` so Shoelace is in the root `node_modules/`. Alternatively, verify the script works from `packages/lit/` with `ls ../../node_modules/@shoelace-style/shoelace/`.
 
 ---
 

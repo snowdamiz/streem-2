@@ -14,7 +14,7 @@ provides:
   - InstallCta section with real sl-button + sl-badge (Shoelace dark theme)
   - Generated JSX IntrinsicElements for sl-button and sl-badge (typed prop: bindings)
   - GitHub Actions deploy workflow (.github/workflows/deploy-landing.yml)
-  - SVG namespace fix in @streem/dom JSX runtime (h.ts + bindings.ts)
+  - SVG namespace fix in /dom JSX runtime (h.ts + bindings.ts)
   - Visual verification of full landing page end-to-end
 
 affects: [lit-interop, deploy, dom, jsx-runtime]
@@ -71,7 +71,7 @@ completed: 2026-02-28
 
 - `InstallCta.tsx` ships with real Shoelace `sl-button` (primary CTA + install-skill) and `sl-badge` (version tag), styled in dark theme with `prop:variant`, `prop:size`, `on:click` — all TypeScript-typed via generated IntrinsicElements
 - GitHub Actions workflow deploys landing to GitHub Pages on push to main via OIDC (no token required)
-- SVG namespace support added to `@streem/dom` JSX runtime — `h()` now calls `createElementNS` for known SVG tags; sparkline workaround removed entirely
+- SVG namespace support added to `/dom` JSX runtime — `h()` now calls `createElementNS` for known SVG tags; sparkline workaround removed entirely
 
 ## Task Commits
 
@@ -104,12 +104,12 @@ completed: 2026-02-28
 - **Issue:** `document.createElement('svg')` creates `HTMLUnknownElement`; sparkline was a workaround using `innerHTML` parsing instead of fixing the root cause
 - **Fix:** Added `SVG_TAGS` set to `h.ts`; `h()` uses `createElementNS(SVG_NS, tag)` for all known SVG elements. `applyProps` widened from `HTMLElement` to `Element`. `className` assignment replaced with `setAttribute`. `Sparkline` component rewritten as plain `<svg>/<path>` JSX.
 - **Files modified:** `packages/dom/src/h.ts`, `packages/dom/src/bindings.ts`, `apps/landing/src/components/TickerDemo.tsx`
-- **Verification:** 93 `@streem/dom` tests pass; `@streem/landing build` exits 0
+- **Verification:** 93 `/dom` tests pass; `/landing build` exits 0
 
 ---
 
 **Total deviations:** 1 auto-fixed (framework limitation identified and resolved)
-**Impact on plan:** Fix improves `@streem/dom` correctness — SVG is now a first-class citizen in the JSX runtime.
+**Impact on plan:** Fix improves `/dom` correctness — SVG is now a first-class citizen in the JSX runtime.
 
 ## Issues Encountered
 

@@ -1,5 +1,5 @@
 {
-  "name": "streem",
+  "name": "streeem",
   "version": "0.1.0",
   "type": "module",
   "exports": {
@@ -16,15 +16,20 @@
       "types": "./dist/jsx-dev-runtime.d.ts"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snowdamiz/streem-2.git",
+    "directory": "packages/streem"
+  },
   "files": ["dist", "skills", "install-streem-skill.mjs"],
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@streem/core": "workspace:*",
-    "@streem/dom": "workspace:*",
-    "@streem/streams": "workspace:*",
+    "@streeem/core": "workspace:*",
+    "@streeem/dom": "workspace:*",
+    "@streeem/streams": "workspace:*",
     "@clack/prompts": "^1.0.1"
   },
   "devDependencies": {

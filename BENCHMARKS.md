@@ -1,6 +1,6 @@
-# @streem/core Signal Benchmarks
+# @streeem/core Signal Benchmarks
 
-Benchmark results for `@streem/core` signals compared against `solid-js` and
+Benchmark results for `@streeem/core` signals compared against `solid-js` and
 `@preact/signals-core` under identical conditions using
 [tinybench](https://github.com/tinylibs/tinybench).
 
@@ -15,7 +15,7 @@ Each benchmark runs 1000 warmup iterations followed by 5000 measured iterations.
 All libraries run in the same process under the same Node.js version.
 No DOM, no framework overhead — pure reactive primitive cost.
 
-**`@streem/core` is measured twice per suite:**
+**`@streeem/core` is measured twice per suite:**
 - **(with createRoot)** — includes owner-scope allocation; matches real-world usage and SolidJS pattern
 - **(primitive only)** — calls `signal()`/`computed()`/`effect()` directly without a createRoot wrapper; directly comparable to `@preact/signals-core` which has no owner concept
 
@@ -23,7 +23,7 @@ No DOM, no framework overhead — pure reactive primitive cost.
 
 | Library | Version | Import |
 |---------|---------|--------|
-| @streem/core | 0.1.0 | `signal, computed, effect, createRoot` |
+| @streeem/core | 0.1.0 | `signal, computed, effect, createRoot` |
 | @preact/signals-core | 1.13.0 | `signal, computed, effect` |
 | solid-js | 1.9.11 | `createSignal, createMemo, createEffect, createRoot` |
 
@@ -40,8 +40,8 @@ No DOM, no framework overhead — pure reactive primitive cost.
 
 | name                                  | ops/sec    | avg (ns) | samples  |
 |---------------------------------------|------------|----------|----------|
-| @streem/core signal (with createRoot) | 23,036,155 | 43.41    | 11,518,078 |
-| @streem/core signal (primitive only)  | 26,574,594 | 37.63    | 13,287,298 |
+| @streeem/core signal (with createRoot) | 23,036,155 | 43.41    | 11,518,078 |
+| @streeem/core signal (primitive only)  | 26,574,594 | 37.63    | 13,287,298 |
 | @preact/signals-core signal           | 46,421,161 | 21.54    | 23,210,582 |
 | solid-js createSignal                 | 21,947,613 | 45.56    | 10,973,807 |
 
@@ -49,8 +49,8 @@ No DOM, no framework overhead — pure reactive primitive cost.
 
 | name                                    | ops/sec    | avg (ns) | samples  |
 |-----------------------------------------|------------|----------|----------|
-| @streem/core computed (with createRoot) | 11,925,326 | 83.86    | 5,962,663 |
-| @streem/core computed (primitive only)  | 5,326,796  | 187.73   | 2,663,398 |
+| @streeem/core computed (with createRoot) | 11,925,326 | 83.86    | 5,962,663 |
+| @streeem/core computed (primitive only)  | 5,326,796  | 187.73   | 2,663,398 |
 | @preact/signals-core computed           | 18,896,253 | 52.92    | 9,453,221 |
 | solid-js createMemo                     | 14,523,704 | 68.85    | 7,261,852 |
 
@@ -58,8 +58,8 @@ No DOM, no framework overhead — pure reactive primitive cost.
 
 | name                                  | ops/sec    | avg (ns) | samples  |
 |---------------------------------------|------------|----------|----------|
-| @streem/core effect (with createRoot) | 8,911,157  | 112.22   | 4,455,579 |
-| @streem/core effect (primitive only)  | 10,597,901 | 94.36    | 5,298,951 |
+| @streeem/core effect (with createRoot) | 8,911,157  | 112.22   | 4,455,579 |
+| @streeem/core effect (primitive only)  | 10,597,901 | 94.36    | 5,298,951 |
 | @preact/signals-core effect           | 13,154,002 | 76.02    | 6,577,002 |
 | solid-js createEffect                 | 22,629,833 | 44.19    | 11,314,917 |
 
@@ -68,7 +68,7 @@ No DOM, no framework overhead — pure reactive primitive cost.
 ```sh
 # From the repository root:
 pnpm install
-pnpm --filter @streem/core build
+pnpm --filter @streeem/core build
 node apps/bench/run.mjs
 ```
 
@@ -77,7 +77,7 @@ Results vary by machine. The tables above were captured on the hardware describe
 ## Phase 9.1 Optimizations
 
 These results supersede the Phase 9 baseline. The following changes were made to
-`@streem/core` between Phase 9 and Phase 9.1 (minor) and the subsequent linked-list
+`@streeem/core` between Phase 9 and Phase 9.1 (minor) and the subsequent linked-list
 rewrite (major).
 
 ### Reactive graph rewrite — linked list subscriber tracking (`reactive.ts`)

@@ -76,7 +76,7 @@ completed: 2026-02-28
 - Extended `applyProps()` in `h.ts` with `typeof value === 'function'` dispatch routing to the appropriate `bind*` function — the critical pattern that makes `class={()=>cls()}` reactive without calling the accessor as a snapshot
 - Extended `appendChildren()` in `h.ts` to handle function children: `() => signal()` passed as a JSX child creates a `bindTextNode()` reactive text node rather than stringifying the function
 - `bindEvent()` wires `addEventListener` once and registers `onCleanup()` for removal on owner scope disposal — event handlers stay attached until their component is torn down
-- All 32 `@streem/dom` tests pass (5 scaffold + 27 binding tests); TypeScript compiles cleanly
+- All 32 `/dom` tests pass (5 scaffold + 27 binding tests); TypeScript compiles cleanly
 
 ## Task Commits
 
@@ -93,7 +93,7 @@ Each task was committed atomically:
 
 ## Decisions Made
 
-- Used `signal.set(value)` (not `signal(value)`) in tests — the `Signal<T>` interface exposes `.set()` for writes, confirmed by inspecting `@streem/core/signal.ts` during RED phase when tests initially used wrong API
+- Used `signal.set(value)` (not `signal(value)`) in tests — the `Signal<T>` interface exposes `.set()` for writes, confirmed by inspecting `/core/signal.ts` during RED phase when tests initially used wrong API
 - Replaced MutationObserver-based "exactly 1 mutation" test with a structural node identity check (same `Text` reference, correct `nodeValue`) — happy-dom's MutationObserver callbacks are async and don't fire synchronously in the test run. The structural check equivalently verifies surgical update behavior.
 
 ## Deviations from Plan

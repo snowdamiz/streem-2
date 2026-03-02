@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Streem is a TypeScript-first, JSX/TSX front-end framework built around reactive signals and real-time data streams. It ships as four packages (`@streem/core`, `@streem/dom`, `@streem/streams`, `@streem/lit`) plus a `streem` meta-package, a `create-streem` CLI scaffolder, and a progressive-disclosure AI skills system. The official landing page (`apps/landing`) is built with the framework itself. It targets developers who want fine-grained reactivity (signals, no VDOM diffing) with first-class support for WebSockets, SSE, fetch streams, and observable-style sources — without the complexity of a custom compiler. Styling via CSS Modules and Tailwind CSS v4 is documented and pre-configured in the default template.
+Streem is a TypeScript-first, JSX/TSX front-end framework built around reactive signals and real-time data streams. It ships as four packages (`/core`, `/dom`, `/streams`, `/lit`) plus a `streem` meta-package, a `create-streem` CLI scaffolder, and a progressive-disclosure AI skills system. The official landing page (`apps/landing`) is built with the framework itself. It targets developers who want fine-grained reactivity (signals, no VDOM diffing) with first-class support for WebSockets, SSE, fetch streams, and observable-style sources — without the complexity of a custom compiler. Styling via CSS Modules and Tailwind CSS v4 is documented and pre-configured in the default template.
 
 ## Core Value
 
@@ -20,11 +20,11 @@ Signals and streams are first-class primitives — not adapters or plugins — s
 - ✓ Framework skills written with progressive disclosure (SKILL.md → sub-skill files) — v1.0
 - ✓ Landing page built with Streem (dogfood proof + official public site) — v1.0
 - ✓ CSR-only (browser rendering, no SSR) — v1.0
-- ✓ TypeScript IntrinsicElements for all sl-* Shoelace elements in @streem/lit dist/ (vite-plugin-dts beforeWriteFile) — v1.1
+- ✓ TypeScript IntrinsicElements for all sl-* Shoelace elements in /lit dist/ (vite-plugin-dts beforeWriteFile) — v1.1
 - ✓ E2E Playwright test: `npm create streem@latest` CLI scaffold produces a buildable project — v1.1
 - ✓ E2E Playwright test: Vite HMR preserves signal state across hot reload — v1.1
 - ✓ Reactive core benchmarked (ops/sec) against SolidJS and Preact signals; BENCHMARKS.md committed with methodology — v1.1
-- ✓ CSSProperties type exported from @streem/dom and streem meta-package; style prop accepts object — v1.1
+- ✓ CSSProperties type exported from /dom and streem meta-package; style prop accepts object — v1.1
 - ✓ CSS Modules documented as recommended styling pattern (docs/STYLING.md) — v1.1
 - ✓ ClassValue API (string/array/object/mixed) for class/className props; bindStyle stale-key diffing via removeProperty() — v1.1
 - ✓ Landing page components migrated from inline style blocks to CSS Modules (dogfood proof) — v1.1
@@ -78,10 +78,10 @@ Signals and streams are first-class primitives — not adapters or plugins — s
 Tech stack: TypeScript, JSX/TSX (jsxImportSource: "streem"), Vite + tsup, Vitest (Node + Browser/Playwright), pnpm workspaces, Shoelace web components, GitHub Actions (Pages deployment), Tailwind CSS v4 (@tailwindcss/vite), CSS Modules.
 
 Packages:
-- `@streem/core` — push-pull reactive graph: signal(), computed(), effect(), createRoot(), onCleanup(), dev-mode warnings; O(1) batchedEffects dedup; lazy Owner init
-- `@streem/dom` — JSX runtime: h(), render(), reactive DOM bindings, Show/For/ErrorBoundary/Suspense, Vite HMR; ClassValue API; bindStyle diff; CSSProperties
-- `@streem/streams` — fromWebSocket(), fromSSE(), fromReadable(), fromObservable(), batch(), throttle(), debounce()
-- `@streem/lit` — bindLitProp(), observeLitProp(), CEM type generation tooling; full sl-* IntrinsicElements in dist/
+- `/core` — push-pull reactive graph: signal(), computed(), effect(), createRoot(), onCleanup(), dev-mode warnings; O(1) batchedEffects dedup; lazy Owner init
+- `/dom` — JSX runtime: h(), render(), reactive DOM bindings, Show/For/ErrorBoundary/Suspense, Vite HMR; ClassValue API; bindStyle diff; CSSProperties
+- `/streams` — fromWebSocket(), fromSSE(), fromReadable(), fromObservable(), batch(), throttle(), debounce()
+- `/lit` — bindLitProp(), observeLitProp(), CEM type generation tooling; full sl-* IntrinsicElements in dist/
 - `streem` — meta-package barrel re-exporting all primitives
 - `create-streem` — CLI scaffolder (npm create streem@latest), now includes Tailwind CSS v4 pre-configured
 - `apps/landing` — official landing page (deployed via GitHub Actions to GitHub Pages); CSS Modules + Tailwind v4
@@ -105,11 +105,11 @@ Packages:
 | CSR-only for v1 | Keeps scope tight; SSR adds significant complexity | ✓ Good — no SSR pressure encountered |
 | Progressive disclosure for AI skills | Root SKILL.md routes to sub-skills rather than one monolithic doc | ✓ Good — install script verified against 6 tool dirs |
 | pnpm workspaces monorepo | All packages share node_modules, faster CI | ✓ Good — workspace protocol prevented version drift |
-| external @streem/core in streams build | Prevents reactive singleton duplication across packages | ✓ Good — fixed a real production bug (reactive context lost across package boundary) |
+| external /core in streams build | Prevents reactive singleton duplication across packages | ✓ Good — fixed a real production bug (reactive context lost across package boundary) |
 | CEM analyzer for Lit type generation | Auto-generate IntrinsicElements from source, not manual hand-roll | ✓ Good — full Shoelace component catalog typed |
 | SVG createElement via innerHTML | SVGElement namespace requires document.createElementNS — JSX factory needed special case | ✓ Good — sparkline renders correctly |
 | Reactive signals outside Suspense scope | Streaming signals must be lifted above Suspense boundary to prevent retry-loop on reconnect | ✓ Good — ticker table skeleton bug fixed |
-| vite-plugin-dts beforeWriteFile hook for ambient types | rollupTypes (api-extractor) silently drops declare module augmentation blocks | ✓ Good — @streem/lit dist/ now contains full sl-* IntrinsicElements |
+| vite-plugin-dts beforeWriteFile hook for ambient types | rollupTypes (api-extractor) silently drops declare module augmentation blocks | ✓ Good — /lit dist/ now contains full sl-* IntrinsicElements |
 | ClassValue recursive union type for class props | Matches clsx API signature; string/array/object all accepted without runtime dependency | ✓ Good — className and class both accepted; classList removed cleanly |
 | bindStyle prev-key tracking for removeProperty() | Reactive style updates must remove stale CSS properties or they persist on the element | ✓ Good — stale keys cleaned up correctly in diff |
 | Tailwind CSS v4 plugin-only config | No postcss.config.js or tailwind.config.js needed — fully plugin-driven via @tailwindcss/vite | ✓ Good — zero config files, works with CSS Modules simultaneously |

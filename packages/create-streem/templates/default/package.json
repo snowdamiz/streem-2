@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "streem": "latest"
+    "streeem": "latest"
   },
   "devDependencies": {
     "@tailwindcss/vite": "latest",

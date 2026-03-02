@@ -63,20 +63,20 @@
 
 ## Summary
 
-Phase 2 builds the DOM rendering layer for `@streem/dom` on top of the `@streem/core` reactive primitives completed in Phase 1. The central design is a **no-compiler JSX runtime**: TypeScript's `"jsx": "react-jsx"` + `"jsxImportSource": "streem"` compiles TSX to calls of `jsx(type, props, key)` automatically — no Babel, no custom transform. The `jsx()` function in `@streem/dom/jsx-runtime` receives these calls and either creates real DOM elements or invokes function components. Reactive bindings are achieved through the **accessor pattern**: any JSX expression that contains a signal read becomes a closure (e.g., `{count()}` compiles to `{count}` where `count` is passed as a getter), and each DOM binding (text node, attribute, class, style) wraps its update in an `effect()` that fires only when the specific value changes.
+Phase 2 builds the DOM rendering layer for `/dom` on top of the `/core` reactive primitives completed in Phase 1. The central design is a **no-compiler JSX runtime**: TypeScript's `"jsx": "react-jsx"` + `"jsxImportSource": "streem"` compiles TSX to calls of `jsx(type, props, key)` automatically — no Babel, no custom transform. The `jsx()` function in `/dom/jsx-runtime` receives these calls and either creates real DOM elements or invokes function components. Reactive bindings are achieved through the **accessor pattern**: any JSX expression that contains a signal read becomes a closure (e.g., `{count()}` compiles to `{count}` where `count` is passed as a getter), and each DOM binding (text node, attribute, class, style) wraps its update in an `effect()` that fires only when the specific value changes.
 
 The component model is deliberately simple: component functions run exactly once inside a `createRoot` scope. There is no re-render loop. All reactivity lives in JSX expressions and explicit `effect()` calls. Built-in components (`<Show>`, `<For>`, `<ErrorBoundary>`, `<Suspense>`) are implemented as first-class functions using the same reactive primitives. `<Show>` and `<For>` manage child DOM scopes via nested `createRoot`, disposing stale subtrees and creating new ones. `<ErrorBoundary>` wraps child rendering in try/catch. `<Suspense>` implements the thrown-Promise protocol: it renders children in a try/catch, catches thrown Promises, shows the fallback, and retries on resolution.
 
 HMR is implemented as a Vite plugin that injects `import.meta.hot.data`-based state preservation into every component file. Signal values are saved into `hot.data` via `hot.dispose()` callbacks and restored from `hot.data` on the next module evaluation. The component identifier (file path + export name) is the key. Structural change detection (signal count mismatch) triggers a full reset.
 
-**Primary recommendation:** Build `@streem/dom` as a new monorepo package at `packages/dom/` with `"jsxImportSource": "streem"` package resolution, implementing `h()` / `jsx()` as a direct DOM factory, accessor-based reactive bindings via `@streem/core` `effect()`, keyed reconciliation for `<For>`, and a Vite plugin for HMR.
+**Primary recommendation:** Build `/dom` as a new monorepo package at `packages/dom/` with `"jsxImportSource": "streem"` package resolution, implementing `h()` / `jsx()` as a direct DOM factory, accessor-based reactive bindings via `/core` `effect()`, keyed reconciliation for `<For>`, and a Vite plugin for HMR.
 
 ## Standard Stack
 
 ### Core
 | Library | Version | Purpose | Why Standard |
 |---------|---------|---------|--------------|
-| `@streem/core` | `workspace:*` | Reactive primitives (`signal`, `effect`, `createRoot`, `onCleanup`) | Phase 1 output — the foundation the DOM layer is built on |
+| `/core` | `workspace:*` | Reactive primitives (`signal`, `effect`, `createRoot`, `onCleanup`) | Phase 1 output — the foundation the DOM layer is built on |
 | TypeScript | `~5.8.0` | Type safety, `jsx: "react-jsx"`, `jsxImportSource` | Already in monorepo; `5.8` is current stable |
 | Vite | `^7.0.0` | Dev server, HMR plugin API (`hotUpdate` hook), esbuild JSX transform | Already in monorepo; Vite 7 is current major |
 | Vitest | `^4.0.0` | Unit/integration tests | Already in monorepo |
@@ -97,7 +97,7 @@ HMR is implemented as a Vite plugin that injects `import.meta.hot.data`-based st
 **Installation:**
 ```bash
 # In packages/dom/
-pnpm add -D @streem/core@workspace:* vite@^7.0.0 vite-plugin-dts@^4.0.0 vitest@^4.0.0 typescript@~5.8.0 happy-dom@^14.0.0
+pnpm add -D /core@workspace:* vite@^7.0.0 vite-plugin-dts@^4.0.0 vitest@^4.0.0 typescript@~5.8.0 happy-dom@^14.0.0
 ```
 
 ## Architecture Patterns
@@ -182,7 +182,7 @@ export namespace JSX {
 **Example:**
 ```typescript
 // packages/dom/src/h.ts
-import { createRoot } from '@streem/core'
+import { createRoot } from '/core'
 
 export const Fragment = Symbol('Fragment')
 
@@ -223,7 +223,7 @@ export function h(
 **Example:**
 ```typescript
 // packages/dom/src/bindings.ts
-import { effect, onCleanup } from '@streem/core'
+import { effect, onCleanup } from '/core'
 
 type Accessor<T> = () => T
 
@@ -349,7 +349,7 @@ function applyProps(el: HTMLElement, props: Record<string, unknown>): void {
 
 ```typescript
 // packages/dom/src/components.ts
-import { createRoot, effect, onCleanup } from '@streem/core'
+import { createRoot, effect, onCleanup } from '/core'
 
 export function Show(props: {
   when: boolean | (() => boolean)
@@ -602,11 +602,11 @@ export function streemHMRPlugin(): Plugin {
 
 ```typescript
 // packages/dom/src/index.ts
-import { effect } from '@streem/core'
+import { effect } from '/core'
 
 export function onMount(fn: () => void | (() => void)): void {
   // Runs synchronously after component initialization since effects are
-  // eager in @streem/core. The component's DOM has been created by the
+  // eager in /core. The component's DOM has been created by the
   // time onMount() runs (h() is synchronous), but not necessarily inserted.
   // Use queueMicrotask to ensure DOM is in document before fn executes.
   let cleanup: (() => void) | void
@@ -626,7 +626,7 @@ export function onMount(fn: () => void | (() => void)): void {
 
 ```typescript
 // packages/dom/src/index.ts
-import { createRoot } from '@streem/core'
+import { createRoot } from '/core'
 
 export function render(
   component: () => Node | null,
@@ -661,13 +661,13 @@ export function render(
 
 | Problem | Don't Build | Use Instead | Why |
 |---------|-------------|-------------|-----|
-| Reactive subscriptions | Custom dependency tracking | `@streem/core` `effect()`, `createRoot()` | Already built, tested, handles disposal, cleanup, batching |
-| Signal read tracking | Custom subscriber registry | `@streem/core` `effect()` | The push-pull graph handles stale subscription cleanup automatically |
-| Effect disposal on unmount | Manual cleanup registry | `@streem/core` `onCleanup()` + `createRoot` | Nested owner scopes auto-dispose on parent disposal |
+| Reactive subscriptions | Custom dependency tracking | `/core` `effect()`, `createRoot()` | Already built, tested, handles disposal, cleanup, batching |
+| Signal read tracking | Custom subscriber registry | `/core` `effect()` | The push-pull graph handles stale subscription cleanup automatically |
+| Effect disposal on unmount | Manual cleanup registry | `/core` `onCleanup()` + `createRoot` | Nested owner scopes auto-dispose on parent disposal |
 | DOM list diffing algorithm | Custom VDOM diff | Explicit key function + `Map<key, row>` reconciliation | Key-based identity is simpler and correct; VDOM defeats the purpose of fine-grained signals |
 | CSS class toggling | `className = computeAllClasses()` | `classList.toggle()` per binding | Per-class bindings are granular; recomputing all classes is a full rerender smell |
 
-**Key insight:** The `@streem/core` owner tree (`createRoot`/`onCleanup`) handles all lifecycle and disposal. The DOM layer only needs to create scopes in the right places and register cleanups.
+**Key insight:** The `/core` owner tree (`createRoot`/`onCleanup`) handles all lifecycle and disposal. The DOM layer only needs to create scopes in the right places and register cleanups.
 
 ## Common Pitfalls
 
@@ -789,7 +789,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     environment: 'happy-dom',
-    name: '@streem/dom',
+    name: '/dom',
   },
 })
 ```
@@ -798,7 +798,7 @@ export default defineConfig({
 ```typescript
 // Source: SolidJS dom-expressions pattern (verified via SolidJS docs)
 // Each binding creates one effect targeting one DOM node
-import { effect } from '@streem/core'
+import { effect } from '/core'
 
 function bindText(node: Text, accessor: () => string): void {
   effect(() => {
@@ -829,7 +829,7 @@ function bindText(node: Text, accessor: () => string): void {
    - Recommendation: For Phase 2 stub, implement simple "if any promise thrown, show fallback; when promise resolves, retry full render". Progressive resolution (each child resolves independently) requires async rendering slots — design this when `createResource` (Phase 3) defines the actual pending signal protocol. The stub is sufficient for the success criteria.
 
 2. **onMount timing — synchronous vs. microtask**
-   - What we know: `@streem/core` effects are synchronous (run immediately on creation)
+   - What we know: `/core` effects are synchronous (run immediately on creation)
    - What's unclear: Does `onMount` need a `queueMicrotask` delay to guarantee the rendered nodes are in the document, or is synchronous sufficient for Streem's use case?
    - Recommendation: Since `render()` appends to the DOM synchronously and `onMount` registers as an effect after `h()` returns, implement synchronously first. If tests reveal timing issues (e.g., `getBoundingClientRect()` returning zeros), add `queueMicrotask` wrapper.
 
@@ -843,7 +843,7 @@ function bindText(node: Text, accessor: () => string): void {
 ### Primary (HIGH confidence)
 - TypeScript official docs — `jsxImportSource`, `jsx: "react-jsx"` behavior, required file exports
 - https://vite.dev/guide/api-hmr — `import.meta.hot.data`, `hot.dispose()`, `hot.accept()`, `hotUpdate` hook
-- `@streem/core` source code (`/packages/core/src/`) — reactive primitives being consumed
+- `/core` source code (`/packages/core/src/`) — reactive primitives being consumed
 
 ### Secondary (MEDIUM confidence)
 - https://docs.solidjs.com/reference/components/for — `<For>` API reference (SolidJS alignment)

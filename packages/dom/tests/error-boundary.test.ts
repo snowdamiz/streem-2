@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { createRoot } from '@streem/core'
+import { createRoot } from '@streeem/core'
 import { ErrorBoundary } from '../src/components.js'
 
 // ---------------------------------------------------------------------------

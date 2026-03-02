@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import tailwind from '@tailwindcss/vite'
-import { streemHMR } from 'streem'
+import { streemHMR } from 'streeem'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { resolve } from 'path'
 

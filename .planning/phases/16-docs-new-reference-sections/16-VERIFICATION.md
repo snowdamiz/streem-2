@@ -48,7 +48,7 @@ re_verification: false
 | `apps/landing/src/DocsApp.tsx`        | TypeScriptSection function + nav entry + Show block + cross-links | VERIFIED | Lines 169-201 (function), line 13 (NAV), line 288 (Show), lines 65+80 (cross-links)            |
 | `apps/landing/src/DocsApp.tsx`        | PerformanceSection function + nav entry + Show block + cross-links | VERIFIED | Lines 203-235 (function), line 14 (NAV), line 291 (Show), lines 66+114 (cross-links)           |
 
-All artifacts are substantive (no stubs): StylingSection has 4 subsections with 6 Code blocks; TypeScriptSection has 5 subsections; PerformanceSection has 4 subsections. TypeScript compilation passes with zero errors (`pnpm --filter @streem/landing exec tsc --noEmit`).
+All artifacts are substantive (no stubs): StylingSection has 4 subsections with 6 Code blocks; TypeScriptSection has 5 subsections; PerformanceSection has 4 subsections. TypeScript compilation passes with zero errors (`pnpm --filter /landing exec tsc --noEmit`).
 
 ---
 

@@ -11,7 +11,7 @@ requires:
 provides:
   - HMR signal state registry (registerForHMR, getRestoredValue, saveToHotData, canRestoreState, saveSignalCount, clearHMRRegistry)
   - streemHMR() Vite plugin using hotUpdate hook for .tsx/.jsx files
-  - apps/demo/ with jsxImportSource: "@streem/dom", signal HMR pattern, Show, For, onMount
+  - apps/demo/ with jsxImportSource: "/dom", signal HMR pattern, Show, For, onMount
   - Fixed JSX.IntrinsicElements in jsx-runtime.d.ts (vite-plugin-dts namespace rollup fix)
 affects:
   - Phase 3 (stream adapters integrate with HMR registry when ready)
@@ -77,7 +77,7 @@ completed: 2026-02-28
 
 - HMR runtime registry (hmr.ts) with 6 exports: registerForHMR, getRestoredValue, saveToHotData, canRestoreState, saveSignalCount, clearHMRRegistry — unit-tested with 9 tests using beforeEach isolation
 - streemHMR() Vite plugin using the Vite 6+/7 hotUpdate hook (not deprecated handleHotUpdate) to propagate HMR for .tsx/.jsx component files
-- apps/demo app proving jsxImportSource: "@streem/dom" compiles TSX, signal-driven reactive DOM works, and HMR save/restore pattern is usable end-to-end
+- apps/demo app proving jsxImportSource: "/dom" compiles TSX, signal-driven reactive DOM works, and HMR save/restore pattern is usable end-to-end
 - Fixed vite-plugin-dts rollupTypes bug that silently dropped JSX.IntrinsicElements from jsx-runtime.d.ts by inlining the namespace declaration
 
 ## Task Commits
@@ -97,8 +97,8 @@ Each task was committed atomically:
 - `packages/dom/src/jsx-runtime.ts` - Inlined JSX namespace (fixed vite-plugin-dts rollup issue); widened children type
 - `packages/dom/src/components.ts` - Widened ForProps.children return type to accept JSX.Element
 - `packages/dom/tests/hmr.test.ts` - 9 unit tests for HMR registry functions
-- `apps/demo/package.json` - @streem/demo workspace app
-- `apps/demo/tsconfig.json` - jsxImportSource: "@streem/dom", jsx: react-jsx
+- `apps/demo/package.json` - /demo workspace app
+- `apps/demo/tsconfig.json` - jsxImportSource: "/dom", jsx: react-jsx
 - `apps/demo/vite.config.ts` - plugins: [streemHMR()]
 - `apps/demo/index.html` - Entry HTML with #app mount point
 - `apps/demo/src/main.tsx` - render() call wiring App into DOM
@@ -128,7 +128,7 @@ Each task was committed atomically:
 - **Issue:** Plan template used `count(count() + 1)` (callable setter) but Signal<T> uses `count.set(value)` method
 - **Fix:** Updated App.tsx to use `count.set(count() + 1)` per the Signal interface established in Phase 1
 - **Files modified:** apps/demo/src/App.tsx
-- **Verification:** TypeScript check passes; matches @streem/core Signal<T> interface
+- **Verification:** TypeScript check passes; matches /core Signal<T> interface
 - **Committed in:** 1bdab10 (Task 2 commit)
 
 **3. [Rule 1 - Bug] Fixed IntrinsicElements children type too narrow for reactive JSX**
@@ -154,7 +154,7 @@ Each task was committed atomically:
 
 ## Issues Encountered
 
-- The plan template for App.tsx used `count(count() + 1)` (callable signal setter) which doesn't match the actual Signal<T> API from @streem/core which uses `.set()`. Fixed in implementation.
+- The plan template for App.tsx used `count(count() + 1)` (callable signal setter) which doesn't match the actual Signal<T> API from /core which uses `.set()`. Fixed in implementation.
 - vite-plugin-dts rollupTypes strips re-exported TypeScript namespaces — a known limitation discovered when fixing the JSX type chain.
 
 ## User Setup Required

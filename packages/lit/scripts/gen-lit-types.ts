@@ -2,7 +2,7 @@
  * gen-lit-types.ts — CEM → JSX types pipeline
  *
  * Run after `cem analyze --litelement` has generated custom-elements.json.
- * Writes src/lit-types/lit-elements.d.ts augmenting @streem/dom/jsx-runtime.
+ * Writes src/lit-types/lit-elements.d.ts augmenting @streeem/dom/jsx-runtime.
  *
  * Usage: tsx scripts/gen-lit-types.ts [--pkg <package-name>]
  *   (no flags): reads ./custom-elements.json from `cem analyze` output
@@ -13,8 +13,8 @@
  *   pnpm gen:lit-types
  *   (which runs: cem analyze --litelement && tsx scripts/gen-lit-types.ts)
  *
- * The generated file augments @streem/dom/jsx-runtime with:
- *   declare module '@streem/dom/jsx-runtime' {
+ * The generated file augments @streeem/dom/jsx-runtime with:
+ *   declare module '@streeem/dom/jsx-runtime' {
  *     namespace JSX {
  *       interface IntrinsicElements { <element-types> }
  *     }
@@ -76,8 +76,8 @@ mkdirSync(outDir, { recursive: true })
 //
 // generateJsxTypes writes a raw TypeScript interface body to outDir/fileName.
 // We then post-process that output to wrap it in the correct
-// `declare module '@streem/dom/jsx-runtime'` block, matching the path that
-// TypeScript resolves when jsxImportSource is set to "@streem/dom".
+// `declare module '@streeem/dom/jsx-runtime'` block, matching the path that
+// TypeScript resolves when jsxImportSource is set to "@streeem/dom".
 // ---------------------------------------------------------------------------
 
 const rawContent = generateJsxTypes(manifest, {
@@ -95,13 +95,13 @@ if (!rawContent) {
 // wrap it in the module augmentation block.
 const existing = existsSync(generatedPath) ? readFileSync(generatedPath, 'utf8') : ''
 
-if (!existing.trimStart().startsWith("declare module '@streem/dom/jsx-runtime'")) {
+if (!existing.trimStart().startsWith("declare module '@streeem/dom/jsx-runtime'")) {
   // Wrap the generated interface body inside the correct module declaration
   const wrapped =
     `// GENERATED — DO NOT EDIT. Run: pnpm gen:lit-types\n` +
     `// Source: ${manifestPath}\n` +
     `// @see https://github.com/wc-toolkit/jsx-types\n\n` +
-    `declare module '@streem/dom/jsx-runtime' {\n` +
+    `declare module '@streeem/dom/jsx-runtime' {\n` +
     `  namespace JSX {\n` +
     `${rawContent
       .split('\n')

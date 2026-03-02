@@ -1,4 +1,4 @@
-import { signal } from 'streem'
+import { signal } from 'streeem'
 
 const count = signal(0)
 

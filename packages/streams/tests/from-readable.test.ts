@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createRoot } from '@streem/core'
+import { createRoot } from '@streeem/core'
 import { fromReadable } from '../src/from-readable.js'
 
 function makeStream<T>(chunks: T[], delayMs = 0): ReadableStream<T> {

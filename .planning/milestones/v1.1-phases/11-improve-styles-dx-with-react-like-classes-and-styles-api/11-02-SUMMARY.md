@@ -60,7 +60,7 @@ completed: 2026-03-01
 - Added 2 bindStyle diff tests: stale property cleared after partial update, full replacement with no stale properties
 - Added 4 applyProps tests: className alias static, class with static object, class with static array, reactive className accessor with ClassValue object
 - Imported `ClassValue` type at top of test file for typed signal declarations
-- All 105 @streem/dom tests pass with zero regressions
+- All 105 /dom tests pass with zero regressions
 
 ## Task Commits
 

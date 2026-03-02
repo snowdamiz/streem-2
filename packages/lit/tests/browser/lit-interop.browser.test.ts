@@ -1,5 +1,5 @@
 /**
- * Browser test suite for @streem/lit — Vitest Browser Mode (Playwright Chromium)
+ * Browser test suite for @streeem/lit — Vitest Browser Mode (Playwright Chromium)
  *
  * Covers all four LIT-01..04 behaviors that require a real browser:
  *  - LIT-03: Shadow DOM event routing via on: prefix
@@ -19,8 +19,8 @@
  */
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { LitElement, html } from 'lit'
-import { createRoot, signal } from '@streem/core'
-import { bindLitProp, observeLitProp } from '@streem/lit'
+import { createRoot, signal } from '@streeem/core'
+import { bindLitProp, observeLitProp } from '@streeem/lit'
 
 // ---------------------------------------------------------------------------
 // Inline Lit component stubs (no decorators — static properties declaration)

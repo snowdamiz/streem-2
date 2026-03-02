@@ -96,7 +96,7 @@ _Note: No refactor commit needed — implementation was clean after bug fix._
 - `packages/core/tests/signal.test.ts` — 16 tests: SIGNAL-01 (signal read/write), SIGNAL-02 (computed lazy eval, caching, diamond dep), SIGNAL-03 (effect auto-track, conditional deps, dispose, equality check)
 - `packages/core/tests/owner.test.ts` — 11 tests: SIGNAL-04 (createRoot dispose, nested roots, isolation, idempotency), SIGNAL-05 (onCleanup per-run, disposal, ordering, cleanup-before-run)
 - `packages/core/tests/dev-warnings.test.ts` — 13 tests: DX-02 (named/anon signal outside context, no warn inside effect/computed/root), DX-03 (effect/computed outside root, no warn inside root)
-- `packages/core/vitest.config.ts` — Per-package vitest config: environment 'node', name '@streem/core'
+- `packages/core/vitest.config.ts` — Per-package vitest config: environment 'node', name '/core'
 - `packages/core/src/owner.ts` — Added EffectCleanupRef interface, currentEffectCleanupTarget global, setCurrentEffectCleanupTarget() and getCurrentEffectCleanupTarget() exports; fixed onCleanup() to prioritize effect's cleanupFns when inside effect body
 - `packages/core/src/reactive.ts` — Added import of setCurrentEffectCleanupTarget from owner.ts; updated runEffect() to set/restore currentEffectCleanupTarget around effect.fn() invocation
 
@@ -133,8 +133,8 @@ None — no external service configuration required.
 
 ## Next Phase Readiness
 
-- All 7 Phase 1 requirements have green test coverage — `@streem/core` is fully tested and ready for downstream use
-- Phase 2 (Component Model) and Phase 3 (Streaming) can both depend on `@streem/core` with confidence
+- All 7 Phase 1 requirements have green test coverage — `/core` is fully tested and ready for downstream use
+- Phase 2 (Component Model) and Phase 3 (Streaming) can both depend on `/core` with confidence
 - No blockers
 
 ## Self-Check: PASSED

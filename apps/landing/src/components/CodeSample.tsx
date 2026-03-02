@@ -1,4 +1,4 @@
-import { signal, Show } from 'streem'
+import { signal, Show } from 'streeem'
 import { highlight } from '../lib/highlight'
 
 type Tab = 'signals' | 'streams' | 'jsx'
@@ -10,7 +10,7 @@ const TABS: { id: Tab; label: string; file: string }[] = [
 ]
 
 const CODE: Record<Tab, string> = {
-  signals: `import { signal, computed, effect } from 'streem'
+  signals: `import { signal, computed, effect } from 'streeem'
 
 // Signals — plain reactive values
 const count = signal(0)
@@ -28,7 +28,7 @@ effect(() => {
 count.set(count.value + 1)
 // logs: "1 is odd"`,
 
-  streams: `import { fromWebSocket, fromSSE, batch, throttle } from 'streem'
+  streams: `import { fromWebSocket, fromSSE, batch, throttle } from 'streeem'
 
 // WebSocket — closes automatically when component unmounts
 const [feed, status] = fromWebSocket('wss://prices.example.com')
@@ -47,7 +47,7 @@ effect(() => {
   })
 })`,
 
-  jsx: `import { signal, Show, For } from 'streem'
+  jsx: `import { signal, Show, For } from 'streeem'
 
 const items = signal(['Alice', 'Bob', 'Carol'])
 const selected = signal<string | null>(null)

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { signal, createRoot } from '@streem/core'
+import { signal, createRoot } from '@streeem/core'
 import { onMount } from '../src/components.js'
 
 // ---------------------------------------------------------------------------

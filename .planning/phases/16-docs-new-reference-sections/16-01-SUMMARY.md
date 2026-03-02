@@ -65,7 +65,7 @@ None — plan executed exactly as written.
 
 ## Verification
 
-- TypeScript compilation: PASS (`pnpm --filter @streem/landing exec tsc --noEmit`)
+- TypeScript compilation: PASS (`pnpm --filter /landing exec tsc --noEmit`)
 - NAV_ITEM: `{ id: 'styling', label: 'Styling' }` present (7th entry)
 - StylingSection function defined and called in Show block
 - Cross-link `href="#styling"` in GettingStartedSection

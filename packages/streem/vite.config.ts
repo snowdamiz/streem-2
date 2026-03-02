@@ -13,11 +13,11 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        '@streem/core',
-        '@streem/dom',
-        '@streem/dom/jsx-runtime',
-        '@streem/dom/jsx-dev-runtime',
-        '@streem/streams',
+        '@streeem/core',
+        '@streeem/dom',
+        '@streeem/dom/jsx-runtime',
+        '@streeem/dom/jsx-dev-runtime',
+        '@streeem/streams',
       ],
     },
     target: 'es2022',

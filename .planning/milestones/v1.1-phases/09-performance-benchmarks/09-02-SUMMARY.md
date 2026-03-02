@@ -52,7 +52,7 @@ completed: 2026-03-01
 - **Files modified:** 2 (BENCHMARKS.md created, package.json modified)
 
 ## Accomplishments
-- Built fresh @streem/core dist, ran benchmark suite end-to-end
+- Built fresh /core dist, ran benchmark suite end-to-end
 - Created BENCHMARKS.md (80 lines) with all 9 ops/sec result tables, environment metadata (Node v25.3.0, Apple M4, macOS, 2026-03-01), methodology, and reproduction steps
 - Added `"bench": "node apps/bench/run.mjs"` to root package.json scripts
 - Committed BENCHMARKS.md and package.json — `pnpm bench` works from repository root
@@ -60,17 +60,17 @@ completed: 2026-03-01
 ## Results Summary (2026-03-01, Node v25.3.0, Apple M4)
 
 **signal read+write:**
-- @streem/core: ~9.1M ops/sec
+- /core: ~9.1M ops/sec
 - @preact/signals-core: ~46.2M ops/sec
 - solid-js: ~23.0M ops/sec
 
 **computed re-evaluation:**
-- @streem/core: ~3.5M ops/sec
+- /core: ~3.5M ops/sec
 - @preact/signals-core: ~19.3M ops/sec
 - solid-js: ~14.7M ops/sec
 
 **effect re-run:**
-- @streem/core: ~3.3M ops/sec
+- /core: ~3.3M ops/sec
 - @preact/signals-core: ~13.2M ops/sec
 - solid-js: ~22.6M ops/sec
 
@@ -88,7 +88,7 @@ Both tasks were committed in a single atomic commit (plan specified joint commit
 ## Decisions Made
 - Committed BENCHMARKS.md and package.json in a single commit as specified by plan Task 2 action (single meaningful commit for both files)
 - Library versions documented: @preact/signals-core 1.13.0, solid-js 1.9.11 (actual installed versions, not placeholder "1.x")
-- Interpretation section added explaining why @streem/core is slower — correctness-first design with owner tracking and DX diagnostics, not algorithmic inefficiency
+- Interpretation section added explaining why /core is slower — correctness-first design with owner tracking and DX diagnostics, not algorithmic inefficiency
 
 ## Deviations from Plan
 
@@ -106,7 +106,7 @@ None - no external service configuration required.
 - PERF-01 and PERF-02 both satisfied: benchmark suite runs and results are committed
 - Phase 9 complete — all 2 plans done
 - Phase 10 (landing page polish) can proceed — benchmark data available if bar chart needed
-- @streem/core ops/sec baseline established for future optimization tracking
+- /core ops/sec baseline established for future optimization tracking
 
 ---
 

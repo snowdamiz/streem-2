@@ -1,3 +1,3 @@
-// Re-export the JSX dev runtime from @streem/dom so that
-// jsxImportSource: "streem" in tsconfig.json resolves correctly in dev mode.
-export * from '@streem/dom/jsx-dev-runtime'
+// Re-export the JSX dev runtime from @streeem/dom so that
+// jsxImportSource: "streeem" in tsconfig.json resolves correctly in dev mode.
+export * from '@streeem/dom/jsx-dev-runtime'

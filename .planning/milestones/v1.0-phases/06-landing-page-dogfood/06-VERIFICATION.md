@@ -24,7 +24,7 @@ gaps:
     missing:
       - "Replace the <span class='badge'>v0.1.0</span> in Hero.tsx with <sl-badge prop:variant='neutral' prop:pill={true}>v0.1.0</sl-badge> and import the badge component."
 human_verification:
-  - test: "Open http://localhost:5173 in a browser after running pnpm --filter @streem/landing dev"
+  - test: "Open http://localhost:5173 in a browser after running pnpm --filter /landing dev"
     expected: "Dark mode page loads with: (1) Hero section showing live reactive counter incrementing, (2) Ticker table showing 7 stock rows with prices updating and SVG sparklines rendering, (3) Features grid with clickable expand, (4) Code sample with copy button, (5) InstallCta section with styled Shoelace sl-button and sl-badge, (6) No visible layout or rendering artifacts"
     why_human: "Visual appearance, live streaming animation, Shoelace component styling, SVG sparkline visibility — none of these can be verified by static code analysis"
   - test: "Navigate to http://localhost:5173/docs/"
@@ -87,9 +87,9 @@ human_verification:
 | From | To | Via | Status | Details |
 |------|----|-----|--------|---------|
 | `TickerDemo.tsx` | `ticker.ts` | createTickerSource import | WIRED | createTickerSource + SYMBOLS imported and called |
-| `TickerDemo.tsx` | `@streem/streams` | fromObservable, throttle, batch imports | WIRED | All three imported from 'streem' and used in the stream pipeline |
+| `TickerDemo.tsx` | `/streams` | fromObservable, throttle, batch imports | WIRED | All three imported from 'streem' and used in the stream pipeline |
 | `TickerDemo.tsx` | sparkline | Sparkline component with d accessor | WIRED | `<path d={() => buildSparklinePath(history())} />` — reactive SVG attribute via bindAttr |
-| `InstallCta.tsx` | `@shoelace-style/shoelace` | Cherry-picked component JS + @streem/lit types | WIRED | button.js + badge.js imported; `import '@streem/lit'` brings in IntrinsicElements augmentation |
+| `InstallCta.tsx` | `@shoelace-style/shoelace` | Cherry-picked component JS + /lit types | WIRED | button.js + badge.js imported; `import '/lit'` brings in IntrinsicElements augmentation |
 | `h.ts` | `createElementNS` | SVG_TAGS.has(tag) check | WIRED | `const el = SVG_TAGS.has(tag) ? document.createElementNS(SVG_NS, tag) : document.createElement(tag)` |
 | `Hero.tsx` | `<sl-badge>` | Shoelace badge component | NOT WIRED | Hero still uses `<span class="badge">v0.1.0</span>` — sl-badge was planned but not implemented here |
 | `landing/src` | `Suspense` | Any import + usage | NOT WIRED | Suspense is not imported anywhere in apps/landing/src at runtime |
@@ -120,7 +120,7 @@ human_verification:
 
 ### 1. Full Visual Page Check
 
-**Test:** Run `pnpm --filter @streem/landing dev` and open http://localhost:5173
+**Test:** Run `pnpm --filter /landing dev` and open http://localhost:5173
 
 **Expected:**
 - Dark mode page with hero headline, live counter incrementing (count/doubled signals)
@@ -167,7 +167,7 @@ The ROADMAP success criterion #1 explicitly requires "every v1 feature (signals,
 
 `<Suspense>` is not imported or rendered anywhere in the live landing page. During development, TickerDemo was designed to use Suspense with the thrown-Promise protocol, but the implementation was replaced with `Show` + `hasData` signal after a bug where Suspense's retry-on-resolve behavior caused infinite stream re-creation. The fix removed Suspense entirely rather than restructuring it.
 
-The component works (93 @streem/dom tests pass including suspense.test.ts) — it simply is not exercised on the page.
+The component works (93 /dom tests pass including suspense.test.ts) — it simply is not exercised on the page.
 
 **Gap 2 (Minor — LAND-01 partial): Hero sl-badge replacement not made**
 
@@ -180,10 +180,10 @@ Hero.tsx line 18-19 contains a stale placeholder comment ("sl-badge added in pla
 - All of: signal, computed, effect, onMount, Show, For, ErrorBoundary, fromObservable, throttle, batch
 - Real Shoelace sl-button + sl-badge in InstallCta with TypeScript-typed prop:/on: bindings
 - Generated lit-elements.d.ts IntrinsicElements for all 56 Shoelace components
-- SVG namespace fix (createElementNS) making SVG a first-class JSX citizen in @streem/dom
+- SVG namespace fix (createElementNS) making SVG a first-class JSX citizen in /dom
 - GitHub Actions Pages deployment workflow with OIDC (no PAT)
 - /docs route with 5-section API reference
-- All 93 @streem/dom tests passing after the SVG fix
+- All 93 /dom tests passing after the SVG fix
 
 ---
 

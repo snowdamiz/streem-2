@@ -38,11 +38,11 @@ re_verification: false
 |-------------------------------------------|-------------------------------------------------------|------------|------------------------------------------------------------------------------|
 | `packages/streem/package.json`            | exports map with `.`, `./jsx-runtime`, `./jsx-dev-runtime` | ✓ VERIFIED | All three export keys present; `files` includes `dist`, `skills`, `install-streem-skill.mjs` |
 | `packages/streem/src/index.ts`            | Flat named re-exports from all three sub-packages     | ✓ VERIFIED | Exports: signal, computed, effect, createRoot, onCleanup, getOwner, runWithOwner, h, Fragment, render, onMount, Show, For, ErrorBoundary, Suspense, streemHMR, fromWebSocket, fromSSE, fromReadable, fromObservable, batch, throttle, debounce, MaxRetriesExceededError |
-| `packages/streem/src/jsx-runtime.ts`      | Re-exports from `@streem/dom/jsx-runtime`             | ✓ VERIFIED | `export * from '@streem/dom/jsx-runtime'` |
-| `packages/streem/vite.config.ts`          | Three entry points, sub-packages externalized         | ✓ VERIFIED | `external: ['@streem/core', '@streem/dom', '@streem/dom/jsx-runtime', '@streem/dom/jsx-dev-runtime', '@streem/streams']` |
+| `packages/streem/src/jsx-runtime.ts`      | Re-exports from `/dom/jsx-runtime`             | ✓ VERIFIED | `export * from '/dom/jsx-runtime'` |
+| `packages/streem/vite.config.ts`          | Three entry points, sub-packages externalized         | ✓ VERIFIED | `external: ['/core', '/dom', '/dom/jsx-runtime', '/dom/jsx-dev-runtime', '/streams']` |
 | `packages/streem/dist/index.js`           | Under 5KB, re-exports only                            | ✓ VERIFIED | 666 bytes — no sub-package code bundled |
-| `packages/streem/dist/jsx-runtime.js`     | Exists and re-exports from dom                        | ✓ VERIFIED | 41 bytes: `export * from "@streem/dom/jsx-runtime"` |
-| `packages/streem/dist/jsx-dev-runtime.js` | Exists and re-exports from dom                        | ✓ VERIFIED | 45 bytes: `export * from "@streem/dom/jsx-dev-runtime"` |
+| `packages/streem/dist/jsx-runtime.js`     | Exists and re-exports from dom                        | ✓ VERIFIED | 41 bytes: `export * from "/dom/jsx-runtime"` |
+| `packages/streem/dist/jsx-dev-runtime.js` | Exists and re-exports from dom                        | ✓ VERIFIED | 45 bytes: `export * from "/dom/jsx-dev-runtime"` |
 
 ### Plan 05-02: create-streem CLI
 
@@ -79,9 +79,9 @@ re_verification: false
 
 | From                                        | To                                       | Via                              | Status     | Details                                                          |
 |---------------------------------------------|------------------------------------------|----------------------------------|------------|------------------------------------------------------------------|
-| `packages/streem/src/index.ts`              | `@streem/core`                           | named re-exports                 | ✓ WIRED    | `export { signal, computed, effect, ... } from '@streem/core'` |
-| `packages/streem/src/jsx-runtime.ts`        | `@streem/dom/jsx-runtime`                | `export *`                       | ✓ WIRED    | `export * from '@streem/dom/jsx-runtime'` |
-| `packages/streem/vite.config.ts`            | rollupOptions.external                   | explicit externalization         | ✓ WIRED    | All 5 @streem/* paths externalized including jsx subpaths |
+| `packages/streem/src/index.ts`              | `/core`                           | named re-exports                 | ✓ WIRED    | `export { signal, computed, effect, ... } from '/core'` |
+| `packages/streem/src/jsx-runtime.ts`        | `/dom/jsx-runtime`                | `export *`                       | ✓ WIRED    | `export * from '/dom/jsx-runtime'` |
+| `packages/streem/vite.config.ts`            | rollupOptions.external                   | explicit externalization         | ✓ WIRED    | All 5 /* paths externalized including jsx subpaths |
 | `packages/create-streem/src/index.ts`       | `templates/default/`                     | `cp(templateDir, targetDir, ...)` | ✓ WIRED    | `await cp(templateDir, targetDir, { recursive: true })` — `templateDir` resolved from `import.meta.url` |
 | `packages/create-streem/templates/default/package.json` | streem npm package          | `"streem": "latest"`             | ✓ WIRED    | Exact match — not `workspace:*` |
 | `packages/streem/skills/SKILL.md`           | `packages/streem/skills/signals.md`      | routing table reference          | ✓ WIRED    | `signals.md` appears in Topic Routing table |
@@ -107,8 +107,8 @@ re_verification: false
 **Internal helpers confirmed absent from public dist:**
 
 The following symbols were verified NOT present in `packages/streem/dist/index.js`:
-- `startBatch`, `endBatch` (internal scheduling primitives from @streem/core)
-- `registerForHMR`, `getRestoredValue`, `saveToHotData`, `canRestoreState`, `saveSignalCount`, `clearHMRRegistry` (HMR internals from @streem/dom)
+- `startBatch`, `endBatch` (internal scheduling primitives from /core)
+- `registerForHMR`, `getRestoredValue`, `saveToHotData`, `canRestoreState`, `saveSignalCount`, `clearHMRRegistry` (HMR internals from /dom)
 
 **Correct public symbol count:** 24 symbols exported from `dist/index.js` (all developer-facing)
 

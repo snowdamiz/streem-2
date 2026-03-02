@@ -60,14 +60,14 @@ human_verification: []
 
 | From | To | Via | Status | Details |
 |------|----|-----|--------|---------|
-| `packages/streams/src/from-websocket.ts` | `@streem/core onCleanup` | `onCleanup(() => { ws.close(); status.set('closed') })` | WIRED | Line 82: `onCleanup(() => {` — registered BEFORE `connect()` call on line 95 |
+| `packages/streams/src/from-websocket.ts` | `/core onCleanup` | `onCleanup(() => { ws.close(); status.set('closed') })` | WIRED | Line 82: `onCleanup(() => {` — registered BEFORE `connect()` call on line 95 |
 | `packages/streams/tests/from-websocket.test.ts` | `vitest-websocket-mock WS` | `WS.clean()` in `afterEach` | WIRED | Line 16: `WS.clean()` present in `afterEach` block |
-| `packages/streams/src/from-sse.ts` | `@streem/core onCleanup` | `onCleanup(() => { es.close(); status.set('closed') })` | WIRED | Lines 56-59: `onCleanup(() => { es.close(); status.set('closed') })` |
+| `packages/streams/src/from-sse.ts` | `/core onCleanup` | `onCleanup(() => { es.close(); status.set('closed') })` | WIRED | Lines 56-59: `onCleanup(() => { es.close(); status.set('closed') })` |
 | `packages/streams/src/from-sse.ts` | `EventSource.readyState` | `es.readyState === EventSource.CLOSED` to distinguish reconnect from permanent failure | WIRED | Line 41: `if (es.readyState === EventSource.CLOSED)` present |
 | `packages/streams/src/from-readable.ts` | `ReadableStream reader` | `reader.cancel()` inside `onCleanup()` | WIRED | Line 50: `reader.cancel().catch(() => { /* intentional */ })` inside `onCleanup` |
 | `packages/streams/src/from-observable.ts` | `Subscribable<T> interface` | `source.subscribe({ next, error, complete })` returning `{ unsubscribe() }` | WIRED | Lines 16-29: subscribe call; line 32: `subscription.unsubscribe()` in `onCleanup` |
-| `packages/streams/src/combinators.ts` | `@streem/core startBatch / endBatch` | `import { startBatch, endBatch } from '@streem/core'` | WIRED | Line 1: import present; lines 23 and 27: `startBatch()` and `endBatch()` called |
-| `packages/streams/src/combinators.ts` | `@streem/core effect()` | `effect(() => { const value = source(); ... })` inside `throttle()` and `debounce()` | WIRED | Line 47: `effect(() => {` in `throttle`; line 76: `effect(() => {` in `debounce` |
+| `packages/streams/src/combinators.ts` | `/core startBatch / endBatch` | `import { startBatch, endBatch } from '/core'` | WIRED | Line 1: import present; lines 23 and 27: `startBatch()` and `endBatch()` called |
+| `packages/streams/src/combinators.ts` | `/core effect()` | `effect(() => { const value = source(); ... })` inside `throttle()` and `debounce()` | WIRED | Line 47: `effect(() => {` in `throttle`; line 76: `effect(() => {` in `debounce` |
 
 ---
 
@@ -111,7 +111,7 @@ None. All phase goal behaviors are verifiable programmatically:
 - Reconnect logic: verified by mock server close + status assertion tests
 - Batch performance: verified by effect run-count assertion (200 writes = 1 flush)
 - Throttle/debounce timing: verified by vi.useFakeTimers() test control
-- DOM-agnostic constraint: packages/streams has no dependency on @streem/dom (package.json only lists @streem/core)
+- DOM-agnostic constraint: packages/streams has no dependency on /dom (package.json only lists /core)
 
 ---
 
@@ -126,9 +126,9 @@ None. All phase goal behaviors are verifiable programmatically:
 | `tests/combinators.test.ts` | 10/10 | All pass |
 | **Total** | **42/42** | **All pass** |
 
-`@streem/core` regression: 40/40 tests pass after adding `startBatch`/`endBatch` to public exports.
+`/core` regression: 40/40 tests pass after adding `startBatch`/`endBatch` to public exports.
 
-`pnpm --filter @streem/streams build`: Clean build, `dist/index.js` (9.91 kB) and `dist/index.d.ts` generated.
+`pnpm --filter /streams build`: Clean build, `dist/index.js` (9.91 kB) and `dist/index.d.ts` generated.
 
 ---
 

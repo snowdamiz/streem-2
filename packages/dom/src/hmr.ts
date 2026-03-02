@@ -1,9 +1,9 @@
 /**
- * @streem/dom HMR — Signal state preservation across Vite hot module reloads.
+ * @streeem/dom HMR — Signal state preservation across Vite hot module reloads.
  *
  * Usage pattern in a component file:
  *
- *   import { hmrSignal } from '@streem/dom/hmr'
+ *   import { hmrSignal } from '@streeem/dom/hmr'
  *   // Or use the pattern directly:
  *
  *   const count = signal(import.meta.hot?.data?.count ?? 0)

@@ -3,7 +3,7 @@ import { playwright } from '@vitest/browser-playwright'
 
 export default defineConfig({
   test: {
-    name: '@streem/lit:browser',
+    name: '@streeem/lit:browser',
     include: ['tests/browser/**/*.browser.test.{ts,tsx}'],
     browser: {
       provider: playwright(),

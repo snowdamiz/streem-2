@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createRoot } from '@streem/core'
+import { createRoot } from '@streeem/core'
 import { fromObservable } from '../src/from-observable.js'
 import type { Subscribable } from '../src/types.js'
 

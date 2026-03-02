@@ -68,7 +68,7 @@ None - plan executed exactly as written.
 
 ## Verification
 
-- Build: `pnpm --filter @streem/landing build` exits 0, no TypeScript errors
+- Build: `pnpm --filter /landing build` exits 0, no TypeScript errors
 - Feature 02 accent: `var(--color-accent)` confirmed in Features.tsx line 35
 - Feature 04 accent: `var(--color-accent-2)` confirmed in Features.tsx line 62
 - `highlight.ts` handles: comments, template/single/double-quoted strings, keywords, function calls, numbers

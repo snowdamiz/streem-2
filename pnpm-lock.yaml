@@ -26,7 +26,7 @@ importers:
       '@preact/signals-core':
         specifier: ^1.8.0
         version: 1.13.0
-      '@streem/core':
+      '@streeem/core':
         specifier: workspace:*
         version: link:../../packages/core
       solid-js:
@@ -38,10 +38,10 @@ importers:
 
   apps/demo:
     dependencies:
-      '@streem/core':
+      '@streeem/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@streem/dom':
+      '@streeem/dom':
         specifier: workspace:*
         version: link:../../packages/dom
     devDependencies:
@@ -63,10 +63,10 @@ importers:
       '@shoelace-style/shoelace':
         specifier: ^2.20.1
         version: 2.20.1(@floating-ui/utils@0.2.10)(@types/react@19.2.14)
-      '@streem/lit':
+      '@streeem/lit':
         specifier: workspace:*
         version: link:../../packages/lit
-      streem:
+      streeem:
         specifier: workspace:*
         version: link:../../packages/streem
     devDependencies:
@@ -119,7 +119,7 @@ importers:
 
   packages/dom:
     dependencies:
-      '@streem/core':
+      '@streeem/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -141,10 +141,10 @@ importers:
 
   packages/lit:
     dependencies:
-      '@streem/core':
+      '@streeem/core':
         specifier: workspace:*
         version: link:../core
-      '@streem/dom':
+      '@streeem/dom':
         specifier: workspace:*
         version: link:../dom
     devDependencies:
@@ -184,7 +184,7 @@ importers:
 
   packages/streams:
     dependencies:
-      '@streem/core':
+      '@streeem/core':
         specifier: workspace:*
         version: link:../core
       rxjs:
@@ -221,13 +221,13 @@ importers:
       '@clack/prompts':
         specifier: ^1.0.1
         version: 1.0.1
-      '@streem/core':
+      '@streeem/core':
         specifier: workspace:*
         version: link:../core
-      '@streem/dom':
+      '@streeem/dom':
         specifier: workspace:*
         version: link:../dom
-      '@streem/streams':
+      '@streeem/streams':
         specifier: workspace:*
         version: link:../streams
     devDependencies:

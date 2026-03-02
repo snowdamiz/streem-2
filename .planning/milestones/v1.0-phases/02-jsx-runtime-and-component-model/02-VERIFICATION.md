@@ -7,7 +7,7 @@ re_verification: true
   previous_status: gaps_found
   previous_score: 9/10
   gaps_closed:
-    - "pnpm --filter @streem/dom exec tsc --noEmit exits 0 (no TypeScript type errors)"
+    - "pnpm --filter /dom exec tsc --noEmit exits 0 (no TypeScript type errors)"
   gaps_remaining: []
   regressions: []
 human_verification:
@@ -32,7 +32,7 @@ human_verification:
 
 | # | Truth | Status | Evidence |
 |---|-------|--------|---------|
-| 1 | Developer configures jsxImportSource: '@streem/dom' in tsconfig and TSX compiles without errors | VERIFIED | apps/demo/tsconfig.json sets jsx: react-jsx + jsxImportSource: @streem/dom; tsc --noEmit on apps/demo exits 0 |
+| 1 | Developer configures jsxImportSource: '/dom' in tsconfig and TSX compiles without errors | VERIFIED | apps/demo/tsconfig.json sets jsx: react-jsx + jsxImportSource: /dom; tsc --noEmit on apps/demo exits 0 |
 | 2 | h() creates real DOM elements (no VDOM) and invokes function components exactly once in createRoot scope | VERIFIED | h.ts:159-172 — function branch uses createRoot(dispose => { result = type(allProps) }); lifecycle.test.ts 7 tests pass including "component called exactly once" |
 | 3 | render() mounts component into DOM container and returns dispose | VERIFIED | render.ts:14-29 — createRoot wraps component(), appends nodes, returns dispose; scaffold.test.ts passes |
 | 4 | JSX.IntrinsicElements and JSX.Element types enable TypeScript IntelliSense | VERIFIED | jsx-runtime.ts inlines full JSX namespace with IntrinsicElements interface and ElementChildrenAttribute; apps/demo TSX compiles |
@@ -40,8 +40,8 @@ human_verification:
 | 6 | Signal used as JSX text child via accessor function updates only that text node (surgical DOM update) | VERIFIED | bindings.ts:11-26 — bindTextNode creates one text node, updates only nodeValue in effect(); bindings.test.ts 27 tests pass including "DOM mutation count exactly 1" |
 | 7 | Show/For/ErrorBoundary/Suspense all present and functional | VERIFIED | components.ts exports all four; 9+10+11+13 tests passing across show/for/error-boundary/suspense test suites |
 | 8 | Signal state preserved across Vite HMR via import.meta.hot.data pattern | VERIFIED | hmr.ts exports 6 functions; App.tsx has dispose/accept pattern; hmr.test.ts 9 tests pass |
-| 9 | All 91 @streem/dom tests pass | VERIFIED | pnpm --filter @streem/dom test: 8 test files, 91 tests, 0 failures |
-| 10 | tsc --noEmit exits 0 on @streem/dom package | VERIFIED | Fix applied at components.ts:301-303 — type predicate filter `(n): n is Node => n != null` plus null-guard before single-element wrap; `pnpm --filter @streem/dom exec tsc --noEmit` exits 0 |
+| 9 | All 91 /dom tests pass | VERIFIED | pnpm --filter /dom test: 8 test files, 91 tests, 0 failures |
+| 10 | tsc --noEmit exits 0 on /dom package | VERIFIED | Fix applied at components.ts:301-303 — type predicate filter `(n): n is Node => n != null` plus null-guard before single-element wrap; `pnpm --filter /dom exec tsc --noEmit` exits 0 |
 
 **Score:** 10/10 truths verified
 
@@ -51,7 +51,7 @@ human_verification:
 
 ### Gap Closed
 
-**Truth 10: tsc --noEmit exits 0 on @streem/dom package**
+**Truth 10: tsc --noEmit exits 0 on /dom package**
 
 Previous status: FAILED — TS2322 type error at `components.ts:301` where `nodes = Array.isArray(result) ? result : [result]` produced `(Node | null | undefined)[]` not assignable to `Node[]`.
 
@@ -65,8 +65,8 @@ nodes = Array.isArray(result)
 
 Verification:
 - `packages/dom/src/components.ts:302-303` — type predicate filter and null guard confirmed present
-- `pnpm --filter @streem/dom exec tsc --noEmit` exits with code 0 — no TypeScript errors
-- `pnpm --filter @streem/dom test` — 8 test files, 91 tests, 0 failures — no regressions
+- `pnpm --filter /dom exec tsc --noEmit` exits with code 0 — no TypeScript errors
+- `pnpm --filter /dom test` — 8 test files, 91 tests, 0 failures — no regressions
 
 ### Regressions
 
@@ -130,10 +130,10 @@ None. All 9 truths that were VERIFIED in the initial verification remain VERIFIE
 | From | To | Via | Status | Details |
 |------|----|-----|--------|---------|
 | jsx-runtime.ts | h.ts | `export { h as jsx, h as jsxs, Fragment }` | WIRED | Line 11 of jsx-runtime.ts |
-| h.ts | @streem/core createRoot | function component branch calls createRoot() | WIRED | h.ts:165 `createRoot((dispose) => { ... result = type(allProps) })` |
+| h.ts | /core createRoot | function component branch calls createRoot() | WIRED | h.ts:165 `createRoot((dispose) => { ... result = type(allProps) })` |
 | h.ts applyProps() | bindings.ts | `typeof value === 'function'` routes to bind* functions | WIRED | All 6 binding dispatch cases present in applyProps() |
-| bindings.ts bind*() | @streem/core effect() | each binding wraps DOM update in effect() | WIRED | All 6 functions use effect() from @streem/core |
-| components.ts Show() | @streem/core effect()+createRoot()+onCleanup() | effect watches `when` accessor; createRoot per Show state | WIRED | components.ts:157 effect(), 175 createRoot(), 200 onCleanup() |
+| bindings.ts bind*() | /core effect() | each binding wraps DOM update in effect() | WIRED | All 6 functions use effect() from /core |
+| components.ts Show() | /core effect()+createRoot()+onCleanup() | effect watches `when` accessor; createRoot per Show state | WIRED | components.ts:157 effect(), 175 createRoot(), 200 onCleanup() |
 | components.ts For() | Map<key, RowEntry> + createRoot() per item | reconciliation map with dispose per row — null-filtered via type predicate | WIRED | rows Map initialized at line 254; createRoot at line 298; filter at line 302 |
 | ErrorBoundary() | Suspense() | `if (err instanceof Promise) throw err` re-throw | WIRED | components.ts:44 — critical re-throw before fallback |
 | Suspense() | Promise.then() | err.then() attaches resolve/reject handlers | WIRED | components.ts:402 `err.then(...)` |
@@ -146,7 +146,7 @@ None. All 9 truths that were VERIFIED in the initial verification remain VERIFIE
 
 | Requirement | Source Plan | Description | Status | Evidence |
 |-------------|------------|-------------|--------|---------|
-| JSX-01 | 02-01 | jsxImportSource: 'streem' in tsconfig — no Babel or custom compiler | SATISFIED | apps/demo/tsconfig.json: jsx: react-jsx + jsxImportSource: @streem/dom; tsc --noEmit passes on demo; package.json exports ./jsx-runtime |
+| JSX-01 | 02-01 | jsxImportSource: 'streem' in tsconfig — no Babel or custom compiler | SATISFIED | apps/demo/tsconfig.json: jsx: react-jsx + jsxImportSource: /dom; tsc --noEmit passes on demo; package.json exports ./jsx-runtime |
 | JSX-02 | 02-02 | Reactive signal values in JSX update only exact affected DOM node | SATISFIED | bindings.ts bindTextNode/bindAttr use effect() targeting one node; bindings.test.ts proves "updates only nodeValue", "does NOT mutate parent innerHTML" |
 | JSX-03 | 02-05 | Vite dev server preserves signal state across HMR | SATISFIED | hmr.ts registry + App.tsx dispose/accept pattern + hmr.test.ts 9 tests; live HMR requires human verification (flagged below) |
 | COMP-01 | 02-01 | Function components with fully typed props | SATISFIED | h.ts typed function component branch; JSX namespace IntrinsicElements; apps/demo TSX compiles |
@@ -175,7 +175,7 @@ The TS2322 anti-pattern from the initial verification has been resolved.
 
 ### 1. Live HMR State Preservation
 
-**Test:** Run `pnpm --filter @streem/demo dev`, open the browser, click Increment several times to raise the counter, then save `apps/demo/src/App.tsx` (e.g. add a space to a comment)
+**Test:** Run `pnpm --filter /demo dev`, open the browser, click Increment several times to raise the counter, then save `apps/demo/src/App.tsx` (e.g. add a space to a comment)
 **Expected:** The count value displayed is preserved after the hot reload — it does NOT reset to 0. The `showExtra` toggle state is also preserved.
 **Why human:** Live HMR requires a running Vite dev server. The unit tests in hmr.test.ts cover the registry logic (save/restore, canRestoreState, clearHMRRegistry) but cannot simulate actual Vite module replacement across a WebSocket HMR connection.
 
@@ -191,7 +191,7 @@ nodes = Array.isArray(result)
   : result != null ? [result] : []
 ```
 
-`pnpm --filter @streem/dom exec tsc --noEmit` now exits 0. All 91 tests continue to pass with no regressions.
+`pnpm --filter /dom exec tsc --noEmit` now exits 0. All 91 tests continue to pass with no regressions.
 
 The one remaining item requiring human attention is live HMR state preservation, which cannot be verified without a running Vite dev server and browser interaction. All automated checks — 10/10 truths, all artifacts substantive and wired, all 10 requirements satisfied, no type errors — pass.
 

@@ -93,7 +93,7 @@ None - plan executed exactly as written.
 
 ## Issues Encountered
 
-None. `pnpm --filter @streem/landing exec tsc --noEmit` passed clean after both tasks.
+None. `pnpm --filter /landing exec tsc --noEmit` passed clean after both tasks.
 
 ## User Setup Required
 

@@ -1,5 +1,5 @@
 /**
- * @streem/core — Public reactive API
+ * @streeem/core — Public reactive API
  *
  * This module exposes the public signal(), computed(), and effect() APIs that
  * users interact with directly. It wraps the internal push-pull reactive graph

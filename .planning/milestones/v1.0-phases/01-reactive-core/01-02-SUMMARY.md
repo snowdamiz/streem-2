@@ -16,7 +16,7 @@ provides:
 
 affects:
   - 01-reactive-core/01-03 (test suite tests these public APIs)
-  - all downstream phases import from @streem/core
+  - all downstream phases import from /core
 
 tech-stack:
   added: []
