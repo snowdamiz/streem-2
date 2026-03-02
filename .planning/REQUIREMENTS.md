@@ -17,6 +17,13 @@ Requirements for the Documentation & DX Polish milestone.
 - [x] **DOCS-02**: Logo (logo.svg from public/) is displayed in the docs sidebar nav header
 - [x] **DOCS-03**: All code blocks in the docs display syntax-highlighted output (TypeScript/TSX)
 
+### Production Readiness
+
+- [x] **PROD-01**: Landing page browser tab shows the Streem favicon (SVG icon mark)
+- [x] **PROD-02**: Sharing the landing page URL on social platforms shows a rich OG/Twitter card preview
+- [x] **PROD-03**: Docs page has complete SEO meta tags (description, OG, Twitter card) for social sharing
+- [x] **PROD-04**: Changes pushed to main trigger the GitHub Actions deploy workflow to GitHub Pages
+
 ### Docs Content
 
 - [x] **DOCS-04**: Existing doc sections (Getting Started, Signals, Components, Streams, Lit interop) are expanded with additional examples, edge cases, and TypeScript tips
@@ -59,10 +66,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DOCS-07 | Phase 16 | Complete |
 | DOCS-08 | Phase 16 | Complete |
 | DOCS-09 | Phase 14 | Complete |
+| PROD-01 | Phase 17 | Complete |
+| PROD-02 | Phase 17 | Complete |
+| PROD-03 | Phase 17 | Complete |
+| PROD-04 | Phase 17 | Complete |
 
 **Coverage:**
-- v1.2 requirements: 10 total
-- Mapped to phases: 10
+- v1.2 requirements: 14 total
+- Mapped to phases: 14
 - Unmapped: 0
 
 ---
