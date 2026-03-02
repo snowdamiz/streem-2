@@ -59,8 +59,15 @@ jobs:
           done
 
       # npm publish uses the OIDC token — no NODE_AUTH_TOKEN env var set.
+      # Attempt all packages before failing so one bad package doesn't block others.
       - name: Publish packages
         run: |
+          failed=0
           for tarball in /tmp/packed/*.tgz; do
-            npm publish "$tarball" --provenance --access public
+            echo "Publishing $tarball..."
+            npm publish "$tarball" --provenance --access public || {
+              echo "ERROR: failed to publish $tarball"
+              failed=1
+            }
           done
+          exit $failed
