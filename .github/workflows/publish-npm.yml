@@ -10,6 +10,10 @@
 # pnpm does not yet support OIDC natively (github.com/pnpm/pnpm/issues/9812).
 # Workaround: pack with pnpm (resolves workspace:* → real versions), then
 # publish each tarball with npm CLI which does the OIDC exchange.
+#
+# Node 24 is required: npm OIDC Trusted Publishing requires npm v11.5.1+.
+# Node 22 ships with npm v10 which does NOT support OIDC — this causes a
+# misleading "Access token expired or revoked" 404 error from the registry.
 
 name: Publish to npm
 
@@ -33,13 +37,13 @@ jobs:
         with:
           version: latest
 
-      # Node 22.14+ ships npm 11.5.1+ which is required for OIDC trusted publishing.
+      # Node 24 ships with npm 11+ which is required for OIDC trusted publishing.
       # registry-url configures the publish endpoint; omitting NODE_AUTH_TOKEN
       # causes npm to fall through to the OIDC exchange automatically.
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
           cache: pnpm
           registry-url: https://registry.npmjs.org
 

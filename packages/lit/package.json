@@ -24,8 +24,8 @@
     "gen:lit-types": "cem analyze --litelement && tsx scripts/gen-lit-types.ts"
   },
   "peerDependencies": {
-    "@streeem/core": "workspace:*",
-    "@streeem/dom": "workspace:*"
+    "@streeem/core": ">=0.1.0",
+    "@streeem/dom": ">=0.1.0"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.5",
