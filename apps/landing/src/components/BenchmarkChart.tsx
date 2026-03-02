@@ -1,5 +1,3 @@
-import { signal, computed } from 'streem'
-
 const SUITES = [
   {
     label: 'signal',
@@ -43,9 +41,7 @@ function formatOps(ops: number): string {
   return (ops / 1_000_000).toFixed(1) + 'M'
 }
 
-// BarGroup renders a single bar with its value label and lib label
 interface BarGroupProps {
-  barKey: string
   x: number
   y: number
   barW: number
@@ -56,14 +52,9 @@ interface BarGroupProps {
   shortLabel: string
   opsLabel: string
   libLabelY: number
-  hoveredBar: ReturnType<typeof signal<string | null>>
 }
 
 function BarGroup(p: BarGroupProps): Node {
-  const getOpacity = computed(() =>
-    p.hoveredBar.value === null || p.hoveredBar.value === p.barKey ? 1 : 0.35
-  )
-
   return (
     <g>
       <text
@@ -73,7 +64,6 @@ function BarGroup(p: BarGroupProps): Node {
         font-size="9"
         font-family="var(--font-mono, monospace)"
         fill={p.color}
-        style={() => `opacity: ${getOpacity()}`}
       >
         {p.opsLabel}
       </text>
@@ -84,9 +74,6 @@ function BarGroup(p: BarGroupProps): Node {
         height={p.barHeight}
         fill={p.color}
         rx="2"
-        style={() => `opacity: ${getOpacity()}; cursor: crosshair;`}
-        onmouseenter={() => p.hoveredBar.set(p.barKey)}
-        onmouseleave={() => p.hoveredBar.set(null)}
       />
       <text
         x={p.labelX}
@@ -95,7 +82,6 @@ function BarGroup(p: BarGroupProps): Node {
         font-size="8"
         font-family="var(--font-mono, monospace)"
         fill="var(--color-muted)"
-        style={() => `opacity: ${getOpacity()}`}
       >
         {p.shortLabel}
       </text>
@@ -104,8 +90,6 @@ function BarGroup(p: BarGroupProps): Node {
 }
 
 export function BenchmarkChart(): Node {
-  const hoveredBar = signal<string | null>(null)
-
   // SVG dimensions
   const W = 600
   const H = 300
@@ -117,10 +101,9 @@ export function BenchmarkChart(): Node {
   const chartH = H - marginTop - marginBottom
   const maxOps = 46_847_878
 
-  const numClusters = SUITES.length        // 3
+  const numClusters = SUITES.length
   const clusterW = chartW / numClusters
   const barsPerCluster = 3
-  // barW chosen so 3 bars + 2 gaps fit in ~60% of clusterW
   const barW = clusterW / (barsPerCluster + barsPerCluster * 0.5)
   const barGap = barW * 0.35
   const clusterBarsW = barsPerCluster * barW + (barsPerCluster - 1) * barGap
@@ -128,7 +111,6 @@ export function BenchmarkChart(): Node {
   const libLabelY = marginTop + chartH + 14
   const groupLabelY = marginTop + chartH + 30
 
-  // Y-axis ticks at 0, 10M, 20M, 30M, 40M
   const yTickValues = [0, 10, 20, 30, 40]
 
   return (
@@ -188,7 +170,6 @@ export function BenchmarkChart(): Node {
               return (
                 <g>
                   {suite.bars.map((bar, bi) => {
-                    const barKey = `${suite.label}-${bar.lib}`
                     const barHeight = (bar.ops / maxOps) * chartH
                     const x = clusterStartX + bi * (barW + barGap)
                     const y = marginTop + chartH - barHeight
@@ -197,7 +178,6 @@ export function BenchmarkChart(): Node {
 
                     return (
                       <BarGroup
-                        barKey={barKey}
                         x={x}
                         y={y}
                         barW={barW}
@@ -208,7 +188,6 @@ export function BenchmarkChart(): Node {
                         shortLabel={SHORT_LABELS[bar.lib] ?? bar.lib}
                         opsLabel={formatOps(bar.ops)}
                         libLabelY={libLabelY}
-                        hoveredBar={hoveredBar}
                       />
                     ) as unknown as Node
                   })}
