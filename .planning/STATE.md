@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Documentation & DX Polish
 status: unknown
-last_updated: "2026-03-02T00:42:22.954Z"
+last_updated: "2026-03-01T19:45:00Z"
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 11
-  completed_plans: 10
+  completed_plans: 11
 ---
 
 # Project State
@@ -18,14 +18,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-01)
 
 **Core value:** Signals and streams are first-class primitives — not adapters or plugins — so real-time UIs feel as natural to write as static ones.
-**Current focus:** Phase 16 — Docs New Reference Sections (in progress)
+**Current focus:** Phase 17 — Make landing/docs page production ready (favicon, SEO, etc)
 
 ## Current Position
 
-Phase: 16 of 16 (Docs New Reference Sections)
-Plan: 3 of 3 (completed)
-Status: Phase 16 complete — Performance reference section added to docs (final plan)
-Last activity: 2026-03-02 - Completed quick task 4: Refactor DocsApp to use Tailwind CSS and split into multiple component files
+Phase: 17 of 17 (Production Ready: Favicon, SEO, Deploy)
+Plan: 1 of 3 (completed)
+Status: Phase 17 plan 01 complete — favicon SVG created and OG/Twitter Card meta tags added
+Last activity: 2026-03-01 - Completed 17-01: favicon.svg and SEO meta tags
 
 Progress: [████░░░░░░] 22%
 
@@ -53,6 +53,7 @@ Progress: [████░░░░░░] 22%
 | Phase 16 P02 | 2 | 2 tasks | 1 files |
 | Phase 16 P03 | 2 | 2 tasks | 1 files |
 | Phase 17 P02 | 1 | 1 tasks | 1 files |
+| Phase 17 P01 | 5 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -106,8 +107,12 @@ Decisions from 16-03:
 - BAD/GOOD comment pattern used for computed vs effect anti-pattern comparison
 - Cross-link in SignalsSection appended after existing TypeScript cross-link as final paragraphs
 - Cross-link in PatternsSection placed after opening intro paragraph for early discoverability
-- [Phase 17]: Owner username nicholasgasior sourced from 17-01-PLAN.md (no git remote configured)
-- [Phase 17]: og:image for docs points to /logo.svg same as landing page
+
+Decisions from 17-01:
+- favicon.svg wraps original logo paths in <g transform> (no path d rewrite) scaled to 64x64 viewBox
+- og:image and twitter:image point to /streem-2/logo.svg (full wordmark) for social cards
+- Deployed URL hardcoded as https://nicholasgasior.github.io/streem-2/ (no git remote configured)
+- No canonical link tag — not meaningful for a SPA
 
 ### Pending Todos
 
@@ -128,6 +133,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-02
-Stopped at: Quick task 4 complete — DocsApp refactored to Tailwind CSS, split into 10 component files
+Last session: 2026-03-01
+Stopped at: Completed 17-01-PLAN.md — favicon.svg and OG/Twitter Card meta tags added to landing page
 Resume file: None
